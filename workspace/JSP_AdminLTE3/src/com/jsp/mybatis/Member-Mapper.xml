@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Member-mapper"><!-- 같은 이름의 매퍼가 있으면 패키지명을 적어야하지만 이거 하나면 안써도 돼 -->
+									<!-- mybatis는 namespace 꼭 줘야하고, 파일명이랑 동일하게해야한다. -->
+
+	<!-- id로 1명 가져오기 -->				<!-- config.xml에 String 을 str로 alias해놓았다. -->
+	<select id="selectMemberById" parameterType="str" resultType="member">
+		select *
+		from member
+		where id=#{id}
+	</select>
+	
+	<!-- 전체조회 -->
+	<select id="selectMemberList" resultType="member">
+		-- 이렇게하면??
+		select * 
+		from member
+	</select>
+	
+	<!-- 전체조회 개수 -->
+	<select id="selectMemberListCount" resultType="int">
+		select count(*) 
+		from member
+	</select>
+	
+	
+	
+	
+	
+	<!-- insert -->
+	<!-- insert, update, delete 스키마는 똑같이 executeUpdate 를실행함(executeQuery,executeUpdate 두개중에 ).
+	 		그중에서도 update 사용하면 실행된 행수를 리턴하고 로깅도 편함. -->
+	<update id="insertMember" parameterType="member">
+		insert into
+		member(id, pwd, email, phone, picture)
+		values(#{id}, #{pwd}, #{email}, #{phone}, #{picture})
+	</update>
+	
+	<!-- update -->
+	<update id="updateMember" parameterType="member">
+		update member
+		set
+		pwd=#{pwd}, email=#{email},phone=#{phone},
+			picture=#{picture}
+		
+		<if test="authroity != null">
+			,authority=#{authority}
+		</if>
+		
+		where id=#{id}
+		
+	</update>
+		<!-- if문 test:뒤에 나온게 true 면 아래 구문을 붙여사용함.
+		 => 의미는 파라미터로 authority의 값을 받으면 아래 구문을 붙이고, 값을 받지 않으면 붙이지 않음.
+		xml에서는 리터럴 String 같은것 없음. 'abc'.toString() 해서 써야한다. -->
+	
+	
+	<!-- delete -->
+	<update id="deleteMember" parameterType="str">
+		delete
+		from member
+		where id=#{id}
+	</update>
+
+</mapper>

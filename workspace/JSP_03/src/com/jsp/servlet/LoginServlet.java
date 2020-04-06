@@ -27,13 +27,21 @@ public class LoginServlet extends HttpServlet {
 		
 		// 로그인 처리부..MemberVO member = mService.getMember(id);
 		
+		
+		// 공백일 때.
+		String msg = "";
+		if(id.equals("")) {
+			msg = "아이디를 입력해주세요.";
+		}
+		request.setAttribute("msg", msg);// 앞이 "" 이거속에넣고 뒤에가 변수명.
+		
+		
 		// 로그인 실패
 		if(!(id.equals("mimi")&&pwd.equals("mimi"))) {
 			request.setAttribute("id", id);
 			url="/WEB-INF/views/common/loginForm.jsp";
 			    
 		}else {
-		
 		
 		
 		// 로그인 성공

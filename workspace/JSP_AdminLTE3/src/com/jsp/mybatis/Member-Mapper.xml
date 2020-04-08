@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="Member-mapper"><!-- 같은 이름의 매퍼가 있으면 패키지명을 적어야하지만 이거 하나면 안써도 돼 -->
+<mapper namespace="Member-Mapper"><!-- 같은 이름의 매퍼가 있으면 패키지명을 적어야하지만 이거 하나면 안써도 돼 -->
 									<!-- mybatis는 namespace 꼭 줘야하고, 파일명이랑 동일하게해야한다. -->
 
 	<!-- id로 1명 가져오기 -->				<!-- config.xml에 String 을 str로 alias해놓았다. -->

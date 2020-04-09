@@ -106,7 +106,11 @@
 				$('form[role="form"] > input[name="picture"]').val(data);
 				$('input[name="checkUpload"]').val(1);
 				alert("사진을 업로드 했습니다.");
+			},
+			error : function(xhr, exception){
+				alert("파일 업로드를 실패했습니다.");
 			}
+			
 		});
 	}
 	// 

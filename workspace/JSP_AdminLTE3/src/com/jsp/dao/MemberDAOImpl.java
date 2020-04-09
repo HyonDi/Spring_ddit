@@ -40,9 +40,14 @@ public class MemberDAOImpl implements MemberDAO {
 	public int selectMemberListCount() throws SQLException {
 		int count = 0;
 		SqlSession session = sessionFactory.openSession();
-		count = session.selectOne("Member-Mapper.selectMemberListCount", null);
 		
-		session.close();
+		try {
+			count = session.selectOne("Member-Mapper.selectMemberListCount", null);
+		}finally {
+			if(session!=null) {
+				session.close();
+			}
+		}
 		
 		return count;
 	}

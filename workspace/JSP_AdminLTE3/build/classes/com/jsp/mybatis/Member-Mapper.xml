@@ -32,8 +32,8 @@
 	 		그중에서도 update 사용하면 실행된 행수를 리턴하고 로깅도 편함. -->
 	<update id="insertMember" parameterType="member">
 		insert into
-		member(id, pwd, email, phone, picture)
-		values(#{id}, #{pwd}, #{email}, #{phone}, #{picture})
+		member(id, pwd, email, phone, picture, name)
+		values(#{id}, #{pwd}, #{email}, #{phone}, #{picture}, #{name})
 	</update>
 	
 	<!-- update -->

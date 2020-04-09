@@ -70,7 +70,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("loginUser", loginUser);
 			
 			// 6분간 세션 유지. 6분간 request 가 없으면 날아간다.
-			session.setMaxInactiveInterval(10);
+			session.setMaxInactiveInterval(60*6);
 			
 		} catch (SQLException e) { // db 터질때
 			//e.printStackTrace();

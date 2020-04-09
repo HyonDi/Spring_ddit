@@ -35,7 +35,7 @@
 			<!-- form start -->
 			<div class="card">
 				<div class="register-card-body">
-					<form role="form" class="form-horizontal" action="regist.do" method="post">						
+					<form role="form" class="form-horizontal" action="regist" method="post">						
 						<input type="hidden" name="picture" />
 						<div class="input-group mb-3">
 							<div class="mailbox-attachments clearfix" style="text-align: center;">
@@ -73,6 +73,17 @@
 							</div>
 							
 						</div>	
+						
+						<div class="form-group row">
+							<label for="name" class="col-sm-3" style="font-size:0.9em;">
+								<span style="color:red;font-weight:bold;">*</span>이&nbsp;&nbsp;름</label>
+							<div class="col-sm-9 input-group-sm">								
+								<input class="form-control" name="name" type="text" class="form-control" id="name"
+										placeholder="이름을 입력하세요." />
+							</div>
+							
+						</div>
+						
 						<div class="form-group row">
 							<label for="authority" class="col-sm-3 control-label text-center" >권 한</label>
 							<div class="col-sm-9">
@@ -147,5 +158,7 @@
 <%@ include file="picture_js.jsp" %>
 <%-- 코드분리를위해. 얘는 상대경로. 여기(regist)에서만쓸거니까. js로 하면 캐쉬때문에 수정이 번거로워서 jsp로 코드를 분리한다.--%>
 
+<%@ include file="regist_js.jsp" %>
+<%--  --%>
 
 

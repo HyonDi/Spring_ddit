@@ -29,7 +29,7 @@ public class GetUploadPath {
 	
 	public static String getUploadPath(String key) {
 		String uploadPath = null;
-		uploadPath = properties.getProperty(key);
+		uploadPath = properties.getProperty(key); // key값을 넣은 것.
 		
 		// / 슬래시로 돼있는걸 \ 역슬래시(File.separator)로 바꾼다.
 		uploadPath = uploadPath.replace("/", File.separator);

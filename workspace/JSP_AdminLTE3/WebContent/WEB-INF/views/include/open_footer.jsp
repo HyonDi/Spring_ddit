@@ -3,7 +3,7 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 
 
-<!-- 새로 열리는 window창 용. 맨 위 header랑 좌측 navbar가 없다. js만 적용. -->
+<%-- 새로 열리는 window창 용. 맨 위 header랑 좌측 navbar가 없다. js만 적용. --%>
 
 
 <!-- Bootstrap 4 -->

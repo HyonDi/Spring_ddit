@@ -102,8 +102,10 @@
 	             					pageContext.setAttribute("member", member);
 	             		%>
 	             		 --%>
-	             						<tr>
-	             							<td>${member.id}</td>
+	             						<tr>											<%-- url, 제목, 너비, 높이 순서임!   --%>
+	             							<td><a href="javascript:OpenWindow('detail?id=${member.id}','회원상세보기','800','600',);" >${member.id}</a></td>
+	             											<%-- target_black, 혹은 이벤트로 안주는 이유는 코드분리를 위해서야 --%>
+	             							<%-- <td>${member.id}</td> --%>
 	             							<td>${member.name}</td>
 	             							<td>${member.pwd}</td>
 	             							<td>${member.email}</td>

@@ -43,7 +43,7 @@
 		pwd=#{pwd}, email=#{email},phone=#{phone},
 			picture=#{picture}
 		
-		<if test="authroity != null">
+		<if test="authority != null">
 			,authority=#{authority}
 		</if>
 		

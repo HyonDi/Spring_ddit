@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title><!-- <decorator:title  default="종현스 시스템"/> --></title>
+  <title><%-- <decorator:title  default="종현스 시스템"/> --%></title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/bootstrap/plugins/fontawesome-free/css/all.min.css">
@@ -170,7 +170,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<%=request.getContextPath()%>/member/getPicture.do?picture=${loginUser.picture}" class="img-circle elevation-2" alt="User Image">
+        
+        <%-- 이미지태그 속성 onerror="" 넣으면 이미지가 터졌을 때 default 이미지를 넣어준다. 단점 : 받을 때 까지 계속 요청함. url 확실하게 주세요.
+         image 폴더는 함부로 건들면 안된다.
+         onerror="this.src='<%=request.getContextPath() %>/resources/bootstrap/dist/img/avatar.png'"
+        	여기에 placehold.it 이나 paceimg.com 거 넣어도 된당! --%>
+        
+          <img src="<%=request.getContextPath()%>/member/picture/get?picture=${loginUser.picture}" 
+          onerror="this.src='<%=request.getContextPath() %>/resources/bootstrap/dist/img/avatar.png'" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <div class="row">

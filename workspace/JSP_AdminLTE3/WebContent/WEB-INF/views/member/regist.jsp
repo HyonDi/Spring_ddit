@@ -5,9 +5,9 @@
 <%@ include file="/WEB-INF/views/include/open_header.jsp" %>
 
 
-	<!-- Content Wrapper. Contains page content -->
+	<%-- Content Wrapper. Contains page content --%>
  <div class="content-wrapper">
-	<!-- Content Header (Page header) -->
+	<%-- Content Header (Page header) --%>
 	  <section class="content-header">
 	  	<div class="container-fluid">
 	  		<div class="row md-2">
@@ -34,6 +34,19 @@
 		<div class="register-box">
 			<!-- form start -->
 			<div class="card">
+				<div class="register-card-header">
+					<div class="row">								
+								<div class="col-sm-6">
+									<button type="button" <%--id="registBtn"--%>class="btn btn-info" onclick="SubmitMemberRegist('form');">가입하기</button>
+							 	</div>
+							 	
+							 	<div class="col-sm-6">
+									<button type="button" id="cancelBtn" onclick="CloseWindow();"
+										class="btn btn-default float-right">&nbsp;&nbsp;&nbsp;취 &nbsp;&nbsp;소&nbsp;&nbsp;&nbsp;</button>
+								</div>
+							
+							</div>
+				</div>
 				<div class="register-card-body">
 					<form role="form" class="form-horizontal" action="regist" method="post">						
 						<input type="hidden" name="picture" />
@@ -121,17 +134,7 @@
 						</div>
 						
 						<div class="card-footer">
-							<div class="row">								
-								<div class="col-sm-6">
-									<button type="button" id="registBtn" class="btn btn-info">가입하기</button>
-							 	</div>
-							 	
-							 	<div class="col-sm-6">
-									<button type="button" id="cancelBtn" onclick="CloseWindow();"
-										class="btn btn-default float-right">&nbsp;&nbsp;&nbsp;취 &nbsp;&nbsp;소&nbsp;&nbsp;&nbsp;</button>
-								</div>
 							
-							</div>
 						</div>
 					</form>					
 				</div><!-- register-card-body -->
@@ -158,7 +161,7 @@
 <%@ include file="picture_js.jsp" %>
 <%-- 코드분리를위해. 얘는 상대경로. 여기(regist)에서만쓸거니까. js로 하면 캐쉬때문에 수정이 번거로워서 jsp로 코드를 분리한다.--%>
 
-<%@ include file="regist_js.jsp" %>
+
 <%--  --%>
 
 

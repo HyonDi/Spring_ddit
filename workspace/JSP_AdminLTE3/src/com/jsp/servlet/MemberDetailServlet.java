@@ -20,6 +20,8 @@ public class MemberDetailServlet extends HttpServlet {
 	// detail보기위한 서블릿. (List에서 회원하나를 클릭했을 때)
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setCharacterEncoding("utf-8");
+		
 		// 1. 화면결정
 		String url="member/detail";
 		

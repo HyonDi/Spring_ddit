@@ -17,7 +17,7 @@ function CloseWindow(){
 }
 	
 // form submit
-function SubmitMemberRegist(formRole){
+function SubmitMember(formRole){
 	var uploadCheck = $('input[name="checkUpload"]').val();
 	if(!(uploadCheck>0)){ // 업로드버튼 눌렀는지 확인.
 		alert("사진 업로드는 필수입니다.");

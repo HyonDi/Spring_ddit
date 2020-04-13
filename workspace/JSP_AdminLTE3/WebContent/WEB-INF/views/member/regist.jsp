@@ -37,7 +37,7 @@
 				<div class="register-card-header">
 					<div class="row">								
 								<div class="col-sm-6">
-									<button type="button" <%--id="registBtn"--%>class="btn btn-info" onclick="SubmitMemberRegist('form');">가입하기</button>
+									<button type="button" <%--id="registBtn"--%>class="btn btn-info" onclick="SubmitMember('form');">가입하기</button>
 							 	</div>
 							 	
 							 	<div class="col-sm-6">

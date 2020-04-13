@@ -45,14 +45,31 @@
 			          		<div class="col-sm-3text-center">
 				          		<button type="button" id="deleteBtn" class="btn btn-danger" >삭 제</button>
 			          		</div>
+			          		
+			          		<c:if test="${member.enabled eq 1}">
 			          		<div class="col-sm-3 text-center">
-			          			<button type="button" id="stopBtn" class="btn btn-info" >정 지</button>
+			          		
+			          			<button type="button" id="disabledBtn" class="btn btn-info" >정 지</button>
+			          			<%-- <c:choose>
+			          				<c:when test="${member.enabled==1}">정지</c:when>
+			          				<c:when test="${member.enabled==0}">활성화</c:when>
+			          			</c:choose> --%>
 			          		</div>
+			          		
+			          		</c:if>	
+			          		
+			          		<c:if test="${member.enabled eq 0}">
+			          		<div class="col-sm-3 text-center">
+			          			<button type="button" id="enabledBtn" class="btn btn-info" >활 성</button>
+			          		</div>
+			          		</c:if>	
+			          			
 			          		<div class="col-sm-3 text-center">
 			            		<button type="button" id="listBtn" onclick="CloseWindow();" class="btn btn-primary pull-right">닫 기</button>
 			            	</div>
+			          		</div>
 		          	    </div>  	
-	        		</div>
+	        		
 	        		<br/>
 	            	<div class="row"  style="height:200px;">
 						<div class="mailbox-attachments clearfix col-md-12" style="text-align: center;">							
@@ -70,25 +87,25 @@
 	                <div class="form-group row">
 	                  <label for="inputPassword3" class="col-sm-3 control-label text-right">패스워드</label>
 	                  <div class="col-sm-9">
-	                    <input name="pwd" type="password" class="form-control" id="inputPassword3" value="${member.pwd }">
+	                    <input name="pwd" type="password" class="form-control" readonly id="inputPassword3" value="${member.pwd }">
 	                  </div>
 	                </div>
 	                <div class="form-group row">
 	                  <label for="inputPassword3" class="col-sm-3 control-label text-right">이&nbsp;&nbsp;름</label>
 	                  <div class="col-sm-9">
-	                    <input name="name" type="text" class="form-control" id="inputName3" value="${member.name }">
+	                    <input name="name" type="text" class="form-control" readonly id="inputName3" value="${member.name }">
 	                  </div>
 	               </div>
 	                <div class="form-group row">
 	                  <label for="inputPassword3" class="col-sm-3 control-label text-right">이메일</label>
 	                  <div class="col-sm-9">
-	                    <input name="email" type="email" class="form-control" id="inputPassword3" value="${member.email }">
+	                    <input name="email" type="email" class="form-control" readonly id="inputPassword3" value="${member.email }">
 	                  </div>
 	                </div>
 	                <div class="form-group row">
 	                  <label for="inputPassword3" class="col-sm-3 control-label text-right">전화번호</label>
 	                  <div class="col-sm-9">   
-	                  	<input name="phone" type="text" class="form-control" id="inputPassword3" value="${member.phone.substring(0,3) }-${member.phone.substring(3,7)}-${member.phone.substring(7) }">	                
+	                  	<input name="phone" type="text" class="form-control" readonly id="inputPassword3" value="${member.phone.substring(0,3) }-${member.phone.substring(3,7)}-${member.phone.substring(7) }">	                
 	                  </div>                  
 	                </div> 
 	              </div>  		          	     
@@ -133,9 +150,17 @@
 		
 	});
 	
-	$('#stopBtn').on('click', function(e){
-		location.href="stop?id=${member.id}";
+	$('#disabledBtn').on('click', function(e){
+		// ajax 사용하면 화면깜빡임 없앨 수 있다.
+		alert("해당회원을 정지시킵니다.");
+		location.href="disabled?id=${member.id}";
+	
 	});
+	
+	$('#enabledBtn').on('click', function(e){
+		alert("해당회원 정지를 해제시킵니다.")
+		location.href="enabled?id=${member.id}";
+	})
 	
 	$('#deleteBtn').on('click', function(e){
 		<%-- 비밀번호를 입력받을 것이다. 확인취소버튼누르게하는것보다 타이핑을시켜야함. --%>

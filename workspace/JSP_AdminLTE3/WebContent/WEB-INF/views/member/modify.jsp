@@ -68,7 +68,7 @@
 	                <div class="form-group row">
 	                  <label for="inputPassword3" class="col-sm-3 control-label text-right">이&nbsp;&nbsp;름</label>
 	                  <div class="col-sm-9">
-	                    <input name="pwd" type="text" class="form-control" id="inputPassword3" value="${member.name }">
+	                    <input name="name" type="text" class="form-control" id="inputPassword3" value="${member.name }">
 	                  </div>
 	               </div>
 	                <div class="form-group row">
@@ -108,7 +108,7 @@
 	              </div> <!-- card body -->
 	              <div class="card-footer">
 	              	<div class="row">
-	              		<button type="button" id="modifyBtn" class="btn btn-warning col-sm-4 text-center" onclick="SubmitMemberRegist('form');">수정하기</button>
+	              		<button type="button" id="modifyBtn" class="btn btn-warning col-sm-4 text-center" onclick="SubmitMember('form');">수정하기</button>
 	              		<div class="col-sm-4"></div>
 	              		<button type="button" id="cacelBtn" class="btn btn-default pull-right col-sm-4 text-center">취 소</button>
 			          		

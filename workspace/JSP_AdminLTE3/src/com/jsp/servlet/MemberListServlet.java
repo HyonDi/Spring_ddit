@@ -25,7 +25,7 @@ public class MemberListServlet extends HttpServlet {
 		
 		
 	 	// 필터로 보냅니다. 서블릿마다 작성해야하는내용.(리퀘스트올때마다 작성해야하는 내용.)
-	 	HttpSession session = request.getSession();
+	 	/* HttpSession session = request.getSession();
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 		if(loginUser == null) { // 세션이 없으면 다시 로그인페이지로 이동한다.
 			
@@ -34,7 +34,7 @@ public class MemberListServlet extends HttpServlet {
 			ViewResolver.view(request, response, url);
 			
 			return;
-		}
+		}*/
 		//-- 요기까지 필터로
 		
 		try {

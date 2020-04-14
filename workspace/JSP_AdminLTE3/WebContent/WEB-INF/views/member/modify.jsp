@@ -3,9 +3,9 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ include file="/WEB-INF/views/include/open_header.jsp" %>
+<%-- <%@ include file="/WEB-INF/views/include/open_header.jsp" %> --%>
 
-
+<body>
   <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
 	  <section class="content-header">
@@ -35,11 +35,20 @@
 	    	<form role="form" class="form-horizontal" action="modify" method="post">
 				<input type="hidden" name="picture" value="${member.picture}"/>
 	        	<div class="register-card-body" >
+	        	<div class="card-header">
+	              	<div class="row">
+	              		<button type="button" id="modifyBtn" class="btn btn-warning col-sm-4 text-center" onclick="SubmitMember('form');">수정하기</button>
+	              		<div class="col-sm-4"></div>
+	              		<button type="button" id="cacelBtn" class="btn btn-default pull-right col-sm-4 text-center">취 소</button>
+			          		
+		          	</div> 
+		          	</div>
 	        		<div class="row">		
 									<%-- 기존데이터 유지를 위해 value값 넣어놓음. 이미지를 안바꿨을 때를 대비함. success 시에 picture_js에서 name=picture 를 가져올것임.???--%>
 						
 						<div class="input-group col-md-12">
 							<div class="col-md-12" style="text-align: center;">
+							<br/>
 								<div class="" id="pictureView" style="border: 1px solid green; height: 200px; width: 140px; margin: 0 auto; margin-bottom:5px;"></div>														
 								<div class="input-group input-group-sm">
 									<label for="inputFile" class=" btn btn-warning btn-sm btn-flat input-group-addon">파일선택</label>
@@ -106,14 +115,14 @@
 	                
 	                <!-- // -->            
 	              </div> <!-- card body -->
-	              <div class="card-footer">
+	              <%-- <div class="card-footer">
 	              	<div class="row">
 	              		<button type="button" id="modifyBtn" class="btn btn-warning col-sm-4 text-center" onclick="SubmitMember('form');">수정하기</button>
 	              		<div class="col-sm-4"></div>
 	              		<button type="button" id="cacelBtn" class="btn btn-default pull-right col-sm-4 text-center">취 소</button>
 			          		
 		          	</div>  	
-	              </div> 		          	     
+	              </div> --%> 		          	     
 	      	  </form>
       	  </div>
     </section>
@@ -142,7 +151,7 @@
 </form>
 
 
-<%@ include file="/WEB-INF/views/include/open_footer.jsp" %>
+<%-- <%@ include file="/WEB-INF/views/include/open_footer.jsp" %> --%>
 <%@ include file="picture_js.jsp" %>
 <script>
 	var imageURL="picture/get?picture=${member.picture}";
@@ -165,7 +174,7 @@
 	});
 </script>
 
-
+</body>
 
 
 

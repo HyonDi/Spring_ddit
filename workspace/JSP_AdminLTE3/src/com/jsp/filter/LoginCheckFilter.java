@@ -51,6 +51,7 @@ public class LoginCheckFilter implements Filter {
 		if(loginUser==null) { //  비 로그인 상태
 			
 			String url="commons/loginCheck";
+			
 			if(reqUrl.equals("/")) {
 				url = "redirect:/commons/login";
 			}
@@ -74,7 +75,9 @@ public class LoginCheckFilter implements Filter {
 		String excludeURLNames=fConfig.getInitParameter("exclude");
 		// getinitParam 으로 <param-name> 을 적으면 <param-value> 들이 String으로 줄줄가져와진다.
 		StringTokenizer st = new StringTokenizer(excludeURLNames,",");// ,을 구분자로 나눠서
-		while(st.hasMoreElements()) {
+		while(st.hasMoreTokens()) {
+			// hasmoretoken 은 delimiter를 포함한것.(뒤에 true를 안주면 token이나 elements나 똑같음.)
+			// hasMoreElements 은 delimiter 를 제외한것.
 			exURLs.add(st.nextToken());// 전역변수인 List exURLs 속에 집어넣어둔다.
 		}
 	}

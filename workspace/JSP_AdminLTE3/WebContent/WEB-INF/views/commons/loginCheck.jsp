@@ -1,10 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true" %>
+
+
 <script>
 	
-	/* alert(window.opener()); */
-	
+// 세션이 만료된건지/로그인을 안한건지구분은 리스너로할 수 있다.	
+
+
 	if(window.opener){
 		/* window.opener.location.reload(true); */
 		/* window.location.href = 'detail?id=${param.id}'; */

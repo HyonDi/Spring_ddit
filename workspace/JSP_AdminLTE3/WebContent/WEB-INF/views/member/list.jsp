@@ -6,8 +6,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%-- c = core! java에서 for, if, token 등이 들어있다. --%>
 
-<%@ include file="/WEB-INF/views/include/header.jsp" %>
-						
+
+<head>
+	<title>회원 목록</title>
+</head>
+
+<%-- <%@ include file="/WEB-INF/views/include/header.jsp" %> --%>
+	
+<body>	
 	<div class="content-wrapper">
 		<!-- Content Header (Page header) -->
 		  <section class="content-header">
@@ -143,6 +149,6 @@
         </div> <!-- card  -->
       </section>	
     </div>
-
-<%@ include file="/WEB-INF/views/include/footer.jsp" %>
+</body>
+<%-- <%@ include file="/WEB-INF/views/include/footer.jsp" %> --%>
 

@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <web-app>
+	<!-- 인코딩필터! -->
+	<filter>
+		<filter-name>setCharacterEncodingFilter</filter-name>
+		<filter-class>
+			org.apache.catalina.filters.SetCharacterEncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<!-- name 맘대로주면 안됩니다. -->
+			
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>setCharacterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+
+
+
+
+
+
+
+	<!-- 세션있나?필터 -->
 	<filter>
 		<filter-name>loginCheckFilter</filter-name>
 		<filter-class>com.jsp.filter.LoginCheckFilter</filter-class>
@@ -18,4 +45,51 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+
+
+
+
+
+	<!-- 로그인한사람이 enabled 인가? 필터. 로그인하면 필터해야해(그래서 위치는 로그인체크 아래!) -->
+	<filter>
+		<filter-name>memberDisabledFilter</filter-name>
+		<filter-class>com.jsp.filter.MemberDisabledFilter</filter-class>
+		
+		<init-param>
+			<!-- <param-name>include</param-name>
+			<param-value>modify,regist,disabled,remove</param-value>
+			
+			<param-name>exclude</param-name>
+			<param-value>resources,commons,.jsp</param-value> -->
+			
+			<param-name>checkURL</param-name>
+			<param-value>modify,regist,disabled,remove,enabled</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>memberDisabledFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<!-- /* 는 일단 다 받고 내가 확인하겠다!하는 의미임. filter안에서 확인할거야. -->
+	</filter-mapping>
+
+
+
+
+
+
+
+	<!-- 헤더+푸터 고정필터! 맨마지막에 위치해야합니다.-->
+	<filter>
+		<filter-name>sitemesh</filter-name>
+		<filter-class>
+			com.opensymphony.sitemesh.webapp.SiteMeshFilter
+		</filter-class>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
 </web-app>

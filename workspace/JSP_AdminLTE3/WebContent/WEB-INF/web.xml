@@ -2,20 +2,18 @@
 
 <web-app>
 
-  <context-param>
+<context-param>
     <param-name>memberDAO</param-name>
     <param-value>com.jsp.dao.MemberDAOImpl</param-value>
   </context-param>
-  
   <context-param>
     <param-name>sqlSessionFactory</param-name>
     <param-value>com.jsp.mybatis.OracleMyBatisSqlSessionFactory</param-value>
   </context-param>
   
   <listener>
-    <listener-class>com.jsp.listener.InitListener</listener-class>
+  	<listener-class>com.jsp.listener.InitListener</listener-class>
   </listener>
-
 
 <!-- init메서드로 하던지, contextparam으로 서블릿들연결하기. -->
 
@@ -107,9 +105,7 @@
 	<!-- 헤더+푸터 고정필터! 맨마지막에 위치해야합니다.-->
 	<filter>
 		<filter-name>sitemesh</filter-name>
-		<filter-class>
-			com.opensymphony.sitemesh.webapp.SiteMeshFilter
-		</filter-class>
+		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
 	</filter>
 	
 	<filter-mapping>

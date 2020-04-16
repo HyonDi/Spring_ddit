@@ -39,6 +39,8 @@ public class LoginCheckFilter implements Filter {
 		
 		if(excludeCheck(reqUrl)) {// reqUrl이  excludeurl중 하나라도 포함이 되는지 체크. 포함이 되면 여기서 return함.
 			chain.doFilter(request, response);
+			// 요기 null
+			
 			return;
 		}
 		

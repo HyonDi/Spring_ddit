@@ -11,12 +11,12 @@ import com.jsp.dto.MemberVO;
 public class MemberDAOImpl implements MemberDAO {
 	
 	// 팩토리를 가져온다.(sqlSessionFactory)
-	private SqlSessionFactory sessionFactory;
+	private SqlSessionFactory slqSessionFactory;
 	/* = OracleMyBatisSqlSessionFactoryBuilder.getSqlSessionFactory();*/
 	//의존주입위해 주석함. 따라서 셋메서드도 필요하다
 	
-	public void setSessionFactory(SqlSessionFactory sessionfactory) {
-		this.sessionFactory = sessionfactory;
+	public void setSqlSessionFactory(SqlSessionFactory sqlSessionfactory) {
+		this.slqSessionFactory = sqlSessionfactory;
 	}
 	
 	
@@ -31,7 +31,7 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	@Override
 	public List<MemberVO> selectMemberList() throws SQLException {
-		SqlSession session = sessionFactory.openSession();
+		SqlSession session = slqSessionFactory.openSession();
 		// openSession 의 파라미터로 true를 주면 auto commit 하게됨.
 		
 		List<MemberVO> memberList = session.selectList("Member-Mapper.selectMemberList", null);
@@ -46,7 +46,7 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public int selectMemberListCount() throws SQLException {
 		int count = 0;
-		SqlSession session = sessionFactory.openSession();
+		SqlSession session = slqSessionFactory.openSession();
 		
 		try {
 			count = session.selectOne("Member-Mapper.selectMemberListCount", null);
@@ -61,7 +61,7 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public MemberVO selectMemberById(String id) throws SQLException {
-		SqlSession session = sessionFactory.openSession();
+		SqlSession session = slqSessionFactory.openSession();
 		MemberVO member = session.selectOne("Member-Mapper.selectMemberById", id);
 		session.close();
 		
@@ -74,7 +74,7 @@ public class MemberDAOImpl implements MemberDAO {
 		// openSession 기본값은 false.(자동커밋X)
 		// 메서드가 close될때 진행했던 sql문을 커밋을 해야함. 그래서 true를 줬다.(select문은 commit할 필요 없음.)
 		
-		SqlSession session = sessionFactory.openSession(true);
+		SqlSession session = slqSessionFactory.openSession(true);
 		session.update("Member-Mapper.insertMember", member);
 		session.close();
 		
@@ -82,7 +82,7 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public void updateMember(MemberVO member) throws SQLException {
-		SqlSession session = sessionFactory.openSession(true);
+		SqlSession session = slqSessionFactory.openSession(true);
 		session.update("Member-Mapper.updateMember", member);
 		session.close();
 		
@@ -90,20 +90,20 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public void deleteMember(String id) throws SQLException {
-		SqlSession session = sessionFactory.openSession(true);
+		SqlSession session = slqSessionFactory.openSession(true);
 		session.update("Member-Mapper.deleteMember", id);
 		session.close();
 		
 	}
 	@Override
 	public void disabledMember(String id) throws SQLException {
-		SqlSession session = sessionFactory.openSession(true);
+		SqlSession session = slqSessionFactory.openSession(true);
 		session.update("Member-Mapper.disabledMember", id);
 		session.close();
 	}
 	@Override
 	public void enabledMember(String id) throws SQLException {
-		SqlSession session = sessionFactory.openSession(true);
+		SqlSession session = slqSessionFactory.openSession(true);
 		session.update("Member-Mapper.enabledMember", id);
 		session.close();
 	}

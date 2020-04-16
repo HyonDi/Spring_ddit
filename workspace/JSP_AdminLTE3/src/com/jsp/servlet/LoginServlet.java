@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.jsp.dto.MemberVO;
 import com.jsp.exception.InvalidPasswordException;
 import com.jsp.exception.NotFoundIDException;
+import com.jsp.service.MemberService;
 import com.jsp.service.MemberServiceImpl;
 import com.jsp.utils.ViewResolver;
 
@@ -21,6 +22,11 @@ import com.jsp.utils.ViewResolver;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	// 의존주입위해 작성.-서블릿은 하지않기로했다.
+/*	private MemberService memberService;
+	public void setMemberService(MemberService memberService) {
+		this.memberService=memberService;
+	}*/
 
 	public void init(ServletConfig config) throws ServletException {
 		System.out.println("init() execute!");
@@ -62,10 +68,10 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		try {
-			MemberServiceImpl.getInstance().login(id, pwd);
+			MemberServiceImpl.getInstance().login(id, pwd); // 여기고침.MemberServiceImpl.getInstance() 를 memberService로 바꿈.
 			
 			// membervo 가져오기
-			MemberVO loginUser = MemberServiceImpl.getInstance().getMember(id);
+			MemberVO loginUser = MemberServiceImpl.getInstance().getMember(id); // 여기고침.MemberServiceImpl.getInstance() 를 memberService로 바꿈.
 			// 세션에 집어넣는다.
 			session.setAttribute("loginUser", loginUser);
 			

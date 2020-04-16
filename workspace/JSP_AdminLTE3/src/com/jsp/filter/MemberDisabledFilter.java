@@ -60,6 +60,7 @@ public class MemberDisabledFilter implements Filter {
 					ViewResolver.view(httpReq, httpResp, url);
 					return;
 				}
+				request.setAttribute("url", url);//??
 			}
 			chain.doFilter(request, response);
 		}else {// 활성화된회원

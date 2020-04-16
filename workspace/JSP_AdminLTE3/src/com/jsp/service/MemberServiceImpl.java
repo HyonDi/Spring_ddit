@@ -11,7 +11,7 @@ import com.jsp.exception.NotFoundIDException;
 
 public class MemberServiceImpl implements MemberService {
 
-	// 싱글톤패턴 구현
+	// 싱글톤패턴 구현 - 의존주입에서는 지운다. classForName으로 하기위해!
 	private static MemberServiceImpl instance = new MemberServiceImpl();
 	private MemberServiceImpl() {}
 	public static MemberServiceImpl getInstance() {
@@ -19,7 +19,10 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	// DAO 필요.
-	private MemberDAO memberDAO = MemberDAOImpl.getInstance();
+	private MemberDAO memberDAO;
+	/* = MemberDAOImpl.getInstance();*/
+	// 의존주입위해 주석.set메서드는 아래있었음.
+	
 	public void setMemberDAO(MemberDAO memberDAO) {
 		this.memberDAO=memberDAO;
 	}
@@ -28,7 +31,12 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public void login(String id, String pwd) throws SQLException, NotFoundIDException, InvalidPasswordException {
-		MemberVO member = memberDAO.selectMemberById(id);
+		
+		MemberVO member = memberDAO.selectMemberById(id); 
+		// 여기가 null
+		
+		
+		
 		if(member == null) throw new NotFoundIDException();
 		// throw 하면 여기서 메서드 끝난다. ( id가 없으면 여기서 메서드 끝남. )
 		

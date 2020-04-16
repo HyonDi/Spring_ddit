@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <web-app>
+
+  <context-param>
+    <param-name>memberDAO</param-name>
+    <param-value>com.jsp.dao.MemberDAOImpl</param-value>
+  </context-param>
+  
+  <context-param>
+    <param-name>sqlSessionFactory</param-name>
+    <param-value>com.jsp.mybatis.OracleMyBatisSqlSessionFactory</param-value>
+  </context-param>
+  
+  <listener>
+    <listener-class>com.jsp.listener.InitListener</listener-class>
+  </listener>
+
+
+<!-- init메서드로 하던지, contextparam으로 서블릿들연결하기. -->
+
+
+
+
+
 	<!-- 인코딩필터! -->
 	<filter>
 		<filter-name>setCharacterEncodingFilter</filter-name>
@@ -14,6 +36,7 @@
 			<param-value>utf-8</param-value>
 		</init-param>
 	</filter>
+	
 	<filter-mapping>
 		<filter-name>setCharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -69,6 +92,8 @@
 	
 	<filter-mapping>
 		<filter-name>memberDisabledFilter</filter-name>
+		
+		
 		<url-pattern>/*</url-pattern>
 		<!-- /* 는 일단 다 받고 내가 확인하겠다!하는 의미임. filter안에서 확인할거야. -->
 	</filter-mapping>
@@ -89,6 +114,12 @@
 	
 	<filter-mapping>
 		<filter-name>sitemesh</filter-name>
+		
+		<!-- <dispatcher>FORWARD</dispatcher> -->
+		<!-- servlet으로 들어갈떄 뿐 아니라 jps FORWARD할때도 필터링을 걸겠다는 것.-->
+		<!-- 이게 없으면 들어오는 url이 무엇?(regist?modify?disabled?)에 따라 걸겠음. 라는 뜻. -->
+		<!-- Spring에서 할건가보다. -->
+		
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	

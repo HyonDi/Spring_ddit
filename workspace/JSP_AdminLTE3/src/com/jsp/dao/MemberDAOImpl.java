@@ -7,19 +7,26 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.jsp.dto.MemberVO;
-import com.jsp.mybatis.OracleMyBatisSqlSessionFactoryBuilder;
 
 public class MemberDAOImpl implements MemberDAO {
 	
 	// 팩토리를 가져온다.(sqlSessionFactory)
-	private SqlSessionFactory sessionFactory = OracleMyBatisSqlSessionFactoryBuilder.getSqlSessionFactory();
+	private SqlSessionFactory sessionFactory;
+	/* = OracleMyBatisSqlSessionFactoryBuilder.getSqlSessionFactory();*/
+	//의존주입위해 주석함. 따라서 셋메서드도 필요하다
 	
-	// 싱글톤패턴 -> if null 그부분 안넣어도되는걸까??
-	private static MemberDAOImpl instance = new MemberDAOImpl();
-	private MemberDAOImpl() {}
-	public static MemberDAOImpl getInstance() {
-		return instance;
+	public void setSessionFactory(SqlSessionFactory sessionfactory) {
+		this.sessionFactory = sessionfactory;
 	}
+	
+	
+	// 싱글톤패턴 -> if null 그부분 안넣어도되는걸까?? 의존주입위해 지운다.
+/*	private static MemberDAOImpl instance = new MemberDAOImpl();
+	//private MemberDAOImpl() {}
+	
+	public MemberDAOImpl getInstance() {
+		return instance;
+	}*/
 	
 	
 	@Override

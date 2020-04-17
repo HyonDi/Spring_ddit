@@ -145,6 +145,9 @@
            	</div>            
        	  </div>   
 		  <div class="card-footer">
+		  <!-- 페이징하는 장소! -->
+		  <%@ include file="/WEB-INF/views/pagination/pagination.jsp" %>
+		  
 		  </div> <!-- card-footer -->
         </div> <!-- card  -->
       </section>	

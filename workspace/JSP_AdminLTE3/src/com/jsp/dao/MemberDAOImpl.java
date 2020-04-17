@@ -3,10 +3,12 @@ package com.jsp.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import com.jsp.dto.MemberVO;
+import com.jsp.request.SearchCriteria;
 
 public class MemberDAOImpl implements MemberDAO {
 	
@@ -106,6 +108,35 @@ public class MemberDAOImpl implements MemberDAO {
 		SqlSession session = slqSessionFactory.openSession(true);
 		session.update("Member-Mapper.enabledMember", id);
 		session.close();
+	}
+
+
+	
+	
+	@Override
+	public List<MemberVO> selectMemberList(SearchCriteria cri) throws SQLException {
+		SqlSession session = slqSessionFactory.openSession(); // select여서 커밋필요없음.
+		int offset = cri.getPageStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset, limit);// offset 이 기준이래용~!
+		
+		List<MemberVO> memberList = null;
+		
+		memberList=session.selectList("Member-Mapper.selectSearchMemberList", cri, rowBounds);
+		//rowBounds : 행범위.이 행을기준으로 잘라서준다?? 여기서부터 몇개까지 잘라서 줌.
+		session.close();
+		return memberList;
+	}
+
+
+	@Override
+	public int selectMemberListCount(SearchCriteria cri) throws SQLException {
+		int count = 0;
+		SqlSession session = slqSessionFactory.openSession();
+		count = session.selectOne("Member-Mapper.selectSearchMemberListCount",cri);
+		
+		session.close();
+		return count;
 	}
 
 }

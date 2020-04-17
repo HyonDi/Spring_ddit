@@ -2,10 +2,12 @@ package com.jsp.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import com.jsp.dto.MemberVO;
 import com.jsp.exception.InvalidPasswordException;
 import com.jsp.exception.NotFoundIDException;
+import com.jsp.request.SearchCriteria;
 
 public interface MemberService {
 	
@@ -21,9 +23,18 @@ public interface MemberService {
 	
 	// 회원리스트 조회
 	List<MemberVO> getMemberList() throws SQLException;
+	// 이때엔 오버로딩해야함.같은기능인데 파라미터가 다르니까.(리턴타입달라도 오버로딩성립합니당)
+	Map<String,Object> getMemberList(SearchCriteria cri) throws SQLException;
+	// 맵인이유는?? 크리테리아받고 페이지메이킹을 만들어서 줘야함. jsp가 꺼내가기 쉽게하기위함입니다. 
+	// memberList, criteria 두개를 넣어놔야하는데 구분하기 쉬우니까. 
+	
 	
 	// 회원정보 조회
 	MemberVO getMember(String id) throws SQLException;
+	
+	
+	
+	
 	
 	// 회원 등록
 	void regist(MemberVO member) throws SQLException;
@@ -41,7 +52,7 @@ public interface MemberService {
 	void enabledMember(String id) throws SQLException;
 	
 	
-	//void disable(String id) throws SQLException;
+	
 	
 	
 }

@@ -3,8 +3,8 @@ package com.jsp.dao;
 import java.sql.SQLException;
 import java.util.List;
 
-
 import com.jsp.dto.MemberVO;
+import com.jsp.request.SearchCriteria;
 
 /**
  * 규격을 만든다. 여기에 없는 메서드는 구현체(다오임플)에 있어도 실행할 수 없음.
@@ -26,9 +26,14 @@ public interface MemberDAO {
 	
 	// 회원 리스트
 	List<MemberVO> selectMemberList() throws SQLException;
+	List<MemberVO> selectMemberList(SearchCriteria cri) throws SQLException;// 오버로딩
 	
 	// 전체 회원 리스트 개수
 	int selectMemberListCount() throws SQLException;
+	
+	// 검색 결과의 전체 리스트 개수
+	int selectMemberListCount(SearchCriteria cri) throws SQLException;// 얘도 오버로딩?
+	
 	
 	// 회원 정보 조회
 	MemberVO selectMemberById(String id) throws SQLException;
@@ -49,5 +54,4 @@ public interface MemberDAO {
 	void enabledMember(String id) throws SQLException;
 	
 	
-	// 검색(안만듦)
 }

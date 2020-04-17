@@ -1,13 +1,17 @@
 package com.jsp.service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.jsp.dao.MemberDAO;
 import com.jsp.dao.MemberDAOImpl;
 import com.jsp.dto.MemberVO;
 import com.jsp.exception.InvalidPasswordException;
 import com.jsp.exception.NotFoundIDException;
+import com.jsp.request.PageMaker;
+import com.jsp.request.SearchCriteria;
 
 public class MemberServiceImpl implements MemberService {
 
@@ -82,5 +86,22 @@ public class MemberServiceImpl implements MemberService {
 	public void enabledMember(String id) throws SQLException {
 		memberDAO.enabledMember(id);
 	}
+	@Override
+	public Map<String, Object> getMemberList(SearchCriteria cri) throws SQLException {
+		// 1. ListmemberVO(기존에 하던것. 그냥데이터만넘기는것.
+		List<MemberVO> memberList = memberDAO.selectMemberList(cri);
 
+		
+		// 2. 페이지만들어서넘겨주기.
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(memberDAO.selectMemberListCount(cri));
+		
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		dataMap.put("memberList", memberList);
+		dataMap.put("pageMaker", pageMaker);
+		
+		return dataMap;
+	}
 }

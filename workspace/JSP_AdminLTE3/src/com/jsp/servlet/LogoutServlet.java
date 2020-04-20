@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.jsp.utils.ViewResolver;
+import com.jsp.dispatcher.ViewResolver;
 
 
-@WebServlet("/commons/logout")
+//@WebServlet("/commons/logout")
 public class LogoutServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

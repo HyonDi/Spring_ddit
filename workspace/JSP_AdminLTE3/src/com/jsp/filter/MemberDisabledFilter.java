@@ -14,8 +14,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jsp.dispatcher.ViewResolver;
 import com.jsp.dto.MemberVO;
-import com.jsp.utils.ViewResolver;
 
 
 /*@WebFilter("/MemberDisabledFilter") 왜 지우냐면 우리는 web.xml로 통일시키기로함.*/

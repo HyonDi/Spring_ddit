@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.jsp.dispatcher.ViewResolver;
 import com.jsp.dto.MemberVO;
 import com.jsp.service.MemberServiceImpl;
-import com.jsp.utils.ViewResolver;
 
 
-@WebServlet("/member/remove")
+//@WebServlet("/member/remove")
 public class MemberRemoveServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -12,13 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+import com.jsp.dispatcher.ViewResolver;
 import com.jsp.utils.GetUploadPath;
-import com.jsp.utils.ViewResolver;
 import com.sun.xml.internal.ws.addressing.v200408.MemberSubmissionWsaClientTube;
 
 
-@WebServlet("/member/picture/get")
+//@WebServlet("/member/picture/get")
 public class GetPictureSevlet extends HttpServlet {
 	// 회원detail에서 사진을 보여주는용도이기때문에 get
 	// servlet을 만드는 이유 : 이미지에 브라우저가 닿을수없어서 요청해야함.

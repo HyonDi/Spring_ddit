@@ -13,10 +13,10 @@
 		/* window.location.href = 'detail?id=${param.id}'; */
 		/* /commons/login */
 		alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-		window.opener.location.href = "<%=request.getContextPath()%>/commons/login";
+		window.opener.location.href = "<%=request.getContextPath()%>/commons/loginForm.do";
 		window.close();
 	}else{
 		alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-		location.href = "<%=request.getContextPath()%>/commons/login";
+		location.href = "<%=request.getContextPath()%>/commons/loginForm.do";
 	}
 </script>

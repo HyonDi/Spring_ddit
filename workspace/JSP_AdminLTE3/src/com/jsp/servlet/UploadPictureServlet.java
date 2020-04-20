@@ -21,7 +21,7 @@ import com.jsp.utils.MakeFileName;
 import com.jsp.utils.MakeLogForException;
 
 
-@WebServlet("/member/picture")
+//@WebServlet("/member/picture")
 public class UploadPictureServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -134,7 +134,7 @@
 		}
 	}); 
 --%>
-	var imageURL="picture/get?picture=${member.picture}"; // var imageURL="picture/get?picture=3e810dd179ef43a8ab88267bd9167d84.jpg";
+	var imageURL="picture/get.do?picture=${member.picture}"; // var imageURL="picture/get?picture=3e810dd179ef43a8ab88267bd9167d84.jpg";
 	
 	$('div#pictureView').css({'background-image' : 'url('+imageURL+')',
 								'background-position' : 'center',
@@ -147,7 +147,7 @@
 	$('#modifyBtn').on('click', function(e){
 		//alert("modify btn click!") -test
 		// 현재화면에서 수정버튼누르면 저장, 취소버튼 나오게하고 readonly 해놨던거 풀고 해도되지만 servlet이용하는게 더 안전하다.
-		location.href="modify?id=${member.id}";
+		location.href="modify.do?id=${member.id}";
 		
 	});
 	
@@ -180,12 +180,12 @@
 		
 		// ajax 방식
 			$.ajax({
-				url:"checkPassword?pwd="+pwd,
+				url:"checkPassword.do?pwd="+pwd,
 				type:"get",
 				success:function(data){
 					// alert(data);
 					if(data=="SUCCESS"){
-						location.href="remove?id=${member.id}";
+						location.href="remove.do?id=${member.id}";
 					}else{
 						alert("패스워드가 일치하지 않습니다.");
 					}

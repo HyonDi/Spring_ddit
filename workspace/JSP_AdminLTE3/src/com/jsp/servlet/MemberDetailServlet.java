@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.jsp.dispatcher.ViewResolver;
 import com.jsp.dto.MemberVO;
 import com.jsp.service.MemberServiceImpl;
-import com.jsp.utils.ViewResolver;
 
 
-@WebServlet("/member/detail")
+//@WebServlet("/member/detail")
 public class MemberDetailServlet extends HttpServlet {
 	// detail보기위한 서블릿. (List에서 회원하나를 클릭했을 때)
 	

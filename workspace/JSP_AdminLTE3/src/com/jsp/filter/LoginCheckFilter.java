@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.jsp.dispatcher.ViewResolver;
 import com.jsp.dto.MemberVO;
-import com.jsp.utils.ViewResolver;
 
 // @WebFilter("/LoginCheckFilter") web.xml에 등록할거야
 public class LoginCheckFilter implements Filter {
@@ -55,7 +55,7 @@ public class LoginCheckFilter implements Filter {
 			String url="commons/loginCheck";
 			
 			if(reqUrl.equals("/")) {
-				url = "redirect:/commons/login";
+				url = "redirect:/commons/loginForm.do";
 			}
 			
 			ViewResolver.view(httpReq, httpResp, url);// 주의!httpReq, httpResp 가 파라미터임!!!! 

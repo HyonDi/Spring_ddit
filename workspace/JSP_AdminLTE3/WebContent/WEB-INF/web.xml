@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<web-app>
-
-<context-param>
+<web-app xmlns:web="http://xmlns.jcp.org/xml/ns/javaee">
+  <context-param>
     <param-name>memberDAO</param-name>
     <param-value>com.jsp.dao.MemberDAOImpl</param-value>
   </context-param>
@@ -10,113 +8,72 @@
     <param-name>sqlSessionFactory</param-name>
     <param-value>com.jsp.mybatis.OracleMyBatisSqlSessionFactory</param-value>
   </context-param>
-  
   <listener>
-  	<listener-class>com.jsp.listener.InitListener</listener-class>
+    <listener-class>com.jsp.listener.InitListener</listener-class>
   </listener>
-
-<!-- init메서드로 하던지, contextparam으로 서블릿들연결하기. -->
-
-
-
-
-
-	<!-- 인코딩필터! -->
-	<filter>
-		<filter-name>setCharacterEncodingFilter</filter-name>
-		<filter-class>
+  
+  <servlet>
+  	<servlet-name>FrontServlet</servlet-name>
+  	<servlet-class>com.jsp.dispatcher.FrontServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  <!-- load-on-startup : 시작할때 로드해달란뜻. 안에 숫자는 순서그루핑용. -->
+  <servlet-mapping>
+  	<servlet-name>FrontServlet</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+  
+  
+  
+  <filter>
+    <filter-name>setCharacterEncodingFilter</filter-name>
+    <filter-class>
 			org.apache.catalina.filters.SetCharacterEncodingFilter
 		</filter-class>
-		<init-param>
-			<param-name>encoding</param-name>
-			<!-- name 맘대로주면 안됩니다. -->
-			
-			<param-value>utf-8</param-value>
-		</init-param>
-	</filter>
-	
-	<filter-mapping>
-		<filter-name>setCharacterEncodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-
-
-
-
-
-
-
-
-	<!-- 세션있나?필터 -->
-	<filter>
-		<filter-name>loginCheckFilter</filter-name>
-		<filter-class>com.jsp.filter.LoginCheckFilter</filter-class>
-		 <!-- 제외시킬 url을 줄 것이다. filter거는 순간, resources와 css 등 모든 것 열때마다 검사한다. commons는 로그인안해도 되는기능.
-				.jsp는 기본서블릿(index.jsp)  -->
-		<init-param>
-			<param-name>exclude</param-name>
-			<param-value>resources,commons,.jsp</param-value>
-		</init-param>
-		
-	</filter>
-	
-	<filter-mapping>
-		<filter-name>loginCheckFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-
-
-
-
-
-	<!-- 로그인한사람이 enabled 인가? 필터. 로그인하면 필터해야해(그래서 위치는 로그인체크 아래!) -->
-	<filter>
-		<filter-name>memberDisabledFilter</filter-name>
-		<filter-class>com.jsp.filter.MemberDisabledFilter</filter-class>
-		
-		<init-param>
-			<!-- <param-name>include</param-name>
-			<param-value>modify,regist,disabled,remove</param-value>
-			
-			<param-name>exclude</param-name>
-			<param-value>resources,commons,.jsp</param-value> -->
-			
-			<param-name>checkURL</param-name>
-			<param-value>modify,regist,disabled,remove,enabled</param-value>
-		</init-param>
-	</filter>
-	
-	<filter-mapping>
-		<filter-name>memberDisabledFilter</filter-name>
-		
-		
-		<url-pattern>/*</url-pattern>
-		<!-- /* 는 일단 다 받고 내가 확인하겠다!하는 의미임. filter안에서 확인할거야. -->
-	</filter-mapping>
-
-
-
-
-
-
-
-	<!-- 헤더+푸터 고정필터! 맨마지막에 위치해야합니다.-->
-	<filter>
-		<filter-name>sitemesh</filter-name>
-		<filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
-	</filter>
-	
-	<filter-mapping>
-		<filter-name>sitemesh</filter-name>
-		
-		<!-- <dispatcher>FORWARD</dispatcher> -->
-		<!-- servlet으로 들어갈떄 뿐 아니라 jps FORWARD할때도 필터링을 걸겠다는 것.-->
-		<!-- 이게 없으면 들어오는 url이 무엇?(regist?modify?disabled?)에 따라 걸겠음. 라는 뜻. -->
-		<!-- Spring에서 할건가보다. -->
-		
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>setCharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>loginCheckFilter</filter-name>
+    <filter-class>com.jsp.filter.LoginCheckFilter</filter-class>
+    <init-param>
+      <param-name>exclude</param-name>
+      <param-value>resources,commons,.jsp</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>loginCheckFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>memberDisabledFilter</filter-name>
+    <filter-class>com.jsp.filter.MemberDisabledFilter</filter-class>
+    <init-param>
+      <param-name>checkURL</param-name>
+      <param-value>modify,regist,disabled,remove,enabled</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>memberDisabledFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>sitemesh</filter-name>
+    <filter-class>com.opensymphony.sitemesh.webapp.SiteMeshFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>sitemesh</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
 </web-app>

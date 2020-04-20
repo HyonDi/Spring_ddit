@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Board-Mapper"><!-- 같은 이름의 매퍼가 있으면 패키지명을 적어야하지만 이거 하나면 안써도 돼 -->
+									<!-- mybatis는 namespace 꼭 줘야하고, 파일명이랑 동일하게해야한다. -->
+
+
+	<sql id="search">
+	<!-- searchType :  파라미터 얘기하는것임. -->
+		<if test="searchType == 'tcw'.toString()">
+		and (title like '%'||#{keyword}||'%'
+		or content like '%'||#{keyword}||'%'
+		or writer like '%'||#{keyword}||'%')
+		</if>
+	
+		<if test="searchType == 't'.toString()">
+		and title like '%'||#{keyword}||'%'
+		</if>
+		
+		<if test="searchType == 'w'.toString()">
+		and writer like '%'||#{keyword}||'%'
+		</if>
+		
+		<if test="searchType == 'c'.toString()">
+		and content like '%'||#{keyword}||'%'
+		</if>
+		
+		<if test="searchType == 'tc'.toString()">
+		and (title like '%'||#{keyword}||'%'
+		or content like '%'||#{keyword}||'%')
+		</if>
+		
+		<if test="searchType == 'cw'.toString()">
+		and (content like '%'||#{keyword}||'%'
+		or writer like '%'||#{keyword}||'%')
+		</if>
+		
+		
+	</sql>
+
+
+
+	<!-- 게시판 검색/게시판리스트가져오기 -->				<!-- config.xml에 String 을 str로 alias해놓았다. -->
+	<select id="selectBoardCriteria" parameterType="searchCriteria" resultType="board">
+		select
+		*
+		from board
+		where bno is not null
+		<include refid="search"/>
+		order by regDate desc
+		
+	</select>
+	
+	<!-- 전체리스트갯수-->
+	<select id="selectBoardCriteriaTotalCount" parameterType="searchCriteria" resultType="int" >
+		select
+		count(*)
+		from board
+		where bno is not null
+		<include refid="search"/>
+		order by regDate desc
+		
+	</select>
+	
+	
+	<!-- 상세보기 -->
+	<select id="selectBoardByBno" parameterType="int" resultType="board">
+		select *
+		from member
+		where bno=#{bno}
+	</select>
+	
+	
+
+	
+	
+	<!-- insert -->
+	<update id="insertBoard" parameterType="board">
+		insert into
+		board(bno, title,writer, content, viewcnt, regdate, updatedate)
+		values(#{bno},#{title},#{writer},#{content},#{viewcnt},#{regdate},#{updatedate})
+	</update>
+	
+	<!-- update -->
+	<update id="updateBoard" parameterType="board">
+		update board
+		set
+		title=#{title}, content=#{content},updatedate=#{updatedate}
+		where bno=#{bno}
+		
+	</update>
+
+	<!-- delete -->
+	<update id="deleteBoard" parameterType="int">
+		delete
+		from board
+		where bno=#{bno}
+	</update>
+	
+	<!-- 조회수(viewcnt) 증가 -->
+	<update id="increaseViewCnt" parameterType="int">
+		update board
+		set
+		viewcnt=#{viewcnt}
+		where bno=#{bno}
+	</update>
+	
+	<!-- board_seq.nextval 가져오기 -->
+	<select id="selectBoardSeqNext" resultType="int">
+		select board_seq.nextval
+		from dual
+	</select>
+
+</mapper>

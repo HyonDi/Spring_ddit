@@ -43,7 +43,7 @@
     	  	<div class="card-header with-border">
     	  		<c:if test="${loginUser.authority eq 'ROLE_ADMIN' }" >
     	  			<button type="button" class="btn btn-primary" 
-    	  			onclick="OpenWindow('regist','회원등록',800,600);" >회원등록</button>
+    	  			onclick="OpenWindow('regist.do','회원등록',800,600);" >회원등록</button>
     	  			<%-- embeded타입으로... 이게뭐지 --%>
     	  		</c:if>
     	  		<div id="keyword" class="card-tools" style="width:350px;">
@@ -109,7 +109,7 @@
 	             		%>
 	             		 --%>
 	             						<tr>											<%-- url, 제목, 너비, 높이 순서임!   --%>
-	             							<td><a href="javascript:OpenWindow('detail?id=${member.id}','회원상세보기','800','600',);" >${member.id}</a></td>
+	             							<td><a href="javascript:OpenWindow('detail.do?id=${member.id}','회원상세보기','800','600',);" >${member.id}</a></td>
 	             											<%-- target_black, 혹은 이벤트로 안주는 이유는 코드분리를 위해서야 --%>
 	             							<%-- <td>${member.id}</td> --%>
 	             							<td>${member.name}</td>

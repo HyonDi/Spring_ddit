@@ -32,7 +32,7 @@
   
     <section class="content register-page" style="height: 586.391px;">       
 		<div class="register-box" style="min-width:450px;">
-	    	<form role="form" class="form-horizontal" action="modify" method="post">
+	    	<form role="form" class="form-horizontal" action="modifySubmit.do" method="post">
 				<input type="hidden" name="picture" value="${member.picture}"/>
 	        	<div class="register-card-body" >
 	        	<div class="card-header">
@@ -130,7 +130,7 @@
   </div>
   <!-- /.content-wrapper -->
 
-<form role="imageForm" action="upload/picture" method="post" enctype="multipart/form-data">
+<form role="imageForm" action="upload/picture.do" method="post" enctype="multipart/form-data">
 	<input id="inputFile" name="pictureFile" type="file" class="form-control" style="display:none;">
 	<input type="hidden" id="oldFile" name="oldPicture" value="${member.picture}"/> <%-- value 미리넣어야함. --%>
 	<input type="hidden" name="checkUpload" value="${empty member.picture ? '0':'1'}"/>
@@ -154,7 +154,7 @@
 <%-- <%@ include file="/WEB-INF/views/include/open_footer.jsp" %> --%>
 <%@ include file="picture_js.jsp" %>
 <script>
-	var imageURL="picture/get?picture=${member.picture}";
+	var imageURL="picture/get.do?picture=${member.picture}";
 	$('div#pictureView').css({'background-image':'url('+imageURL+')',
 							  'background-position':'center',
 							  'background-size':'cover',

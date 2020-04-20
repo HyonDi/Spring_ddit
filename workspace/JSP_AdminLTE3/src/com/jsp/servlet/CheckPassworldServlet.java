@@ -16,7 +16,7 @@ import com.jsp.service.MemberServiceImpl;
 /**
  * Servlet implementation class CheckPassworldServlet
  */
-@WebServlet("/member/checkPassword")
+//@WebServlet("/member/checkPassword")// 원서블릿으로만들기위해 url다지웠습니다.
 public class CheckPassworldServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

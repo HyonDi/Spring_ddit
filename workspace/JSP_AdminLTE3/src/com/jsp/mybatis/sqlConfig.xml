@@ -15,6 +15,7 @@
 		<typeAlias type="java.lang.String" alias="str"/>
 		<typeAlias type="java.lang.Integer" alias="int"/>
 		<typeAlias type="com.jsp.dto.MemberVO" alias="member"/>
+		<typeAlias type="com.jsp.dto.BoardVO" alias="board"/>
 	</typeAliases>
 	
 	<!-- jdbc(자바에서관할하는 데이터소스 연결.) , pool 쓸거야. , property에있는 정보 빼옴. (factory pattern)-->
@@ -33,6 +34,7 @@
 	<!-- 매퍼 -->
 	<mappers>
 		<mapper resource="com/jsp/mybatis/Member-Mapper.xml"/>
+		<mapper resource="com/jsp/mybatis/Board-Mapper.xml"/>
 	</mappers>
 	
 </configuration>

@@ -96,7 +96,7 @@
 		// 이렇게하면 실제로 submit한것처럼 반응을 함.
 		// file명만 넣고, checkipload1로 바꾸고 끝낸다.
 		$.ajax({
-			url:"<%=request.getContextPath()%>/member/picture",
+			url:"<%=request.getContextPath()%>/member/picture.do",
 			data : form,
 			type: 'post',
 			processData:false,

@@ -9,6 +9,6 @@
 	/* window.close(); */
 	
 	window.opener.location.reload(true);
-	window.location.href = 'detail?id=${param.id}';
+	window.location.href = 'detail.do?id=${param.id}';
 		
 </script>

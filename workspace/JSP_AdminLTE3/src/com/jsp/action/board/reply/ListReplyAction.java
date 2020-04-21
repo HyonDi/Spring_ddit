@@ -1,4 +1,4 @@
-package com.jsp.action.board;
+package com.jsp.action.board.reply;
 
 import java.io.IOException;
 
@@ -7,17 +7,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jsp.action.Action;
-/**
- * 등록화면 window
- * @author PC-16
- *
- */
-public class BoardRegistFormAction implements Action {
+import com.jsp.service.ReplyService;
+import com.jsp.service.ReplyServiceImpl;
 
+public class ListReplyAction implements Action{
+
+	private ReplyService ReplyService = ReplyServiceImpl.getInstance();
+	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String url = "board/registBoard";
+		String url = null;
+		
+		
+		
 		return url;
 	}
 

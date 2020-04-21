@@ -1,0 +1,25 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<!--
+게시판 화면마다 계속 들어가는 상단 부분 분리
+-->
+
+<!-- Content Header (Page header) -->
+    <section class="content-header">
+    	<div class="container-fluid">
+    		<div class="row mb-2">
+    			<div class="col-sm-6">
+	      			<h1>${param.subject }</h1>
+	      		</div>	      		
+	    	
+	       		
+	       		<div class="col-sm-6">
+			      <ol class="breadcrumb float-sm-right">
+			        <li class="breadcrumb-item"><a href="${param.url }"><i class="fa fa-dashboard"></i>게시글관리</a></li>
+			        <li class="breadcrumb-item active">${param.item }</li>		        
+			      </ol>
+		      	</div>
+	     	</div>	     	
+      	</div>
+    </section>

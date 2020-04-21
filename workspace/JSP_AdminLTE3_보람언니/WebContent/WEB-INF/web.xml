@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  <context-param>
+    <param-name>memberDAO</param-name>
+    <param-value>com.jsp.dao.MemberDAOImpl</param-value>
+  </context-param>
+  
+  <context-param>
+    <param-name>boardDAO</param-name>
+    <param-value>com.jsp.dao.BoardDAOImpl</param-value>
+  </context-param>
+  
+  <context-param>
+    <param-name>replyDAO</param-name>
+    <param-value>com.jsp.dao.ReplyDAOImpl</param-value>
+  </context-param>
+  
+  <context-param>
+    <param-name>sqlSessionFactory</param-name>
+    <param-value>com.jsp.mybatis.OracleMyBatisSqlSessionFactory</param-value>
+  </context-param>
+  
+  <listener>
+    <listener-class>com.jsp.listener.InitBeanListener</listener-class>
+  </listener>
+
+	<!-- <load-on-startup>1</load-on-startup> : 톰캣실행할때 init 메서드를 실행시키려할때 ...?을 그루핑하는 번호 -->
+	<!-- 0보다 큰 값인 3 혹은 4가 들어오거나 1이 들어오는 경우 들어온값대로 서블릿 인스턴스를 3, 4 혹은 1개만 띄우는것이 아니고 우선순위를 의미합니다. 
+	0보다 큰값중에서 가장 낮은 수가 가장먼저 초기화 된다고 생각하시면 됩니다.
+	그럼 모든 서블릿을 1로 하면 누가 먼저 초기화 되나요라는 질문이 나올법하죠 ㅎ 그럴 경우 먼저 작성된 서블릿부터 초기화 됩니다. ㅎㅎ -->  
+  <servlet>
+  	<servlet-name>FrontServlet</servlet-name>
+  	<servlet-class>com.jsp.dispatcher.FrontServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>FrontServlet</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+  <filter>
+    <filter-name>setCharacterEncodingFilter</filter-name>
+    <filter-class>
+		org.apache.catalina.filters.SetCharacterEncodingFilter
+	</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>setCharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>loginCheckFilter</filter-name>
+    <filter-class>com.jsp.filter.LoginCheckFilter</filter-class>
+    <init-param>
+      <param-name>exclude</param-name>
+      <param-value>resources,commons,.jsp</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>loginCheckFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>memberDisabledFilter</filter-name>
+    <filter-class>com.jsp.filter.MemberDisabledFilter</filter-class>
+    <init-param>
+      <param-name>checkURL</param-name>
+      <param-value>regist,modify,remove,enabled,disabled</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>memberDisabledFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>sitemesh</filter-name>
+    <filter-class>
+		com.opensymphony.sitemesh.webapp.SiteMeshFilter
+	</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>sitemesh</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+</web-app>

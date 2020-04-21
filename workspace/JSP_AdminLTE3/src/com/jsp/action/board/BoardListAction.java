@@ -11,11 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.jsp.action.Action;
 import com.jsp.request.SearchCriteria;
 import com.jsp.service.BoardService;
+import com.jsp.service.BoardServiceImpl;
 
 public class BoardListAction implements Action {
 
 	// 의존주입위한코드.
-	private BoardService boardService; // = new BoardServiceImpl.getInstance();
+	private BoardService boardService = BoardServiceImpl.getInstance();
 	public void setBoardService(BoardService boardService) {
 		this.boardService = boardService;
 	}
@@ -49,6 +50,8 @@ public class BoardListAction implements Action {
 			cri.setKeyword(keyword);
 		}
 		
+	/*	System.out.println("cri : " + cri + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("boardService : " + boardService + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");*/
 		
 		try {
 			// 서비스호출.

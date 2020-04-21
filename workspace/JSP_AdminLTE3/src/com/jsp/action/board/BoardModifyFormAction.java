@@ -9,10 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.jsp.action.Action;
 import com.jsp.dto.BoardVO;
 import com.jsp.service.BoardService;
+import com.jsp.service.BoardServiceImpl;
 
 public class BoardModifyFormAction implements Action {
 	// 의존주입위한코드.
-	private BoardService boardService; // = new BoardServiceImpl.getInstance();
+	private BoardService boardService = BoardServiceImpl.getInstance();
 	public void setBoardService(BoardService boardService) {
 		this.boardService = boardService;
 	}

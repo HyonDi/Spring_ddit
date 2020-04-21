@@ -40,7 +40,7 @@
 
 
 	<!-- 게시판 검색/게시판리스트가져오기 -->				<!-- config.xml에 String 을 str로 alias해놓았다. -->
-	<select id="selectBoardCriteria" parameterType="searchCriteria" resultType="board">
+	<select id="selectBoardCriteria" resultType="board">
 		select
 		*
 		from board
@@ -51,7 +51,7 @@
 	</select>
 	
 	<!-- 전체리스트갯수-->
-	<select id="selectBoardCriteriaTotalCount" parameterType="searchCriteria" resultType="int" >
+	<select id="selectBoardCriteriaTotalCount" resultType="int" >
 		select
 		count(*)
 		from board
@@ -65,7 +65,7 @@
 	<!-- 상세보기 -->
 	<select id="selectBoardByBno" parameterType="int" resultType="board">
 		select *
-		from member
+		from board
 		where bno=#{bno}
 	</select>
 	

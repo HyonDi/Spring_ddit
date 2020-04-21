@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- url과 어떤 템플릿(jsp)을 쓸지 규정하는 역할 -->
+<decorators defaultdir="/WEB-INF/views/decorators">	
+	<decorator name="main" page="main_decorator.jsp">
+		<pattern>/*</pattern>				
+	</decorator>
+	
+	<!-- '부분적'인게 '전체적'인 것보다 우선순위가 높다 -->
+	<decorator name="open_window" page="open_decorator.jsp">
+		<pattern>/**/regist*</pattern>
+		<pattern>/**/modify*</pattern>
+		<pattern>/**/detail*</pattern>				
+	</decorator>
+		
+	<excludes>
+		<pattern>/commons/login*.do</pattern>
+		<pattern>/*.jsp</pattern>
+		<pattern>/resources/**</pattern>
+	</excludes>
+</decorators>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Member-Mapper">
+
+	<select id="selectMemberById" parameterType="str" resultType="member">
+		select *
+		from member
+		where id=#{id}
+	</select>
+
+	<select id="selectMemberList" resultType="member">
+		select *
+		from member
+	</select>
+
+	<select id="selectMemberListCount" resultType="int">
+		select count(*)
+		from member
+	</select>
+	
+	<!-- 검색 -->
+	<sql id="search">
+		<if test="searchType == 'i'.toString()">
+			and id like '%'||#{keyword}||'%'
+		</if>
+		<if test="searchType == 'p'.toString()">
+			and phone like '%'||#{keyword}||'%'
+		</if>
+		<if test="searchType == 'e'.toString()">
+			and email like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	<!-- where id is not null : where절에 참인 조건을 줘야 if문을 탄다 -->
+	<select id="selectSearchMemberList" resultType="member">
+		select *
+		from member
+		where id is not null
+		<include refid="search" />
+		order by regDate desc
+	</select>
+	
+	<!-- 검색 결과 개수 -->
+	<select id="selectSearchMemberListCount" resultType="int">
+		select count(*)
+		from member
+		where id is not null
+		<include refid="search" />
+		order by regDate desc
+	</select>
+	
+	<!-- insert와 delete는 결과값이 null인데 update는 쿼리와 상관없이 결과값이 있다 : 결과값이 필요하므로 update 스키마로 사용 -->
+	<update id="insertMember" parameterType="member">
+		insert into
+		member(id, pwd, email, phone, picture, name)
+		values (#{id}, #{pwd}, #{email}, #{phone}, #{picture}, #{name})
+	</update>
+	
+	<!-- if문에서 문자열('abc')을 쓰고 싶으면 'abc'.toString()이라고 써야함 -->
+	<update id="updateMember" parameterType="member">
+		update member
+		set
+		pwd=#{pwd}, name=#{name}, email=#{email}, phone=#{phone}, picture=#{picture}
+		
+		<if test="authority != null">
+			,authority=#{authority}
+		</if>
+		
+		where id=#{id}
+	</update>
+	
+	<!-- parameterType 없어도됨:없으면 object (vo로 받을수도있음) -->
+	<update id="deleteMember" parameterType="str">
+		delete
+		from member
+		where id=#{id}
+	</update>
+	
+	<update id="disabledMember" parameterType="str">
+		update member
+		set enabled=0
+		where id=#{id}
+	</update>
+	
+	<update id="enabledMember" parameterType="str">
+		update member
+		set enabled=1
+		where id=#{id}
+	</update>
+</mapper>

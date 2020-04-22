@@ -139,7 +139,7 @@
 	
 	<jsp:include page="detailBoard_js.jsp"></jsp:include>
 	
-	<%-- <%@ include file="reply_js.jsp" %> --%>
+	<%@ include file="reply_js.jsp" %>
 	
 		
 </body>

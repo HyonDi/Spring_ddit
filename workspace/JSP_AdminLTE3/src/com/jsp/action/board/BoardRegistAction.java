@@ -10,10 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.jsp.action.Action;
 import com.jsp.dto.BoardVO;
 import com.jsp.request.BoardRegistRequest;
+import com.jsp.service.BoardService;
 import com.jsp.service.BoardServiceImpl;
 
 public class BoardRegistAction implements Action {
-
+	
+	private BoardService boardService;// = BoardServiceImpl.getInstance();
+	public void setBoardService(BoardService boardService) {
+		this.boardService = boardService;
+	}
+	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -24,7 +30,18 @@ public class BoardRegistAction implements Action {
 		// 성공시 갈 곳.
 		String url="board/regist_success"; // .jsp 적으면 안됨!
 		
-		//String bno = request.getParameter("bno");
+		/*int boardseqNext = 0;
+		try {
+			// 다음 시퀀스번호 받아온다.
+			boardseqNext = boardService.selectBoardSeqNext();
+		} catch(SQLException e) {
+			e.printStackTrace();
+			url = "board/regist_fail";
+		}
+		*/
+//		int bno = boardseqNext;
+		
+		String bno = "1"; // 일단 1넣어놓는다.
 		
 		String title = request.getParameter("title");
 		String writer = request.getParameter("writer");
@@ -34,13 +51,14 @@ public class BoardRegistAction implements Action {
 		String updatedate = request.getParameter("updatedate");*/
 		
 		//System.out.println("bno : " + bno + "!!!!!!!!!!!!!!!");
-		BoardRegistRequest boardReq = new BoardRegistRequest(title, writer, content);
+		BoardRegistRequest boardReq = new BoardRegistRequest(bno,title, writer, content);
 		
 		BoardVO board = boardReq.toBoardVO();
 		
 		// redirect/forward로 화면을 내보내야하는 애야. 그래서
+		
 		try {
-			BoardServiceImpl.getInstance().write(board);
+			boardService.write(board);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			// 실패시!!

@@ -40,25 +40,34 @@
 
 
 	<!-- 게시판 검색/게시판리스트가져오기 -->				<!-- config.xml에 String 을 str로 alias해놓았다. -->
-	<select id="selectBoardCriteria" resultType="board">
+	<select id="selectBoardCriteria" 
+	parameterType="com.jsp.request.SearchCriteria"
+	resultType="board">
 		select
 		*
 		from board
 		where bno is not null
 		<include refid="search"/>
-		order by regDate desc
+		order by regdate desc
 		
 	</select>
 	
 	<!-- 전체리스트갯수-->
-	<select id="selectBoardCriteriaTotalCount" resultType="int" >
+	<select id="selectBoardCriteriaTotalCount" 
+	parameterType="com.jsp.request.SearchCriteria" resultType="int" >
 		select
 		count(*)
 		from board
 		where bno is not null
 		<include refid="search"/>
-		order by regDate desc
+		order by regdate desc
 		
+	</select>
+	
+	<select id="selectBoardList" resultType="board">
+		select * 
+		from board 
+		order by regdate desc		
 	</select>
 	
 	
@@ -76,15 +85,15 @@
 	<!-- insert -->
 	<update id="insertBoard" parameterType="board">
 		insert into
-		board(bno, title,writer, content, viewcnt, regdate, updatedate)
-		values(#{bno},#{title},#{writer},#{content},#{viewcnt},#{regdate},#{updatedate})
+		board(bno, title,writer, content)
+		values(#{bno},#{title},#{writer},#{content})
 	</update>
 	
 	<!-- update -->
 	<update id="updateBoard" parameterType="board">
 		update board
 		set
-		title=#{title}, content=#{content},updatedate=#{updatedate}
+		title=#{title}, content=#{content},updatedate=sysdate
 		where bno=#{bno}
 		
 	</update>
@@ -100,13 +109,13 @@
 	<update id="increaseViewCnt" parameterType="int">
 		update board
 		set
-		viewcnt=#{viewcnt}
+		viewcnt=viewcnt+1
 		where bno=#{bno}
 	</update>
 	
 	<!-- board_seq.nextval 가져오기 -->
 	<select id="selectBoardSeqNext" resultType="int">
-		select board_seq.nextval
+		select board_seq.nextval as bno
 		from dual
 	</select>
 

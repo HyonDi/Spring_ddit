@@ -177,7 +177,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
          onerror="this.src='<%=request.getContextPath() %>/resources/bootstrap/dist/img/avatar.png'"
         	여기에 placehold.it 이나 paceimg.com 거 넣어도 된당! --%>
         
-          <img src="<%=request.getContextPath()%>/member/picture/get?picture=${loginUser.picture}" 
+          <img src="<%=request.getContextPath()%>/member/picture/get.do?picture=${loginUser.picture}" 
           onerror="this.src='<%=request.getContextPath() %>/resources/bootstrap/dist/img/avatar.png'" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">

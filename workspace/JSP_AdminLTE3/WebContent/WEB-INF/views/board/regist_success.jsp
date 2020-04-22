@@ -5,7 +5,7 @@
 <%//현재창 닫고 부모창 새로고침! %>
 
 <script>
-	alert("${param.id}님 글 작성이 완료되었습니다.");
+	alert("글 작성이 완료되었습니다.");
 	window.close();
 	
 	window.opener.location.reload(true);

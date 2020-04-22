@@ -1,5 +1,6 @@
 package com.jsp.dispatcher;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import com.jsp.action.Action;
+import com.jsp.action.ApplicationContext;
 
 public class HandlerMapper {
 	// 서블릿똘마니???
@@ -35,10 +37,31 @@ public class HandlerMapper {
 			String actionClassName = rbHome.getString(command);
 			
 			System.out.println(actionClassName);
-			
+
 			try{
-			Class actionClass = Class.forName(actionClassName);
+			Class<?> actionClass = Class.forName(actionClassName);
 			Action commandAction = (Action) actionClass.newInstance();
+			
+			// 의존성확인 및 조립 . 주입시키기!
+			Method[] methods = actionClass.getMethods();
+			
+			// 우리 set메서드들 다 파라미터 하나임. 그래서 0번째꺼만가져온다. 그런데 패키명경로들이 쭉 딸려옴.(com.jsp....)
+			for(Method method : methods) {
+				if(method.getName().contains("set")) {
+					String paramType=method.getParameterTypes()[0].getName();
+					
+					// 그래서 .으로 split해서 잘라서 뒤에거 빼온다.
+					paramType=paramType.substring(paramType.lastIndexOf(".")+1);
+					
+					// 리터럴스트링으로 바꾸는방법 : (char) +"" 시킴.
+					paramType=(paramType.charAt(0) + "").toLowerCase()+paramType.substring(1);
+					try {
+						method.invoke(commandAction, ApplicationContext.getApplicationContext().get(paramType));
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
 			
 			commandMap.put(command, commandAction);
 			

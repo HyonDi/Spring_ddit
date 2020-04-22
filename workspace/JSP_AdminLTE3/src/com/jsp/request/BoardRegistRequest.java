@@ -6,7 +6,7 @@ import com.jsp.dto.BoardVO;
 import com.jsp.dto.MemberVO;
 
 public class BoardRegistRequest {
-	//private int bno;          // 게시판번호
+	private int bno;          // 게시판번호
 	private String title;
 	private String writer;		// member 의 id. 로그인한사람.
 	private String content;	
@@ -17,21 +17,21 @@ public class BoardRegistRequest {
 
 	public BoardRegistRequest() {}
 	
-	public BoardRegistRequest(String title, String writer, String content) {
+	public BoardRegistRequest(String bno,String title, String writer, String content) {
 		super();
-		//this.bno = bno;
+		this.bno = Integer.parseInt(bno);
 		this.title = title;
 		this.writer = writer;
 		this.content = content;
 	}
 
-/*	public int getBno() {
+	public int getBno() {
 		return bno;
 	}
 
 	public void setBno(int bno) {
 		this.bno = bno;
-	}*/
+	}
 
 	public String getTitle() {
 		return title;
@@ -57,16 +57,19 @@ public class BoardRegistRequest {
 		this.content = content;
 	}
 
+
+
+
+
 	@Override
 	public String toString() {
-		return "BoardRegistRequest [title=" + title + ", writer=" + writer + ", content=" + content
+		return "BoardRegistRequest [bno=" + bno + ", title=" + title + ", writer=" + writer + ", content=" + content
 				+ "]";
 	}
 
-
 	public BoardVO toBoardVO() {
 		BoardVO board = new BoardVO();
-		//board.setBno(bno);
+		board.setBno(bno);
 		board.setContent(content);
 		board.setTitle(title);
 		board.setWriter(writer);

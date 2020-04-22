@@ -10,10 +10,16 @@ import javax.servlet.http.HttpSession;
 
 import com.jsp.action.Action;
 import com.jsp.dto.MemberVO;
+import com.jsp.service.MemberService;
 import com.jsp.service.MemberServiceImpl;
 
 public class RemoveAction implements Action {
 
+	private MemberService memberService;// = MemberServiceImpl.getInstance();
+	public void setMemberService(MemberService memberService) {
+		this.memberService = memberService;
+	}
+	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -29,7 +35,7 @@ public class RemoveAction implements Action {
 		}else {
 			
 			try {
-				MemberServiceImpl.getInstance().remove(id);
+				memberService.remove(id);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				url = "member/remove_fail";

@@ -11,11 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jsp.action.Action;
+import com.jsp.service.MemberServiceImpl;
 import com.jsp.utils.GetUploadPath;
 import com.sun.corba.se.impl.ior.GenericTaggedComponent;
 
 public class GetPictureAction implements Action{
-
+	
+	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {

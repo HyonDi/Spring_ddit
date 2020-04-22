@@ -4,6 +4,7 @@
 
 
 <script>
+	window.opener.location.reload(true);
 	
 	var formObj = $("form[role='form']");
 

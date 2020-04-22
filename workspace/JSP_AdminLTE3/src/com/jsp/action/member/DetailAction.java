@@ -8,11 +8,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jsp.action.Action;
+import com.jsp.dao.ReplyDAO;
 import com.jsp.dto.MemberVO;
+import com.jsp.service.MemberService;
 import com.jsp.service.MemberServiceImpl;
 
 public class DetailAction implements Action{
 
+	private MemberService memberService;// = MemberServiceImpl.getInstance();
+	public void setMemberService(MemberService memberService) {
+		this.memberService = memberService;
+	}
+	
+	
+	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -28,7 +37,7 @@ public class DetailAction implements Action{
 		// 3. 서비스요청 => 결과받음
 		MemberVO member = null;
 		try {
-			member = MemberServiceImpl.getInstance().getMember(id);
+			member = memberService.getMember(id);
 			
 			// 이게 뭘하는거죠?? attribute가 뭘 넣는거죠ㅠㅠ jsp에 보낼거라면
 			// 무조건 앞에 내가정한이름 넣고 뒤에 넣을 값 들어있는 변수이름 적으면되는거에요??

@@ -16,10 +16,11 @@ import com.jsp.service.MemberServiceImpl;
 
 public class ListAction implements Action {
 	
-	private MemberService memberService = MemberServiceImpl.getInstance();
+	private MemberService memberService;// = MemberServiceImpl.getInstance();
 	public void setMemberService(MemberService memberService) {
 		this.memberService = memberService;
 	}
+	
 	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)

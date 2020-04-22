@@ -16,11 +16,11 @@ import com.jsp.request.SearchCriteria;
 public class MemberServiceImpl implements MemberService {
 
 	// 싱글톤패턴 구현 - 의존주입에서는 지운다. classForName으로 하기위해!
-	private static MemberServiceImpl instance = new MemberServiceImpl();
+/*	private static MemberServiceImpl instance = new MemberServiceImpl();
 	private MemberServiceImpl() {}
 	public static MemberServiceImpl getInstance() {
 		return instance;
-	}
+	}*/
 	
 	// DAO 필요.
 	private MemberDAO memberDAO;

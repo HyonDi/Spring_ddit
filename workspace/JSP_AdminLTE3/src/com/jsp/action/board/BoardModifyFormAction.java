@@ -13,7 +13,7 @@ import com.jsp.service.BoardServiceImpl;
 
 public class BoardModifyFormAction implements Action {
 	// 의존주입위한코드.
-	private BoardService boardService = BoardServiceImpl.getInstance();
+	private BoardService boardService;// = BoardServiceImpl.getInstance();
 	public void setBoardService(BoardService boardService) {
 		this.boardService = boardService;
 	}

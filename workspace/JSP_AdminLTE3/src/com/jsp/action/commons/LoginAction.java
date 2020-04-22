@@ -18,7 +18,7 @@ import com.jsp.service.MemberServiceImpl;
 public class LoginAction implements Action {
 
 	// 의존주입을 받기위해 작성함.
-	private MemberService memberService = MemberServiceImpl.getInstance();
+	private MemberService memberService;// = MemberServiceImpl.getInstance();
 	public void setMemberService(MemberService memberService) {
 		this.memberService = memberService;
 	}

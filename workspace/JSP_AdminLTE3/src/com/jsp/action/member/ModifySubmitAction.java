@@ -10,10 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.jsp.action.Action;
 import com.jsp.dto.MemberVO;
 import com.jsp.request.MemberRegistRequest;
+import com.jsp.service.MemberService;
 import com.jsp.service.MemberServiceImpl;
 
 public class ModifySubmitAction implements Action {
 
+	private MemberService memberService;// = MemberServiceImpl.getInstance();
+	public void setMemberService(MemberService memberService) {
+		this.memberService = memberService;
+	}
+	
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -42,7 +48,7 @@ public class ModifySubmitAction implements Action {
 		
 		// redirect/forward로 화면을 내보내야하는 애야. 그래서
 		try {
-			MemberServiceImpl.getInstance().modify(member);
+			memberService.modify(member);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			// 실패시!!

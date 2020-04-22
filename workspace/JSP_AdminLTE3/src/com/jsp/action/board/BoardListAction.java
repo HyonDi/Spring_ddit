@@ -16,7 +16,7 @@ import com.jsp.service.BoardServiceImpl;
 public class BoardListAction implements Action {
 
 	// 의존주입위한코드.
-	private BoardService boardService = BoardServiceImpl.getInstance();
+	private BoardService boardService;// = BoardServiceImpl.getInstance();
 	public void setBoardService(BoardService boardService) {
 		this.boardService = boardService;
 	}
@@ -26,7 +26,7 @@ public class BoardListAction implements Action {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String url = "board/list"; //webinf > views > board > list 
+		String url = "board/list"; //webinf > views > board > list 를 dmlalgka.
 		
 		// 크리테리아만드는 데 필요한것.
 		String page = request.getParameter("page");
@@ -36,6 +36,8 @@ public class BoardListAction implements Action {
 		
 		// Search크리테리아를 만든다.
 		SearchCriteria cri = new SearchCriteria();
+		
+		
 		
 		
 		// 할당해줌. set. page가 String이라 exception(NumberFormatException) 넣어두었다.
@@ -52,6 +54,11 @@ public class BoardListAction implements Action {
 		
 	/*	System.out.println("cri : " + cri + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		System.out.println("boardService : " + boardService + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");*/
+		
+		// 수정했는지안했는지 체크를 위함.
+		String modify_check = "수정안함";
+		request.setAttribute("check",modify_check);
+		
 		
 		try {
 			// 서비스호출.

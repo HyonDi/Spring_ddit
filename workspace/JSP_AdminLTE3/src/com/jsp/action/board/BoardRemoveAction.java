@@ -25,11 +25,11 @@ public class BoardRemoveAction implements Action{
 		/*HttpSession session = request.getSession();
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");*/
 		
+		String url = "board/remove_success";
 		String bno = request.getParameter("bno");
 		
 		//String id = request.getParameter("id");
 		
-		String url = "board/remove_success";
 		
 		try {
 			boardService.remove(Integer.parseInt(bno));

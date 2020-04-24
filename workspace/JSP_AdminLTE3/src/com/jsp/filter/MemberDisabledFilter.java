@@ -21,6 +21,8 @@ import com.jsp.dto.MemberVO;
 /*@WebFilter("/MemberDisabledFilter") 왜 지우냐면 우리는 web.xml로 통일시키기로함.*/
 public class MemberDisabledFilter implements Filter {
 	
+	private ViewResolver viewResolver;
+	
 	private List<String> checkURLs=new ArrayList<String>();// 이 파일안에서만사용하니까 게터세터필요없음.
 	
 	//private Set<String> checkURLs=new HashSet<String>(); //set으로사용하는 경우도 있다.
@@ -57,7 +59,7 @@ public class MemberDisabledFilter implements Filter {
 					System.out.println("url : " + url);
 					url="commons/checkDisabled";
 					
-					ViewResolver.view(httpReq, httpResp, url);
+					viewResolver.view(httpReq, httpResp, url);
 					return;
 				}
 				request.setAttribute("url", url);//??
@@ -80,6 +82,21 @@ public class MemberDisabledFilter implements Filter {
 			String urlkey = st.nextToken();
 			checkURLs.add(urlkey);
 		}
+		
+		
+		
+		// view Resolver
+		String viewResolverType = fConfig.getInitParameter("viewResolver");
+		try {
+			Class<?> cls = Class.forName(viewResolverType);
+			this.viewResolver = (ViewResolver) cls.newInstance();
+			System.out.println("[MemberDisabledFilter]" + viewResolver + "가 준비되었습니다.");
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("[MemberDisabledFilter]" + viewResolver + "가 준비되지 않았습니다.");
+		}
+		
 	}
 	
 }

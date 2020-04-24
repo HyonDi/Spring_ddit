@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ViewResolver {
 	// 서블릿이 쓰던 request, response를 받아야한다.
 	
-	public static void view(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException, IOException{
+	public void view(HttpServletRequest request, HttpServletResponse response, String url) throws ServletException, IOException{
 		
 		// url이아니면 하는일 없도록
 		if(url == null) {return;}

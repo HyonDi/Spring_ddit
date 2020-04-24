@@ -20,7 +20,8 @@ import com.jsp.dto.MemberVO;
 
 // @WebFilter("/LoginCheckFilter") web.xml에 등록할거야
 public class LoginCheckFilter implements Filter {
-
+	private ViewResolver viewResolver;
+	
 	private List<String> exURLs=new ArrayList<String>(); 
 	// 전역변수로 선언! init이 실행되며 이 속에 값을 넣어줄것이고, dofilter를 실행하기전 요청온 url이 exurls에 들어있는지 체크 한 후
 	// exurl에 들어있다면 필터링을 하지 않을것이다.
@@ -58,7 +59,9 @@ public class LoginCheckFilter implements Filter {
 				url = "redirect:/commons/loginForm.do";
 			}
 			
-			ViewResolver.view(httpReq, httpResp, url);// 주의!httpReq, httpResp 가 파라미터임!!!! 
+			//ViewResolver.view(httpReq, httpResp, url);// 주의!httpReq, httpResp 가 파라미터임!!!!
+			viewResolver.view(httpReq, httpResp, url);
+			// initparam 에 심어야한다.
 		}else {
 			chain.doFilter(request, response);
 		}
@@ -74,6 +77,7 @@ public class LoginCheckFilter implements Filter {
 		//-</init-param>
 		// 요것.
 		
+		
 		String excludeURLNames=fConfig.getInitParameter("exclude");
 		// getinitParam 으로 <param-name> 을 적으면 <param-value> 들이 String으로 줄줄가져와진다.
 		StringTokenizer st = new StringTokenizer(excludeURLNames,",");// ,을 구분자로 나눠서
@@ -81,6 +85,22 @@ public class LoginCheckFilter implements Filter {
 			// hasmoretoken 은 delimiter를 포함한것.(뒤에 true를 안주면 token이나 elements나 똑같음.)
 			// hasMoreElements 은 delimiter 를 제외한것.
 			exURLs.add(st.nextToken());// 전역변수인 List exURLs 속에 집어넣어둔다.
+		}
+		System.out.println(exURLs);
+		
+		
+		
+		
+		// view Resolver
+		String viewResolverType = fConfig.getInitParameter("viewResolver");
+		try {
+			Class<?> cls = Class.forName(viewResolverType);
+			this.viewResolver = (ViewResolver) cls.newInstance();
+			System.out.println("[LoginCheckFilter]" + viewResolver + "가 준비되었습니다.");
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("[LoginCheckFilter]" + viewResolver + "가 준비되지 않았습니다.");
 		}
 	}
 
@@ -92,4 +112,6 @@ public class LoginCheckFilter implements Filter {
 		}
 		return false;
 	}
+	
+	
 }

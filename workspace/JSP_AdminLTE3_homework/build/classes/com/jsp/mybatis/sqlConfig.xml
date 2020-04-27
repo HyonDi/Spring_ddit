@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+  <!-- 태그 순서 : properties, typeAliases, 데이터소스잡는부분(environments), mappers 
+  				꼭 지켜야합니다********** -->
+  				
+<configuration>
+	<!-- 외부에있는 데이터. 우선적으로 불러와야함. -->
+	<properties resource="com/jsp/properties/db.properties"/>
+	
+	<!-- 내부. 변수선언. -->
+	<typeAliases>
+		<typeAlias type="java.lang.String" alias="str"/>
+		<typeAlias type="java.lang.Integer" alias="int"/>
+		
+		<typeAlias type="com.jsp.dto.MemberVO" alias="member"/>
+		
+		<typeAlias type="com.jsp.dto.BoardVO" alias="board"/>
+		<typeAlias type="com.jsp.dto.ReplyVO" alias="reply"/>
+		
+		<typeAlias type="com.jsp.dto.PdsVO" alias="pds"/>
+		<typeAlias type="com.jsp.dto.AttachVO" alias="attach"/>
+	</typeAliases>
+	
+	<!-- jdbc(자바에서관할하는 데이터소스 연결.) , pool 쓸거야. , property에있는 정보 빼옴. (factory pattern)-->
+	<environments default="dev">
+		<environment id="dev">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 매퍼 -->
+	<mappers>
+		<mapper resource="com/jsp/mybatis/Member-Mapper.xml"/>
+		
+		<mapper resource="com/jsp/mybatis/Board-Mapper.xml"/>
+		<mapper resource="com/jsp/mybatis/Reply-Mapper.xml"/>
+		
+		<mapper resource="com/jsp/mybatis/Pds-Mapper.xml"/>
+		<mapper resource="com/jsp/mybatis/Attach-Mapper.xml"/>
+	</mappers>
+	
+</configuration>

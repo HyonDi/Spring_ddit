@@ -1,0 +1,32 @@
+package com.jsp.servlet;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.jsp.dispatcher.ViewResolver;
+
+
+//@WebServlet("/commons/logout")
+public class LogoutServlet extends HttpServlet {
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String url="redirect:/commons/login";
+		
+		HttpSession session = request.getSession();
+		session.invalidate();
+		
+		ViewResolver.view(request, response, url);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// post가 필요없지만 post로 오면 404나올수있으니 지우지 않는다
+		doGet(request, response);
+	}
+
+}

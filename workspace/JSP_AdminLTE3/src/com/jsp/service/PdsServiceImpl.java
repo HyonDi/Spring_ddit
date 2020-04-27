@@ -43,11 +43,24 @@ public class PdsServiceImpl implements PdsService {
 	}
 	@Override
 	public PdsVO getPds(int pno) throws SQLException {
+		pdsDAO.increaseViewCnt(pno);
+		
 		PdsVO pds = pdsDAO.selectPdsByPno(pno);
 		List<AttachVO> attachList=attachDAO.selectAttachesByPno(pno);
 		pds.setAttachList(attachList);
 		return pds;
 	}
+	
+	@Override
+	public PdsVO getPdsForModify(int pno) throws SQLException {
+		PdsVO pds = pdsDAO.selectPdsByPno(pno);
+		List<AttachVO> attachList=attachDAO.selectAttachesByPno(pno);
+		pds.setAttachList(attachList);
+		return pds;
+	}
+	
+	
+	
 	@Override
 	public void regist(PdsVO pds) throws SQLException {
 		int pno = pdsDAO.getSeqNextValue();
@@ -83,6 +96,10 @@ public class PdsServiceImpl implements PdsService {
 		
 		return pds;
 	}
+
+
+
+
 	
 	
 }

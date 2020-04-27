@@ -65,7 +65,7 @@
 <%@ include file="/WEB-INF/views/commons/summernote.jsp" %>
 
 <jsp:include page="regist_js.jsp" />
-<%-- <jsp:include page="./attach_js.jsp" />  --%>
+<jsp:include page="./attach_js.jsp"/>
 
 </body>
 

@@ -12,7 +12,9 @@ import com.jsp.action.Action;
 import com.jsp.dto.AttachVO;
 import com.jsp.dto.BoardVO;
 import com.jsp.dto.PdsVO;
+import com.jsp.request.PageMaker;
 import com.jsp.service.PdsService;
+import com.jsp.utils.CreatePageMaker;
 import com.jsp.utils.MakeFileName;
 
 public class ModifyFormAction implements Action {
@@ -58,8 +60,11 @@ public class ModifyFormAction implements Action {
 			List<AttachVO> renamedAttachList = MakeFileName.parseFileNameFromAttaches(pds.getAttachList(), "\\$\\$");
 			pds.setAttachList(renamedAttachList);
 			
+			PageMaker pageMaker = CreatePageMaker.make(request);
+			
+			request.setAttribute("pageMaker", pageMaker);
 			request.setAttribute("pds", pds); // request에 심는다 = attribute set함.
-		} catch(SQLException e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 			url="error/500_error";
 		}

@@ -33,7 +33,13 @@ public class PageMaker {
 		// totalCount 에 db조회 값이 제대로들어오는 시기? : 아래 게터세터의 setTotalCount 될 때. 
 	}
 
+	public String makeQuery() {
+		return makeQuery(cri.getPage());
+		// 현재페이지로갈때
+	}
+	
 	public String makeQuery(int page) {
+		// 다른페이지로갈때 , 페이지네이션할 때. 임의의 페이지.
 		String query="?page=" + page
 					+"&perPageNum="+cri.getPerPageNum()
 					+"&searchType="+cri.getSearchType()

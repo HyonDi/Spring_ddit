@@ -88,7 +88,7 @@
 						<tr>
 							<td>${pds.pno}</td>
 							<td id="pdsTitle" style="text-align:left;max-width:100%;overflow: hidden; white-space:nowrap; text-overflow:ellipsis;">
-								<a href="javascript:OpenWindow('detail.do?pno=${pds.pno }&check=list','상세보기',800,800);">
+								<a href="javascript:OpenWindow('detail.do${pageMaker.makeQuery()}&pno=${pds.pno }&check=list','상세보기',800,800);">
 									<span class="col-sm-12">${pds.title }</span>
 								</a>
 							</td>
@@ -127,7 +127,7 @@
  
  <script>
  
-	$('#searchBtn').on('click',function(){
+	$('#searchBtn').on('click',function(e){
 		var jobForm=$('#jobForm');
 		jobForm.find("[name='page']").val(1); // 3번페이지보다가 검색하면 1페이지로 이동.
 		jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());

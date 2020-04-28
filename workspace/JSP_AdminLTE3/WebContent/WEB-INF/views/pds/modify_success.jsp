@@ -10,6 +10,5 @@
 // 	alert("${board.title}로 글제목을 변경하셨습니다.");
 	
 	window.opener.location.reload(true);
-	window.location.href = 'detail.do?pno=${param.pno}&check=modyfied';
-	
+	window.location.href = 'detail.do${pageMaker.makeQuery()}&pno=${param.pno}&check=modyfied';
 </script>

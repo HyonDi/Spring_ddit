@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+
+<decorators defaultdir="/WEB-INF/views/decorators">	
+	<decorator name="main" page="main_decorator.jsp">
+	<!-- header.jsp, footer.jsp 를 include -->
+		<pattern>/*</pattern>				
+	</decorator>
+	
+	<decorator name="open_window" page="open_decorator.jsp">
+	<!-- opener_header.jsp, opener_footer.jsp 를 include -->
+		<pattern>/**/regist*</pattern>
+		<pattern>/**/modify*</pattern>
+		<pattern>/**/detail*</pattern>
+	</decorator>
+	
+		
+	<excludes>
+		<pattern>/commons/login*.do</pattern>
+		<pattern>/*.jsp</pattern>
+		<pattern>/resources/**</pattern>
+	</excludes>
+</decorators>

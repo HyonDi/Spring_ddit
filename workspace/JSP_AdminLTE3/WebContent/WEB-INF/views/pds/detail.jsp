@@ -100,12 +100,11 @@
   
   <form role="form">
   	<input type='hidden' name='pno' value ="${pds.pno}">
-  	<input type='hidden' name='page' value ="${param.page}">
-    <input type='hidden' name='perPageNum' value ="${param.perPageNum}">
-    <input type='hidden' name="searchType" 
-		         value="${param.searchType }" />
-	<input type='hidden' name="keyword" 
-		         value="${param.keyword }" />
+  	<input type='hidden' name='page' value ="${pageMaker.cri.page}">
+    <input type='hidden' name='perPageNum' value ="${pageMaker.cri.perPageNum}">
+    <input type='hidden' name="searchType" value="${pageMaker.cri.searchType }" />
+	<input type='hidden' name="keyword" value="${pageMaker.cri.keyword }" />
+	
   </form> 
 
 <%-- <jsp:include page="./detailPds_js.jsp"></jsp:include> --%>

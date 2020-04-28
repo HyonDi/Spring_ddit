@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  				
+<configuration>
+	<properties resource="com/daejeon/properties/db.properties"/>
+	
+	<typeAliases>
+		<typeAlias type="java.lang.String" alias="str"/>
+		<typeAlias type="java.lang.Integer" alias="int"/>
+		
+		<typeAlias type="com.daejeon.dto.MemberVO" alias="member"/>
+		
+		<typeAlias type="com.daejeon.dto.BoardVO" alias="board"/>
+		<typeAlias type="com.daejeon.dto.ReplyVO" alias="reply"/>
+		
+		<typeAlias type="com.daejeon.dto.AttachVO" alias="attach"/>
+	</typeAliases>
+	
+	<environments default="dev">
+		<environment id="dev">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="com/daejeon/mybatis/Member-Mapper.xml"/>
+		
+		<mapper resource="com/daejeon/mybatis/Board-Mapper.xml"/>
+		<mapper resource="com/daejeon/mybatis/Reply-Mapper.xml"/>
+		
+		<mapper resource="com/daejeon/mybatis/Attach-Mapper.xml"/>
+	</mappers>
+	
+</configuration>

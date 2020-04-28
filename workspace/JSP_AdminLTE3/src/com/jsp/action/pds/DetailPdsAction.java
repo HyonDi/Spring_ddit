@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.jsp.action.Action;
 import com.jsp.dto.AttachVO;
 import com.jsp.dto.PdsVO;
+import com.jsp.request.PageMaker;
+import com.jsp.request.SearchCriteria;
 import com.jsp.service.PdsService;
+import com.jsp.utils.CreatePageMaker;
 import com.jsp.utils.MakeFileName;
 
 public class DetailPdsAction implements Action {
@@ -28,15 +31,32 @@ public class DetailPdsAction implements Action {
 		// 화면결정.
 		String url="pds/detail";
 		
+		
+		
+		
 		// 파라미터받기. 파라미터로넘어오는건 모두  String
 		int pno = Integer.parseInt(request.getParameter("pno"));
 		String modify_check = request.getParameter("check");
+		int page = Integer.parseInt(request.getParameter("page"));
+		int perPageNum = Integer.parseInt(request.getParameter("perPageNum"));
+		String searchType = request.getParameter("searchType");
+		String keyword = request.getParameter("keyword");
+		
+		
+		
+		SearchCriteria cri = new SearchCriteria();
+		cri.setPage(page);
+		cri.setPerPageNum(perPageNum);
+		cri.setKeyword(keyword);
+		cri.setSearchType(searchType);
+		
+		
 		
 		PdsVO pds = null;
 		try {
 			// 증가
 			if(modify_check.equals("modyfied")) { // 고쳤을 때 
-				pds = pdsService.getPdsForModify(pno);
+				pds = pdsService.read(pno);
 			}else if(modify_check.equals("list")) { // 안고쳤을 때 
 				pds = pdsService.getPds(pno);
 			}
@@ -46,7 +66,11 @@ public class DetailPdsAction implements Action {
 			pds.setAttachList(renamedAttachList);
 			
 			request.setAttribute("pds", pds); // request에 심는다 = attribute set함.
-		} catch(SQLException e) {
+			
+			PageMaker pageMaker = CreatePageMaker.make(request);//
+			
+			request.setAttribute("pageMaker", pageMaker);
+		} catch(Exception e) {
 			e.printStackTrace();
 			url="error/500_error";
 		}

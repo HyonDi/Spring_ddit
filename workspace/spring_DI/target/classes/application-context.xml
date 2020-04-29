@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="sumation" 
+	class="com.java.general.Sumation"
+		/>
+	
+	
+	<bean id="tripleSumation" 
+	class="com.java.general.TripleSumation"
+		/>
+	
+	<bean id="calculator" 
+	class="com.java.general.UpdateCalculator"
+	p:sumation-ref="tripleSumation"
+		/>
+		<!-- 요기 p:sumation-ref="sumation" 으로 교체가능합니다.
+		class="com.java.general.Calculator" 으로 교체가능합니다.--> 
+	
+</beans>

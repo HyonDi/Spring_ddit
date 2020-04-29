@@ -27,6 +27,7 @@ public class BoardModifyFormAction implements Action {
 		
 		String url="board/modify";
 		
+		
 		int bno = Integer.parseInt(request.getParameter("bno"));
 		String modify_check = request.getParameter("check");
 		

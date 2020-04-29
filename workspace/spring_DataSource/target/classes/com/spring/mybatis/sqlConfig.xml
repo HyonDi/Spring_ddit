@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+  <!-- 태그 순서 : properties, typeAliases, 데이터소스잡는부분(environments), mappers 
+  				꼭 지켜야합니다********** -->
+  				
+<configuration>
+	
+	<typeAliases>
+		<typeAlias type="java.lang.String" alias="str"/>
+		<typeAlias type="java.lang.Integer" alias="int"/>
+		
+		<typeAlias type="com.spring.MemberVO" alias="member"/>
+		
+	<!-- 	<typeAlias type="com.jsp.dto.BoardVO" alias="board"/>
+		<typeAlias type="com.jsp.dto.ReplyVO" alias="reply"/>
+		
+		<typeAlias type="com.jsp.dto.PdsVO" alias="pds"/>
+		<typeAlias type="com.jsp.dto.AttachVO" alias="attach"/>
+		-->
+	</typeAliases> 
+	
+</configuration>

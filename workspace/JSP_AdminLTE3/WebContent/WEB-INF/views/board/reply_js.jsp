@@ -181,7 +181,9 @@ getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+r
 			data:JSON.stringify(data),
 			contentType:"application/json", <%--보내는 data 형식 지정--%>
 			dataType:"text", <%-- 받는 ㅇata 형식 지정--%>
+			//============위까지가 요청
 			
+			// =============아래는 요청결과를 처리된결과를 받는거
 			success:function(data){
 				var result=data.split(',');
 				//alert(result + ": result");

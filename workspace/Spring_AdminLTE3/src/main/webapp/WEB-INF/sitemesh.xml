@@ -1,0 +1,21 @@
+<sitemesh>
+
+	<!-- decorator 경로! -->
+	<property name="decorators-file" value="/WEB-INF/decorators.xml" />
+	<excludes file="${decorators-file}" />
+
+	<page-parsers>
+		<parser content-type="text/html"
+			class="com.opensymphony.module.sitemesh.parser.HTMLPageParser" />
+	</page-parsers>
+
+	<decorator-mappers>
+		<mapper
+			class="com.opensymphony.module.sitemesh.mapper.ConfigDecoratorMapper">
+			
+			<!-- url 내부 규정!!-decorator에서 규정할거야 -->
+			<param name="config" value="${decorators-file}" />
+		</mapper>
+	</decorator-mappers>
+
+</sitemesh>

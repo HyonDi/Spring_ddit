@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- 어떤 url에 어떤 템플릿쓸거야? 하는내용. 그런데 새로열리는 window창에도 헤더푸터가붙을거야. 샘플임. -->
+<!-- 템플릿 1개당 decorators 1개가 있어야해. -->
+<!-- request에도 안붙어야함. 로그인화면에도.= 제외해야하는애들은 여기서 제외해야함.-->
+
+<!-- 우선순위 : 부우분먼저. 그래서 open_window가 main보다 우선순위가 높아. exclude가 가장우선순위높음. -->
+<!-- 그럼 하나만있는거면 exclude보다 높음?? 똑같은 범위 2개면?>?? --> 
+<decorators defaultdir="/WEB-INF/views/decorators">	
+	<decorator name="main" page="main_decorator.jsp">
+	<!-- header.jsp, footer.jsp 를 include -->
+		<pattern>/*</pattern>				
+	</decorator>
+	
+	<decorator name="open_window" page="open_decorator.jsp">
+	<!-- opener_header.jsp, opener_footer.jsp 를 include -->
+		<pattern>/**/regist*</pattern>
+		<pattern>/**/modify*</pattern>
+		<pattern>/**/detail*</pattern>
+	</decorator>
+	
+		
+	<excludes>
+		<pattern>/commons/login*.do</pattern>
+		<pattern>/*.jsp</pattern>
+		<pattern>/resources/**</pattern>
+	</excludes>
+</decorators>

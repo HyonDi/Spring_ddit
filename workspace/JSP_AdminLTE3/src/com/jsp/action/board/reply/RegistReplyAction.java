@@ -29,14 +29,17 @@ public class RegistReplyAction implements Action {
 		String url=null;
 		
 		ObjectMapper mapper = new ObjectMapper();
+		// objectMapper가 잭슨에있는 클래스.(혹은 인터페이스 둘중하나)
 		
 														// 데이터. 			// 저장그릇
 		RegistReplyRequest replyReq = mapper.readValue(request.getReader(), RegistReplyRequest.class);
+		//===
 		
 		response.setContentType("text/plainlcharset=utf-8");
 		PrintWriter out=response.getWriter();
 		try {
 			replyService.registReply(replyReq.toReplyVO());
+			
 			
 			// 제일최근에작성한글 앞으로 끌어오는방법.
 			// 서치크리테리아다시생성

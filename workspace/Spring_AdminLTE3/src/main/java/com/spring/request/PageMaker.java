@@ -48,7 +48,6 @@ public class PageMaker {
 	}
 	
 	
-	
 	// 게터세터
 	public int getTotalCount() {
 		return totalCount;

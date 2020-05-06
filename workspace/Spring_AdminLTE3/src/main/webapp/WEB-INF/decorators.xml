@@ -21,6 +21,7 @@
 	
 		
 	<excludes>
+		<pattern>/replies/**</pattern>
 		<pattern>/commons/login*.do</pattern>
 		<pattern>/*.jsp</pattern>
 		<pattern>/resources/**</pattern>

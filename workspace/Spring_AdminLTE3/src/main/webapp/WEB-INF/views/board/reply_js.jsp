@@ -97,16 +97,30 @@ getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+r
 		});
 	} --%>
 	
-	function getPage(pageInfo){	
-		$.getJSON(pageInfo,function(data){	
+	function getPage(pageInfo){
+		
+		$.ajax({
+			url : pageInfo,
+			type : "get",
+			success : function(dataMap){
+				printData(dataMap.replyList,$('#repliesDiv'),$('#reply-list-template'));
+				printPaging(dataMap.pageMaker, $('.pagination'));
+			},
+			error:function(error){
+				alert("서버 장애로 댓글 목록을 불러올 수 없습니다.");
+			}
+			
+		});
+<%-- 		$.getJSON(pageInfo,function(data){	
 			printData(data.replyList,$('#repliesDiv'),$('#reply-list-template'));
 			printPaging(data.pageMaker, $('.pagination'));
 			
-			<%-- 댓글처음등록할때에 -1이 나올수도 있어!방지위한 조치.--%>
-			<%-- if(data.pageMaker.realEndPage>0){
+			댓글처음등록할때에 -1이 나올수도 있어!방지위한 조치.
+			if(data.pageMaker.realEndPage>0){
 				realEndPage=data.pageMaker.realEndPage;
-			} --%>
-		});
+			}
+		}); --%>
+		
 	}
 	
 	
@@ -181,8 +195,10 @@ getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+r
 			data:JSON.stringify(data),
 			contentType:"application/json", <%--보내는 data 형식 지정--%>
 			dataType:"text", <%-- 받는 ㅇata 형식 지정--%>
+			//============위까지가 요청
 			
-			success:function(data){
+			// =============아래는 요청결과를 처리된결과를 받는거
+			<%-- success:function(data){
 				var result=data.split(',');
 				//alert(result + ": result");
 				if(result[0]=="SUCCESS"){
@@ -195,10 +211,21 @@ getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+r
 					// alert('댓글등록이 취소되었습니다.')
 					return;
 				}
+			} --%>
+			success:function(data){
+				var result=data.split(',');
+				//alert(result + ": result");
+				alert('댓글이 등록되었습니다.');
+				getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+data);
+				$('#newReplyText').val("");
+			},
+			error :function(error){
+				alert('댓글등록이 취소되었습니다.')
+				window.location.reload(true);
 			}
 		});
 		
-	})
+	});
 	
 	//reply modify
 	$('div.timeline').on('click','#modifyReplyBtn',function(event){
@@ -206,10 +233,10 @@ getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+r
 		var replyer=$(event.target).attr("data-replyer");
 	// 로그인사용자확인
 	//String으로 비교할거니가 큰따옴표 꼭 써줘야한다. 안쓰면 변수로 mimi를 찾는다. String mimi를 찾아야하는데!
-		if(replyer!="${loginUser.id}"){
+		/* if(replyer!="${loginUser.id}"){
 			alert("수정 권한이 없습니다.");
 			$(this).attr("data-toggle","");
-		}
+		} */
 		
 	});
 	
@@ -240,16 +267,13 @@ getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+r
 			url:"<%=request.getContextPath()%>/replies/modify.do",
 			type:"post",
 			data:JSON.stringify(sendData),
+			contentType:"application/json",
 			success:function(result){
-				if(result=="SUCCESS"){
-					alert("수정되었습니다.");
-					getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page=" +replyPage);
-				}else{
-					alert("수정이 실패했습니다.");
-				}
+				alert("수정되었습니다.");
+				getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page=" +replyPage);
 			},
 			error:function(error){
-				alert("삭제에 실패했습니다.");
+				alert("수정에 실패했습니다.");
 			},
 			complete:function(){
 				$('#modifyModal').modal('hide');
@@ -271,12 +295,11 @@ getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+r
 				url:"<%=request.getContextPath()%>/replies/remove.do",
 				type:"post",
 				data:JSON.stringify(sendData),
+				/* contentType:"application/json", */
 				success:function(data){
-					var result = data.split(',');
-					if(result[0]=="SUCCESS"){
-						alert("삭제되었습니다.");
-						getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+result[1]);
-					}
+					alert("삭제되었습니다.");
+					getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+data);
+					
 				},
 				error:function(error){
 					alert("삭제에 실패했습니다.");

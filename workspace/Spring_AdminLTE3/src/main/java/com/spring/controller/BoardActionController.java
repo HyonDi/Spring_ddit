@@ -2,6 +2,8 @@ package com.spring.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.dto.BoardVO;
 import com.spring.request.BoardRegistRequest;
+import com.spring.request.PageMaker;
 import com.spring.request.SearchCriteria;
 import com.spring.service.BoardService;
 
@@ -39,7 +42,7 @@ public class BoardActionController {
 		return url;
 	}
 	
-	@RequestMapping("regist.do") // 열 곳.??
+	@RequestMapping(value="regist.do",method=RequestMethod.POST) // 열 곳.??
 	public String registPost(BoardRegistRequest registReq, SearchCriteria cri) throws Exception{
 		String url = "board/regist_success"; // 완료 후 갈곳.??
 		
@@ -75,7 +78,7 @@ public class BoardActionController {
 	}
 	
 	@RequestMapping("modifyForm.do")
-	public String modifyPost(Model model, SearchCriteria cri, int bno) throws Exception {
+	public String modify(Model model, int bno) throws Exception {
 		String url = "board/modifyBoard";
 		System.out.println("bno : " + bno);
 		
@@ -85,15 +88,19 @@ public class BoardActionController {
 		return url;
 	}
 	
-	@RequestMapping("modify.do")
-	public String modify(BoardRegistRequest registReq, SearchCriteria cri) throws Exception{
+	@RequestMapping(value="modify.do", method=RequestMethod.POST)
+	public String modifyPost(BoardRegistRequest registReq, SearchCriteria cri) throws Exception{
+		String url = "redirect:board/detail.do";
+		
+		
+		url=url+PageMaker.makeQuery(cri);
+		
 		BoardVO board = registReq.toBoardVO();
-		String url = "board/modify_success";
 		
 		try {
 			boardService.modify(board);
 			
- 		} catch(Exception e) {
+		} catch(Exception e) {
  			e.printStackTrace();
  			url = "board/modify_fail";
  		}
@@ -101,7 +108,17 @@ public class BoardActionController {
 		return url;
 	}
 	
-	@RequestMapping("")
+	@RequestMapping("remove.do")
+	public void remove(int bno, HttpServletResponse response) throws Exception{
+		// HttpServletResponse response 와 같은 인자를 받았으면 이 메서드 안에서
+		// 반드시 화면을 해결해야한다.
+		// 저걸 인자로 받는다는 것이 이 메서드에서 화면결정을 하겠다는 의미로
+		// 
+		boardService.remove(bno);
+		
+		response.setContentType("text/html;charset=utf-8");
+		
+	}
 	
 	
 }

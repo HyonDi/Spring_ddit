@@ -3,44 +3,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.spring</groupId>
-	<artifactId>mvc</artifactId>
-	<name>Spring_AdminLTE3</name>
+	<artifactId>fileUpload</artifactId>
+	<name>spring_fileUpload</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
-	
-	<repositories>
-	  	<repository>
-	  		<id>oracle.driver.ojdbc6</id>
-	  		<url>http://www.datanucleus.org/downloads/maven2/</url>
-	  	</repository>
-  	</repositories>
-	
 	<properties>
 		<java-version>1.7</java-version>
 		<org.springframework-version>3.2.6.RELEASE</org.springframework-version>
-		<!-- oracle driver ojdbc6 -->
-		<oracle.ojdbc-version>11.2.0.3</oracle.ojdbc-version>
-		<!-- commons dbcp -->
-		<commons.dbcp-version>2.4.0</commons.dbcp-version>
-		<!-- myBatis -->
-		<myBatis-version>3.2.8</myBatis-version>
-		<!-- myBatis-Spring -->
-		<myBatis.spring-version>1.2.2</myBatis.spring-version>
-		<opensymphony.sitemesh-version>2.4.2</opensymphony.sitemesh-version>
-		<jackson.databind-version>2.9.8</jackson.databind-version>
+		
+		
+		<commons.fileupload-version>1.3.1</commons.fileupload-version>
 		
 		
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
-<!-- 	Logging
-		<logback.version>1.0.13</logback.version>
-		<slf4j.version>1.7.5</slf4j.version>
-
-		Test
-		<junit.version>4.11</junit.version> -->
 	</properties>
-	
-	
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -60,66 +37,16 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${org.springframework-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${org.springframework-version}</version>
-			<scope>test</scope>
-		</dependency>
-			<!-- scope test 주면 test 시에만 이걸 사용함.. -->
 				
-				
-				
-				
-		<!-- ojdbc6 -->
+		<!--commons-fileupload -->
 		<dependency>
-		    <groupId>oracle</groupId>
-		    <artifactId>ojdbc6</artifactId>
-		    <version>${oracle.ojdbc-version}</version>
-		</dependency>
-		
-		<!-- dbcp -->
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-dbcp2</artifactId>
-		    <version>${commons.dbcp-version}</version>
-		</dependency>
-		
-		<!-- mybatis -->
-		<dependency>
-		    <groupId>org.mybatis</groupId>
-		    <artifactId>mybatis</artifactId>
-		    <version>${myBatis-version}</version>
-		</dependency>
-				
-		<!-- mybatis-spring -->
-		<dependency>
-		    <groupId>org.mybatis</groupId>
-		    <artifactId>mybatis-spring</artifactId>
-		    <version>${myBatis.spring-version}</version>
-		</dependency>
-				
-		<!-- sitemesh -->
-		<dependency>
-		    <groupId>opensymphony</groupId>
-		    <artifactId>sitemesh</artifactId>
-		    <version>${opensymphony.sitemesh-version}</version>
-		</dependency>
-				
-				
-		<!--jackson-databind -->
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>${jackson.databind-version}</version>
+		    <groupId>commons-fileupload</groupId>
+		    <artifactId>commons-fileupload</artifactId>
+		    <version>${commons.fileupload-version}</version>
 		</dependency>
 						
+				
+				
 				
 				
 		<!-- AspectJ -->
@@ -178,45 +105,35 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
+	
 				
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<version>2.3.1</version>
 			<scope>provided</scope>
 		</dependency>
+		
+		
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
 	
-		
-		
-		
-		
-		
-		
-		
-	<!-- Test Artifacts -->
-<!-- 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${org.springframework-version}</version>
-			<scope>test</scope>
-		</dependency> -->
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>        
 	</dependencies>

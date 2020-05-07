@@ -7,4 +7,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
+	<context:property-placeholder location="classpath:com/spring/properties/*.properties"/>
+
+
+<!-- bean으로 String객체만들기. beanString객체. 				또다른 방법으로는 property를 만들고...?? -->
+	<bean id="uploadPath" class="java.lang.String">
+		<constructor-arg value="${rootPath}"/>		<!-- c:\\upload -->
+	</bean>
 </beans>

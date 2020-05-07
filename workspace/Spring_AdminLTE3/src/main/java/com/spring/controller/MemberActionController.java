@@ -2,13 +2,21 @@ package com.spring.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.dto.MemberVO;
+import com.spring.request.MemberRegistRequest;
+import com.spring.request.PageMaker;
 import com.spring.request.SearchCriteria;
 import com.spring.service.MemberService;
 
@@ -47,4 +55,107 @@ public class MemberActionController {
 		model.addAllAttributes(dataMap);
 		return url;
 	}
+	
+	@RequestMapping("regist.do")
+	public String registForm() throws Exception{
+		String url="member/regist";
+		return url;
+	}
+	
+	@RequestMapping("registSubmit.do")
+	public String registPost(MemberRegistRequest registReq, SearchCriteria cri) throws Exception{
+		String url="member/regist_success";
+		
+		MemberVO member = registReq.toMemberVO();
+		
+		try {
+			memberService.regist(member);
+		}catch(Exception e) {
+			e.printStackTrace();
+			url="member/regist_fail";
+		}
+		
+		return url;
+	}
+	
+	@RequestMapping("modify.do")
+	public String modify(Model model,String id) throws Exception{
+		String url = "member/modify";
+		
+		MemberVO member = memberService.getMember(id);
+		
+		model.addAttribute("member",member);
+		
+		return url;
+	}
+	
+	@RequestMapping("modifySubmit.do")
+	public String modifyPost(MemberRegistRequest request,SearchCriteria cri) throws Exception{
+		String url = "member/modify_success";
+		
+		//url = url + PageMaker.makeQuery(cri);
+		
+		MemberVO member = request.toMemberVO();
+		
+		try {
+			memberService.modify(member);;
+		} catch(Exception e) {
+			e.printStackTrace();
+			url="board/modify_cancel";
+		}
+		
+		return url;
+	}
+	
+	@RequestMapping("remove.do")
+	public String remove(String id) throws Exception{
+		String url = "member/remove_success";
+		try {
+			memberService.remove(id);
+		}catch(Exception e) {
+			e.printStackTrace();
+			url="member/remove_fail";
+		}
+		
+		return url;
+	}
+	
+	@RequestMapping("detail.do")
+	public String detail(String id, Model model) throws Exception{
+		String url = "member/detail";
+		
+		MemberVO member = memberService.getMember(id);
+		
+		model.addAttribute("member",member);
+		
+		return url;
+		
+	}
+	
+	@RequestMapping("checkPassword.do")
+	@ResponseBody
+	public ResponseEntity<String> checkPassword(HttpSession session, String pwd) throws Exception{
+		ResponseEntity<String> entity = null;
+		MemberVO loginUser = (MemberVO)session.getAttribute("loginUser");
+		
+		// 여기 로그인하는거 만들고 더 작성해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		System.out.println("pwd : " + pwd + " 맨위");
+		
+		//if(pwd.equals(loginUser.getPwd())) {
+		
+		
+		if(pwd.equals("mimi")) {	
+			entity = new ResponseEntity<String>(HttpStatus.OK);
+			System.out.println("pwd : " + pwd+ " 성공");
+		}else {
+			entity = new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+			System.out.println("pwd : " + pwd+ " 실패");
+		}
+		
+		//model.addAttribute("entity",entity);
+		
+		return entity;
+	}
+	
+	
 }

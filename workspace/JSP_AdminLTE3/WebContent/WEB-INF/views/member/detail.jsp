@@ -184,12 +184,13 @@
 				type:"get",
 				success:function(data){
 					// alert(data);
-					if(data=="SUCCESS"){
-						location.href="remove.do?id=${member.id}";
-					}else{
-						alert("패스워드가 일치하지 않습니다.");
-					}
+					location.href="remove.do?id=${member.id}";
+						
+				},
+				error:function(error){
+					alert("패스워드가 일치하지 않습니다.");
 				}
+				
 		}); 
 		
 		

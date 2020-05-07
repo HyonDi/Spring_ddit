@@ -84,13 +84,14 @@ public class BoardActionController {
 		
 		BoardVO board = boardService.getBoard(bno);
 		
+		
 		model.addAttribute("board",board);
 		return url;
 	}
 	
 	@RequestMapping(value="modify.do", method=RequestMethod.POST)
 	public String modifyPost(BoardRegistRequest registReq, SearchCriteria cri) throws Exception{
-		String url = "redirect:board/detail.do";
+	/*	String url = "redirect:board/detail.do";
 		
 		
 		url=url+PageMaker.makeQuery(cri);
@@ -103,20 +104,40 @@ public class BoardActionController {
 		} catch(Exception e) {
  			e.printStackTrace();
  			url = "board/modify_fail";
- 		}
+ 		}*/
+		String url = "board/modify_success";
+		
+		BoardVO board = registReq.toBoardVO();
+		
+		try {
+			boardService.modify(board);
+		}catch(Exception e){
+			e.printStackTrace();
+			url="board/modify_fail";
+		}
+		
+		
+		
 		
 		return url;
 	}
 	
 	@RequestMapping("remove.do")
-	public void remove(int bno, HttpServletResponse response) throws Exception{
+	public String remove(int bno) throws Exception{
 		// HttpServletResponse response 와 같은 인자를 받았으면 이 메서드 안에서
 		// 반드시 화면을 해결해야한다.
 		// 저걸 인자로 받는다는 것이 이 메서드에서 화면결정을 하겠다는 의미로
 		// 
-		boardService.remove(bno);
+		String url = "board/remove_success";
+		try {
+			boardService.remove(bno);//
+		}catch(Exception e){
+			e.printStackTrace();
+			url = "board/remove_fail";
+		}
 		
-		response.setContentType("text/html;charset=utf-8");
+		return url;
+		//response.setContentType("text/html;charset=utf-8");
 		
 	}
 	

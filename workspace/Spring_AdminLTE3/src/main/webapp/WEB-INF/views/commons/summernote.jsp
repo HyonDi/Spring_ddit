@@ -57,6 +57,9 @@ Head 마크업 써도 무방함. decorator에 head에 내용만 등록된다 (�
 			success : function(img_url){
 				//$(el) : summernote 뒤에 있는 textarea
 				$(el).summernote('editor.insertImage', img_url); //'editor.insertImage' : image 태그를 만들어줌
+			},
+			error:function(error){
+				alert("이미지 첨부에 실패했습니다.");
 			}
 		});
 	}
@@ -74,11 +77,16 @@ Head 마크업 써도 무방함. decorator에 head에 내용만 등록된다 (�
 		
 		$.ajax({
 			url : "<%= request.getContextPath() %>/deleteImg.do",
-			data : JSON.stringify(fileData),
 			type : "post",
+			data : JSON.stringify(fileData),
+			contentType:"application/json",
 			success : function(res){
-				console.log(res);
+				console.log(res+"!!!!!!!");
+			},
+			error : function(error){
+				alert("이미지 삭제에 실패했습니다.");
 			}
+			
 		});
 	}
 	

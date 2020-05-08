@@ -88,12 +88,14 @@ small{
 				$(".uploadedList").append(str);
 				// json데이터가 아니어서 핸들바?를 사용하지못함.
 			},
-			error:function(error){}
+			error:function(error){
+				alert("파일업로드가 실패했습니다.")
+			}
 		});
 	}
 	
 	function checkImageType(fileName){
-		fileName=fileName.substring(fileName.lastIndexOf(',')+1).toLowerCase();
+		fileName=fileName.substring(fileName.lastIndexOf('.')+1).toLowerCase();
 		var pattern=/jpg|gif|png|jpeg/i;/* i 가 전체 라는 의미래. fileName이 확장자로 넘어올 것인데 그 전체가 패턴중 하나인지 검사. */
 		return fileName.match(pattern);
 	}
@@ -118,6 +120,27 @@ small{
 		return front+end;
 	}
 	
+	/* 이미지삭제하는 함수. X버튼은 스크립트에의해만들어진것이니 bublling이용해야한다.*/
+	$('.uploadedList').on('click','small',function(event){
+		// alert("delete btn");
+		
+		var data=$(this).attr("data-src");
+		var that=$(this);/* 이벤트 대상을 지칭해야하는데 ajax에서 $(this) 를 사용할 경우 $.ajax를 가리키게되어서 미리 that 이라는 변수에 담아놓았다. */
+		var fileData = {fileName:data}; /* JSON */
+		
+		$.ajax({
+			url:"deleteFile",
+			type:"post",
+			data:JSON.stringify(fileData),
+			contentType:"application/json",/* handlerAdaptor가 contentType안주면 기본 parameter로 해석한다. (form태그처럼) SpringMVC을 탑재했을경우handlerAdaptor가 개입을하므로 contentType을 줘야한다.*/
+			success:function(data){
+				that.parent("div").remove();/* deleteFile 에서 db삭제가 성공적으로 이루어지면 div를 지워 안보이게한다. */
+			},
+			error:function(error){
+				alert("첨부파일 삭제를 실패했습니다.");
+			}
+		});
+	});
 	
 	
 </script>

@@ -295,7 +295,7 @@ getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+r
 				url:"<%=request.getContextPath()%>/replies/remove.do",
 				type:"post",
 				data:JSON.stringify(sendData),
-				/* contentType:"application/json", */
+				contentType:"application/json",
 				success:function(data){
 					alert("삭제되었습니다.");
 					getPage("<%=request.getContextPath()%>/replies/list.do?bno=${board.bno}&page="+data);

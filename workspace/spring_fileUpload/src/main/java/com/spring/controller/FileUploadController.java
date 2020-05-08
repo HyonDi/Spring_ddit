@@ -141,8 +141,9 @@ public class FileUploadController {
 		}
 		
 		return url;
-		
-		
 	}
+	
+	// fileDelete하는 메서드
+	
 }	
 	

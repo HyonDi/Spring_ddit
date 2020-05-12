@@ -41,7 +41,7 @@ public class PdsActionController {
 		// Model과 view가 전부들어있음. model.addAllAttrilbute,addAllAttrilbutes,addAttribute 메서드랑 똑같음.
 		// handleraMapper -> viewResolver -> dispatcherServlet 에게이동되는 과정은 동일.
 		
-		String url = "pds/list";
+		String url = "pds/list.page";
 		
 		Map<String, Object> dataMap = pdsService.getList(cri);
 		
@@ -53,7 +53,7 @@ public class PdsActionController {
 	
 	@RequestMapping("registForm.do")
 	public ModelAndView registForm(ModelAndView mnv) throws Exception {
-		String url = "pds/regist";
+		String url = "pds/regist.open";
 		mnv.setViewName(url);
 		
 		return mnv;
@@ -80,7 +80,7 @@ public class PdsActionController {
 	
 	@RequestMapping("modifyForm.do")
 	public ModelAndView modifyForm(ModelAndView mnv, int pno) throws Exception {
-		String url = "pds/modify";
+		String url = "pds/modify.open";
 		PdsVO pds = pdsService.getPds(pno);
 		mnv.addObject("pds",pds);
 		mnv.setViewName(url);
@@ -90,7 +90,7 @@ public class PdsActionController {
 	
 	@RequestMapping("/detail.do")
 	public ModelAndView detail(ModelAndView mnv, int pno) throws Exception {
-		String url = "pds/detail";
+		String url = "pds/detail.open";
 		PdsVO pds = pdsService.getPds(pno);
 		mnv.addObject("pds",pds);
 		mnv.setViewName(url);

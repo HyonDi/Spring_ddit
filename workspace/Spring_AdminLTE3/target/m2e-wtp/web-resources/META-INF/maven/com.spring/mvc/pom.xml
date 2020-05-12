@@ -75,7 +75,7 @@
 			<version>${org.springframework-version}</version>
 			<scope>test</scope>
 		</dependency>
-			<!-- scope test 주면 test 시에만 이걸 사용함.. -->
+		<!-- scope test 주면 test 시에만 이걸 사용함.. -->
 				
 				
 				
@@ -109,11 +109,19 @@
 		</dependency>
 				
 		<!-- sitemesh -->
-		<dependency>
+	<!-- 	<dependency>
 		    <groupId>opensymphony</groupId>
 		    <artifactId>sitemesh</artifactId>
 		    <version>${opensymphony.sitemesh-version}</version>
+		</dependency> -->
+				
+		<!-- tiles-extras -->
+		<dependency>
+		    <groupId>org.apache.tiles</groupId>
+		    <artifactId>tiles-extras</artifactId>
+		    <version>3.0.8</version>
 		</dependency>
+				
 				
 		<!-- commons-fileupload -->
 		<dependency>

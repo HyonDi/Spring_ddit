@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -31,15 +32,17 @@ public class CommonsActionController {
 	
 	//@RequestMapping(value= {"/", "/commons/loginForm.do"})
 	@RequestMapping("loginForm.do")
-	public String loginForm() {
+	public String loginForm(Model model) {
 		String url = "commons/loginForm";
+		model.addAttribute("title", "로그인");
+		
 		return url;
 	}
 	
 	@RequestMapping(value = "login.do", method = RequestMethod.POST)
 	public String loginPost(String id, String pwd, HttpServletRequest request, HttpSession session) {
 		//String url = "redirect:"+request.getContextPath()+"/member/list.do";
-		String url = "redirect:/member/list.do";
+		String url = "redirect:/member/list.do";// .page를 안붙이는게 action url 이어서인가보다.
 		// resolver는 / 주면 앞에 자동으로 contextPath붙여준다.
 		
 		// 메세지가있다면 지운다.
@@ -54,7 +57,7 @@ public class CommonsActionController {
 			// 필터를안넣어서 여기서 유효성검사하는것으로 대체하는 내용.
 			if(loginUser.getEnabled()==0) {// 사용정지
 				message="사용 정지된 아이디로 이용이 제한됩니다.";
-				url="redirect:/commons/loginFrom.do";
+				url="redirect:/commons/loginForm.do";
 			}else {// 사용 가능. 세션유지 6분으로했다. tomcat 은 30분최대.
 				session.setAttribute("loginUser", loginUser);
 				session.setMaxInactiveInterval(60*6);
@@ -78,6 +81,13 @@ public class CommonsActionController {
 		session.setAttribute("msg", message);
 		session.setAttribute("id", id);
 		
+		return url;
+	}
+	
+	@RequestMapping("logout.do")
+	public String logout(HttpSession session) throws Exception{
+		String url = "redirect:/commons/loginForm.do";
+		session.invalidate();
 		return url;
 	}
 }

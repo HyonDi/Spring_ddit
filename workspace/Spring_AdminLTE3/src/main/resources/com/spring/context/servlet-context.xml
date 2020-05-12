@@ -30,11 +30,46 @@
 			    />
 
 
+		<!-- tilesView를 환경 설정해줄 bean -->
+	<!-- 환경설정 내용이 들어있는 xml 경로 지정 -->
+	<beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<beans:property name="definitions">
+			<beans:list>
+				<beans:value>/WEB-INF/tiles/tiles.xml</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<!-- tilesView 알맹이 -->
+	<!-- viewClass tiles'3'인거 주의(jar버전에따라 다름) -->
+	<beans:bean id="viewClass" class="java.lang.String">
+		<beans:constructor-arg value="org.springframework.web.servlet.view.tiles3.TilesView" />
+	</beans:bean>
+				
+	<!-- tilesView와 controller에서 보내는 viewName을 연결해줄 본드 역할 -->
+	<!-- UrlBasedViewResolver : view의 url(브라우저에서 넘어오는 url이 아니다) -->
+	<!-- p:order="1" : 우선순위를 1로... -->
+	<beans:bean id="tilesViewResolver"
+				class="org.springframework.web.servlet.view.UrlBasedViewResolver"
+				p:viewClass-ref="viewClass"
+				p:order="1" />
+
+
+
+
+
+
+
+
+
+
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<!-- viewResolver 설정(handler mapper와 adaptor는 자동으로 설정됨) -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+			    p:order="2" >
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
+		
 	</beans:bean>
 	
 	<!-- @component를 찾아서 bean 등록함 -->

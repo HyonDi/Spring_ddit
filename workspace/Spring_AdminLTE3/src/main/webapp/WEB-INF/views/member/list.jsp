@@ -7,9 +7,9 @@
 <%-- c = core! java에서 for, if, token 등이 들어있다. --%>
 
 
-<head>
-	<title>회원 목록</title>
-</head>
+<%-- <head>
+	<title>${title }</title>
+</head> --%>
 
 <%-- <%@ include file="/WEB-INF/views/include/header.jsp" %> --%>
 	

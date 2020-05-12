@@ -35,7 +35,7 @@ public class MemberActionController {
 	public String list(SearchCriteria cri, Model model) throws Exception{
 		// void 로 함으로 이게 화면이라는것을 알려준다. url이랑 똑같이 화면 url준다는의미임.
 		
-		String url="member/list";
+		String url="member/list.page";
 		
 		// service에서 데이터를 받는다.
 		Map<String, Object> dataMap = memberService.getMemberList(cri);
@@ -52,13 +52,17 @@ public class MemberActionController {
 		model.addAttribute("memberList", (List<MemberVO>)dataMap.get("memberList"));
 		*/
 		// 위에것을 한번에 넣을 때에는
+		model.addAttribute("title","회원리스트");
 		model.addAllAttributes(dataMap);
 		return url;
 	}
 	
+	
+	
+	
 	@RequestMapping("regist.do")
 	public String registForm() throws Exception{
-		String url="member/regist";
+		String url="member/regist.open";
 		return url;
 	}
 	
@@ -80,7 +84,7 @@ public class MemberActionController {
 	
 	@RequestMapping("modify.do")
 	public String modify(Model model,String id) throws Exception{
-		String url = "member/modify";
+		String url = "member/modify.open";
 		
 		MemberVO member = memberService.getMember(id);
 		
@@ -122,7 +126,7 @@ public class MemberActionController {
 	
 	@RequestMapping("detail.do")
 	public String detail(String id, Model model) throws Exception{
-		String url = "member/detail";
+		String url = "member/detail.open";
 		
 		MemberVO member = memberService.getMember(id);
 		

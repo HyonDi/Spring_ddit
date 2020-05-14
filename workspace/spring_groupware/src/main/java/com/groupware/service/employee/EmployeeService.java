@@ -6,9 +6,9 @@ import java.util.Map;
 
 import com.groupware.dto.CareerVO;
 import com.groupware.dto.EmployeeVO;
+import com.groupware.exception.IdNotFoundException;
+import com.groupware.exception.InvalidPasswordException;
 import com.groupware.request.SearchCriteria;
-import com.spring.exception.IdNotFoundException;
-import com.spring.exception.InvalidPasswordException;
 
 public interface EmployeeService {
 	

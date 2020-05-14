@@ -103,9 +103,9 @@ $(document).ready(function() {
 		url: "<%=request.getContextPath()%>/commons/topMenuHql",
 		dataType: "json",
 		success: function(data) {			
-		     $("#topMenuUl").html(menuA(data,"${mCode==null ? 'MENU00' : mCode }"));		     
-		     <c:if test="${!empty mCode}" >
-		     	onTopMenu('${mCode}','${mCode.substring(0,6)}');		     	
+		     $("#topMenuUl").html(menuA(data,"${mCode==null ? 'MENU00' : mCode }"));	/* 주메뉴만들기 */		     
+		     <c:if test="${!empty mCode}" >											/* 클릭한게 서브메뉴라면? */
+		     	onTopMenu('${mCode}','${mCode.substring(0,6)}');				/* 서브메뉴, 주메뉴 */	     	
 		     	if('${mCode}'.length>6) {
 		     		reURL('${mCode}');
 		     		onSubMenu('${mCode}');
@@ -116,6 +116,7 @@ $(document).ready(function() {
 		     </c:if>
 		},
 		error:function(){
+			alert("로그인 하세요.");
 			location.href="<%=request.getContextPath()%>/commons/login";
 		}
 		

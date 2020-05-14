@@ -10,25 +10,28 @@ window.onpopstate = function(event) {
 
 
 function reURL(mCode) {
+	// 주소줄로 iframe의 상태유지를해야함. 파라미터주소줄을만들어주는역할을 합니다. 실제화면이동은아님. 페이지상태유지를하기위한것.
+	// 히스토리를조작한다.
+	
     // HTML5 지원브라우저에서 사용 가능
     if (typeof(history.pushState) == 'function') {
         //현재 주소를 가져온다.
         var renewURL = location.href;
         //현재 주소 중 .htm 뒤 부분이 있다면 날려버린다.
-        renewURL = renewURL.substring(0, renewURL.indexOf(".htm")+4);
+        renewURL = renewURL.substring(0, renewURL.indexOf(".htm")+4);// renewURL => html이빠진상태임.
         
-        if (mCode != 'MENU00') {
-            renewURL += "?mCode="+mCode;
+        if (mCode != 'MENU00') { // 홈이아닐때만.
+            renewURL += "?mCode="+mCode; // 선택된서브메뉴=mcode. 
         }
         
         //mCode 값을 가져와서 비교한다.
-        var qCode = getQueryString("mCode") || "MENU00";
+        var qCode = getQueryString("mCode") || "MENU00";// 현재서브메뉴를 누른건지, 다른서브메뉴를누른건지 비교
         if (mCode != qCode) {
             //페이지를 리로드하지 않고 페이지 주소만 변경할 때 사용
-            history.pushState(mCode, null, renewURL);
+            history.pushState(mCode, null, renewURL);// 히스토리객체를조작한다.처음누를때는 pushState가 동작.
         }
     } else {
-        location.hash = "#"+mCode;
+        location.hash = "#"+mCode;// hash : 주소줄을 mCode인것처럼 브라우저가 착각하게만든다.
     }
 }
 
@@ -249,7 +252,7 @@ function menuA(menu, mCode) {
 
 
 
-function switchSidebar(mCode) {
+function switchSidebar(mCode) {// 홈버튼누를때와 아닐때를 구분한다. 홈버튼누르면 iframe과 sidebar 날리고 메인나오게함.
     if (mCode == 'MENU00') {
         $("#if_list_div").removeClass("show").addClass("hide"); //.hide();
         $(".main-style").removeClass("hide").addClass("show"); //.show(); 
@@ -265,13 +268,13 @@ function switchSidebar(mCode) {
     reURL(mCode);
 }
 
-function loadSidebar(mCode, sCode) {
+function loadSidebar(mCode, sCode) {// 서브메뉴, 주메뉴
     $.ajax({ 
     	type: 'post' ,
     	dataType: 'html',
     	async: true,
-    	url: '/conmons/subMenuHql',
-        data: { 'mCode': sCode },       
+    	url: '/commons/subMenuHql',
+        data: { 'mCode': sCode },   // 단순한 json형태는 그냥 adaptor가 파라미터처럼 받아준다.(commonController에서)    
         success: function(data, status, xhr) {
         	
         	$("#sidebar2 > ul").css("diplay","block");
@@ -318,7 +321,7 @@ function onTopMenu(mCode, sCode, elem) {
             });
 */            
             loadSidebar(mCode, sCode);
-            switchSidebar(mCode);
+            switchSidebar(mCode); // sidebar , iframe이 보이게할지안보이게할지 결정하는 함수.
 
             //$("#if_list").attr("src", link_element.attr("data-url"));
             if ($("button[data-target='#sidebar']").attr("aria-expanded") == 'true') {
@@ -392,7 +395,7 @@ function onSubMenu(mCode) {
             });*/
 
             //프로젝트에서만 사용하는 전달 값
-            var isProj = mCode.indexOf("MENU16") == 0;
+            /* var isProj = mCode.indexOf("MENU16") == 0;
             var projParam = "";
             if (isProj) {
                 if (link_element.attr("data-url").indexOf("?") == -1) {
@@ -449,8 +452,21 @@ function onSubMenu(mCode) {
             	}
             	projParam += "workType=3&clubId=" + clubModuleId;
             }
-
-            $("#if_list").attr("src", link_element.attr("data-url")+projParam);
+            
+            */
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            // 매우중요***************** iframe의 src를 바꾸고있다.
+            // 필요한데이터를 태그에 심는다. functionCall하기때문에 찾아서가져오게해야한다.
+            // handlerFunction(event)에서는 this를 쓸수있었지만(this.attribute 로)
+            $("#if_list").attr("src", link_element.attr("data-url")/*+projParam*/);
             //if ($("#if_list").attr("src") != link_element.attr("data-url")+projParam) {
             //}
             

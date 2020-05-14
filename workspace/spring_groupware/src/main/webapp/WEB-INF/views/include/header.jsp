@@ -359,7 +359,7 @@ div#logo {
 				</div>
 				
 				
-				<ul class="nav nav-list" style="top: 0px;">   <!-- 서브메누  -->
+				<ul class="nav nav-list" style="top: 0px;">   <!-- 서브메뉴  -->
 				</ul>
 				<div class="sidebar-toggle sidebar-collapse">
 					<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>

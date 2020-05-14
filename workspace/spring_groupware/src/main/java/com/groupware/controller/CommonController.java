@@ -49,16 +49,18 @@ public class CommonController {
 		result = new ResponseEntity<Map<String, List<MenuVO>>>(menuMap, HttpStatus.OK);
 		
 		return result;
+		
 	}
 	
 	@RequestMapping("/commons/subMenuHql")
 	public String getsubMenu(@RequestParam(defaultValue="MENU00") String mCode, Model model) throws Exception{
 		String url = "commons/subMenu";
-		List<MenuVO> menuList = menuService.getSubMenuList(mCode);
+		List<MenuVO> menuList = menuService.getSubMenuList(mCode);// mCode없으면 defaule가 Home. 서브메뉴리스트를 만들어서 화면(commons/subMenu)에넘긴다.
 		model.addAttribute("subMenuList", menuList);
 		
 		return url;
 	}
 	
+	/* restful방식으로되어있는것들은 security에서 빼줘야한다고? 안그러면 success가 로그인화면을 받아서 작동멈춤. */
 	
 }

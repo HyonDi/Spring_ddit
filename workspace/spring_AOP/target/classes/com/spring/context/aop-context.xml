@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/aop"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+<!-- 기본네임스페이스 조작하기! -->
+<!-- 기본 nameSpace의 prefix생략(:aop 지우기.). > beans네임스페이스에는 prefix 붙이기(xmlns:beans)-->
+
+
+	<config>
+		<aspect id="이가 썩지 않는 방법." ref="양치하기"><!-- 양치하기는 application-context에 등록되어있는 이름이야. 이거의 chikachika메서드를 실행할것임. -->
+		
+			<!-- 관점 : pointCut, joinPoint, advice 을 정의.-->
+			<pointcut id="잠자기" 
+					  expression="execution(public * com.spring.behavior..잠자기*(..))"/>
+					  				<!-- 정규식 : 퍼블릭메서드들(public) / 리턴타입상관없음(*)/ 패키지설정(com.spring.behavior)/ 클래스무관(..)/메서드이름(잠자기)/파라미터무관(*)  -->
+			<pointcut id="식사하기"
+					  expression="execution(public * com.spring.behavior..밥먹기*(..))"/>
+			
+			<before method="chikachika" pointcut-ref="잠자기"/>
+			<after method="chikachika" pointcut-ref="식사하기"/>
+			
+					  				
+		</aspect>
+	</config>
+
+</beans:beans>

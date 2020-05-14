@@ -9,11 +9,11 @@ import com.groupware.dao.employee.CareerDAO;
 import com.groupware.dao.employee.EmployeeDAO;
 import com.groupware.dto.CareerVO;
 import com.groupware.dto.EmployeeVO;
+import com.groupware.exception.IdNotFoundException;
+import com.groupware.exception.InvalidPasswordException;
 import com.groupware.request.PageMaker;
 import com.groupware.request.SearchCriteria;
-import com.spring.exception.IdNotFoundException;
-import com.spring.exception.InvalidPasswordException;
-import com.spring.utils.DataFormat;
+import com.groupware.utils.DataFormat;
 
 public class EmployeeServiceImpl implements EmployeeService{
 
@@ -58,7 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 		
 		EmployeeVO employee = employeeDAO.selectEmployeeById(id);
 		
-		employee.setSsn(DataFormat.parseSSN(employee.getSsn()));
+		employee.setSsn(DataFormat.parseSSN(employee.getSsn()));// DataFormat : 주민번호 
 		employee.setPhone_c(employee.getPhone_c());
 		employee.setPhone_p(employee.getPhone_p());
 		

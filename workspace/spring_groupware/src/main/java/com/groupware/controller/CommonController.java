@@ -63,4 +63,7 @@ public class CommonController {
 	
 	/* restful방식으로되어있는것들은 security에서 빼줘야한다고? 안그러면 success가 로그인화면을 받아서 작동멈춤. */
 	
+	@RequestMapping("/commons/login")
+	public void loginForm() {}
+	
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security" 
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- security : 인증(authentication), 인허가(authorization) -->
+	
+	<!-- 인증 : 사용자가 누구인지 밝히는 것. -->
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="user" password="user" authorities="ROLE_USER"/>
+				<user name="manager" password="manager" authorities="ROLE_MANAGER"/>
+				<user name="admin" password="admin" authorities="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER"/>
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+	
+	<!-- 인허가 : 너에게 권한이 있는가. 해당어플리케이션에대한 접근권한제한. -->
+	
+	<http use-expressions="true" pattern="/**">
+	
+		<access-denied-handler error-page="/security/accessDenied"/>
+											<!-- 권한이없을때 내쳐질 페이지.  -->							
+																	
+		<intercept-url pattern="/admin/**" access="hasAuthority('ROLE_ADMIN')"/>
+		<intercept-url pattern="/manager/**" access="hasAuthority('ROLE_MANAGER')"/>
+		<intercept-url pattern="/member/**" access="hasAuthority('ROLE_USER')"/>
+		
+		<intercept-url pattern="/home/**" access="isAuthenticated()"/>
+													<!-- 로그인만하면 권한에 관계없이. -->
+		
+		<intercept-url pattern="/** " access="permitAll"/>
+	
+	
+	<!-- 테스트용. 커스터마이징해서 원하는방식으로쓸수있지만 기본적으로 제공해주는것을 사용하겠다는 의미. -->	
+		<form-login/>
+		<logout/>
+	</http>
+	
+	
+	
+</beans:beans>

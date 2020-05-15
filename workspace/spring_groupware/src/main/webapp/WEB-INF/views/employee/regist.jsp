@@ -315,6 +315,7 @@ div#picturePreView{
 		
 	});
 	
+	// 경력사항 추가
 	function RegistCareer(){
 		/* if($('input[name="uploadFile"]').length >=5){
 			alert("파일추가는 5개까지만 가능합니다.");
@@ -337,11 +338,12 @@ div#picturePreView{
 		div.appendTo('.career');
 	}
 	
+	// 경력사항 삭제
 	$('#careerDel').on('click',)
 	
-	$(document).on("click",'#careerDel', function(){
-		// inputrow 를 삭제해야함.
-		$(this).parent().remove();
+		$(document).on("click",'#careerDel', function(){
+			// inputrow 를 삭제해야함.
+			$(this).parent().remove();
 	})
 	
 	/* 자잘한것> */

@@ -93,9 +93,9 @@
 		<constructor-arg value="${filePath.employee.document}"/>
 	</bean>
 	
-	<bean id="picture" class="java.lang.String">
+	<!-- <bean id="picture" class="java.lang.String">
 		<constructor-arg value="${filePath.employee.picture}"/>
-	</bean>
+	</bean> -->
 	
 	<!-- summerNote -->
 	<bean id="imgPath" class="java.lang.String">

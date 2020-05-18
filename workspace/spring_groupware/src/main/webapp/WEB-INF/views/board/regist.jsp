@@ -32,7 +32,7 @@ body {
 					새문서
 			</li>
 		</ul>
-		<%-- <%@ include file="/WEB-INF/views/commons/user_label.jsp" %> --%>
+		<%@ include file="/WEB-INF/views/commons/user_label.jsp" %>
 		<%-- 로그인한사람의 정보를 표시하는 것. --%>
 		
 	</div>

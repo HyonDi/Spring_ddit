@@ -41,6 +41,7 @@
 			username-parameter="id"
 			password-parameter="pwd"
 			authentication-success-handler-ref="loginSuccessHandler"
+			authentication-failure-handler-ref="LoginFailureHandler"
 		/>
 		<!-- default-target-url="/index.htm"  삭제. -->
 		<!-- authentication-success-handler : 로그인성공시 . -->
@@ -59,5 +60,9 @@
 			 	class="com.groupware.security.LoginSuccessHandler"
 			 	p:defaultTargetUrl="/index.htm"
 			 	/>
-
+	<beans:bean id="LoginFailureHandler"
+			 	class="com.groupware.security.LoginFailureHandler"
+			 	p:defaultFailureUrl="/commons/login"
+			 	p:useForward="true"
+			 	/>
 </beans:beans>

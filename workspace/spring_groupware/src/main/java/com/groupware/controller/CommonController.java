@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.groupware.dto.EmployeeVO;
 import com.groupware.dto.MenuVO;
+import com.groupware.service.employee.EmployeeService;
 import com.groupware.service.menu.MenuService;
 
 @Controller
@@ -25,6 +27,11 @@ public class CommonController {
 	@Autowired
 	private MenuService menuService;
 
+	@Autowired
+	private EmployeeService employeeService;
+
+	
+	
 	@RequestMapping(value = "/index.htm", method = RequestMethod.GET)
 	public String mainGet(Model model, String mCode) throws Exception{
 		model.addAttribute("mCode", mCode);
@@ -62,8 +69,17 @@ public class CommonController {
 	}
 	
 	/* restful방식으로되어있는것들은 security에서 빼줘야한다고? 안그러면 success가 로그인화면을 받아서 작동멈춤. */
-	
 	@RequestMapping("/commons/login")
 	public void loginForm() {}
 	
+	@RequestMapping(value="/commons/userInfo", method = RequestMethod.GET)
+	public String getUserInfo(String id, Model model) throws Exception {
+		String url = "commons/employee_info"; // 페이징 해주는 애??
+		
+		Map<String, Object> dataMap = employeeService.getEmployee(id);
+		
+		EmployeeVO employee = (EmployeeVO) dataMap.get("employee");
+		model.addAttribute("employee",employee);
+		return url;
+	}
 }

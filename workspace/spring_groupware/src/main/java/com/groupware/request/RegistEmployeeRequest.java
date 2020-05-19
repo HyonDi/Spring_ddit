@@ -3,6 +3,7 @@ package com.groupware.request;
 import java.util.Arrays;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groupware.dto.CareerVO;
@@ -116,6 +117,7 @@ public class RegistEmployeeRequest {
 		return regDate;
 	}
 
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
 	}

@@ -44,6 +44,16 @@
 		  class="com.groupware.dao.employee.DepartmentDAOImpl"
 		  p:sqlSession-ref="sqlSession"
 		  />
+	
+	<bean id="noticeDAO"
+		  class="com.groupware.dao.board.NoticeDAOImpl"
+		  p:session-ref="sqlSession"
+		  />
+		  
+	<bean id="noticeAttachDAO"
+		  class="com.groupware.dao.board.NoticeAttachDAOImpl"
+		  p:session-ref="sqlSession"
+		  />
 		   
 	<bean id ="menuService"
 		  class="com.groupware.service.menu.MenuServiceImpl"
@@ -82,6 +92,13 @@
 		  p:employeeDAO-ref="employeeDAO"
 		  p:deptDAO-ref="deptDAO"
 		  />
+		  
+	<bean id="noticeService"
+		  class="com.groupware.service.board.NoticeServiceImpl"
+		  p:noticeDAO-ref="noticeDAO"
+		  p:noticeAttachDAO-ref="noticeAttachDAO"
+		  />
+		  
 	
 	<!-- pds file path -->
 	<bean id="uploadPath" class="java.lang.String">

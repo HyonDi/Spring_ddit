@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +34,7 @@ import com.groupware.dto.CareerVO;
 import com.groupware.dto.EmployeeVO;
 import com.groupware.exception.IdNotFoundException;
 import com.groupware.exception.InvalidPasswordException;
+import com.groupware.request.ModifyEmployeeRequest;
 import com.groupware.request.RegistEmployeeRequest;
 import com.groupware.request.SearchCriteria;
 import com.groupware.service.employee.DepartmentService;
@@ -84,6 +87,11 @@ public class EmployeeController {
 		
 		EmployeeVO employee = empReq.toEmployeeVO();
 		List<CareerVO> careers = new ArrayList<CareerVO>();
+		System.out.println("careers : " + careers); // []
+		System.out.println("employee : " + employee); //
+		System.out.println("empReq : " + empReq);
+		System.out.println("empReq.toEmployeeVO() : " + empReq.toEmployeeVO());
+		System.out.println("empReq.getCareers() : " + empReq.getCareers()); //null
 		
 		if(careers!=null) {
 			for(CareerVO career : empReq.getCareers()) {
@@ -152,7 +160,7 @@ public class EmployeeController {
 		dataMap.put("register", register);
 		
 		// 화면표시하기위해 직위정보, 부서정보 같이 넣어 url로 보낸다?
-		model.addAttribute("positioinList", positionService.getPosotionList());
+		model.addAttribute("positionList", positionService.getPosotionList());
 		model.addAttribute("deptList", deptService.getDeptList());
 		
 		model.addAllAttributes(dataMap);
@@ -162,7 +170,7 @@ public class EmployeeController {
 	}
 	
 	//
-	@RequestMapping(value="/modify",method=RequestMethod.POST)
+	/*@RequestMapping(value="/modify",method=RequestMethod.POST)
 	public String modifyPost(RegistEmployeeRequest empReq, Model model)throws Exception{
 		String url= "employee/modify_ok";
 		
@@ -206,6 +214,62 @@ public class EmployeeController {
 		return url;
 	}
 	//
+*/	
+	
+	@RequestMapping(value="/modify", method=RequestMethod.POST)
+	public String modifyPOST(ModifyEmployeeRequest modifyReq, HttpSession session, Model model) throws Exception{
+		
+		String url = "employee/modify_ok";
+		
+		EmployeeVO employee = modifyReq.toEmployeeVO();
+		List<CareerVO> careers = modifyReq.getCareerList();
+		
+		// 첨부파일 저장 : picture, licenseDoc, graduDoc, scoreDoc
+		employee.setPicture(saveFile(modifyReq.getPicture(), modifyReq.getOld_picture(), modifyReq.getId()));
+		employee.setLicenseDoc(saveFile(modifyReq.getLicenseDoc(), modifyReq.getOld_licenseDoc(), modifyReq.getId()));
+		employee.setGraduDoc(saveFile(modifyReq.getGraduDoc(), modifyReq.getOld_graduDoc(), modifyReq.getId()));
+		employee.setScoreDoc(saveFile(modifyReq.getScoreDoc(), modifyReq.getOld_scoreDoc(), modifyReq.getId()));
+		
+		employeeService.modify(employee, careers);
+		
+		EmployeeVO loginUser = (EmployeeVO)session.getAttribute("loginUser");
+		
+		
+		if(loginUser != null && loginUser.getId().equals(employee.getId())) {
+			loginUser = (EmployeeVO) employeeService.getEmployee(employee.getId()).get("employee");
+			session.setAttribute("loginUser", loginUser);
+		}
+		model.addAttribute("employee", employee);
+		
+		return url;
+	}
+	
+	private String saveFile(MultipartFile file, String old_fileName, String id) throws Exception{
+		if(file == null || file.isEmpty()) {
+			if(old_fileName == null || old_fileName.isEmpty()) {
+				File oldFile = new File(employeeAttachPath + File.separator + id, old_fileName);
+				if(oldFile.exists()) oldFile.delete();
+				return "";
+			}
+			return old_fileName;
+		}
+		
+		// 기존 파일 삭제
+		File oldFile = new File(employeeAttachPath + File.separator + id, old_fileName);
+		if(oldFile.exists()) oldFile.delete();
+		
+		// 신규 파일 저장
+		String fileName = UUID.randomUUID().toString().replace("-", "") + "$$" + file.getName();
+		File savePath = new File(employeeAttachPath + File.separator + id);
+		
+		if(!savePath.exists()) {
+			savePath.mkdirs();
+		}
+		
+		file.transferTo(new File(savePath, fileName));
+		
+		return fileName;
+	}
 	
 	
 	@RequestMapping("/checkId")
@@ -274,5 +338,29 @@ public class EmployeeController {
 		return entity;
 	}
 
+	@RequestMapping("/picture/{id}")
+	@ResponseBody
+	public ResponseEntity<byte[]> sendPicture(@PathVariable("id") String id, HttpServletResponse response) throws Exception{
+		
+		ResponseEntity<byte[]> entity = null;
+		
+		EmployeeVO emp = (EmployeeVO) employeeService.getEmployee(id).get("employee");
+		
+		String fileName = emp.getPicture();
+		String savePath = employeeAttachPath + File.separator + emp.getId();
+		
+		FileInputStream in = null;
+		
+		try {
+			in = new FileInputStream(savePath + File.separator + fileName);
+			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), HttpStatus.OK);
+		}catch(IOException e) {
+			entity = new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
+		}finally {
+			if(in!=null)in.close();
+		}
+		
+		return entity;
+	}
 	
 }

@@ -59,6 +59,7 @@ public class CareerVO {
 	public void setStartDay(Date startDay) {
 		this.startDay = startDay;
 	}
+	
 	public Date getEndDay() {
 		return endDay;
 	}

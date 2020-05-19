@@ -182,7 +182,7 @@ textarea:read-only{
 						</div>
 						<label for="regDate" class="col-xs-4 col-sm-2 control-label bolder g_label ">입사날짜</label> 
 						<div class="col-xs-8 col-sm-4 g_value">
-							<span class="col-sm-12"><fmt:formatDate value="${employee.regDate }" pattern="yyyy.MM.dd"/></span>
+							<span class="col-sm-12"><fmt:formatDate value="${employee.regDate }" pattern="yyyy-MM-dd"/></span>
 						</div>
 					</div>
 					
@@ -218,7 +218,7 @@ textarea:read-only{
 								<c:forEach var="career" items="${careers }">
 									<div class="no-padding" style="text-align:center;">
 										<input class="col-xs-12" type="text" style="text-align:center;" 
-										 value="<fmt:formatDate value="${career.startDay }" pattern="yyyy.MM.dd" /> ~ <fmt:formatDate value="${career.endDay }" pattern="yyyy.MM.dd" />" />
+										 value="<fmt:formatDate value="${career.startDay }" pattern="yyyy-MM-dd" /> ~ <fmt:formatDate value="${career.endDay }" pattern="yyyy.MM.dd" />" />
 									</div>
 								</c:forEach>					
 							</div>													

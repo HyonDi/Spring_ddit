@@ -131,42 +131,38 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping("/detail")
-	public String detail(String id, Model model) throws Exception{
+	public String detail(String id, Model model) throws Exception {
 		String url = "employee/detail";
-		
+
 		Map<String, Object> dataMap = employeeService.getEmployee(id);
-		
+
 		EmployeeVO employee = (EmployeeVO) dataMap.get("employee");
 		EmployeeVO register = (EmployeeVO) employeeService.getEmployee(employee.getRegister()).get("employee");
-		
+
 		dataMap.put("register", register);
 		model.addAllAttributes(dataMap);
-		
+
 		return url;
 	}
 	
 	@RequestMapping(value="/modify",method=RequestMethod.GET)
-	public String modifyGET(String id, Model model) throws Exception{
+	public String modifyGET(String id,Model model)throws Exception{
+		String url="employee/modify";
 		
-		String url = "employee/modify";
-		
-		// careerList 랑 employee는 들어있음.
 		Map<String, Object> dataMap = employeeService.getEmployee(id);
-		
+
 		EmployeeVO employee = (EmployeeVO) dataMap.get("employee");
-		EmployeeVO register = (EmployeeVO) employeeService.getEmployee(employee.getRegister()).get("employee");
-		
-		// 등록자정보 확인하기위함.
+		EmployeeVO register 
+		= (EmployeeVO) employeeService.getEmployee(employee.getRegister()).get("employee");
+
 		dataMap.put("register", register);
 		
-		// 화면표시하기위해 직위정보, 부서정보 같이 넣어 url로 보낸다?
 		model.addAttribute("positionList", positionService.getPosotionList());
 		model.addAttribute("deptList", deptService.getDeptList());
 		
 		model.addAllAttributes(dataMap);
 		
 		return url;
-		
 	}
 	
 	//
@@ -216,60 +212,42 @@ public class EmployeeController {
 	//
 */	
 	
-	@RequestMapping(value="/modify", method=RequestMethod.POST)
-	public String modifyPOST(ModifyEmployeeRequest modifyReq, HttpSession session, Model model) throws Exception{
+	@RequestMapping(value="/modify",method=RequestMethod.POST)
+	public String modifyPOST(ModifyEmployeeRequest modifyReq,HttpSession session,
+							 Model model)throws Exception{
+		String url="employee/modify_ok";
 		
-		String url = "employee/modify_ok";
-		
+
 		EmployeeVO employee = modifyReq.toEmployeeVO();
 		List<CareerVO> careers = modifyReq.getCareerList();
-		
+				
+
 		// 첨부파일 저장 : picture, licenseDoc, graduDoc, scoreDoc
-		employee.setPicture(saveFile(modifyReq.getPicture(), modifyReq.getOld_picture(), modifyReq.getId()));
-		employee.setLicenseDoc(saveFile(modifyReq.getLicenseDoc(), modifyReq.getOld_licenseDoc(), modifyReq.getId()));
-		employee.setGraduDoc(saveFile(modifyReq.getGraduDoc(), modifyReq.getOld_graduDoc(), modifyReq.getId()));
-		employee.setScoreDoc(saveFile(modifyReq.getScoreDoc(), modifyReq.getOld_scoreDoc(), modifyReq.getId()));
-		
+		employee.setPicture(saveFile(modifyReq.getPicture(),modifyReq.getOld_picture()
+										,modifyReq.getId()));
+		employee.setLicenseDoc(saveFile(modifyReq.getLicenseDoc(),modifyReq.getOld_licenseDoc()
+										,modifyReq.getId()));
+		employee.setGraduDoc(saveFile(modifyReq.getGraduDoc(),modifyReq.getOld_graduDoc()
+										,modifyReq.getId()));
+		employee.setScoreDoc(saveFile(modifyReq.getScoreDoc(),modifyReq.getOld_scoreDoc()
+										,modifyReq.getId()));
+
 		employeeService.modify(employee, careers);
 		
 		EmployeeVO loginUser = (EmployeeVO)session.getAttribute("loginUser");
 		
 		
-		if(loginUser != null && loginUser.getId().equals(employee.getId())) {
-			loginUser = (EmployeeVO) employeeService.getEmployee(employee.getId()).get("employee");
+		if(loginUser!=null && loginUser.getId().equals(employee.getId())) {		
+			loginUser = (EmployeeVO)employeeService.getEmployee(employee.getId())
+					.get("employee");			
 			session.setAttribute("loginUser", loginUser);
 		}
 		model.addAttribute("employee", employee);
 		
-		return url;
+		return url;				
 	}
 	
-	private String saveFile(MultipartFile file, String old_fileName, String id) throws Exception{
-		if(file == null || file.isEmpty()) {
-			if(old_fileName == null || old_fileName.isEmpty()) {
-				File oldFile = new File(employeeAttachPath + File.separator + id, old_fileName);
-				if(oldFile.exists()) oldFile.delete();
-				return "";
-			}
-			return old_fileName;
-		}
-		
-		// 기존 파일 삭제
-		File oldFile = new File(employeeAttachPath + File.separator + id, old_fileName);
-		if(oldFile.exists()) oldFile.delete();
-		
-		// 신규 파일 저장
-		String fileName = UUID.randomUUID().toString().replace("-", "") + "$$" + file.getName();
-		File savePath = new File(employeeAttachPath + File.separator + id);
-		
-		if(!savePath.exists()) {
-			savePath.mkdirs();
-		}
-		
-		file.transferTo(new File(savePath, fileName));
-		
-		return fileName;
-	}
+	
 	
 	
 	@RequestMapping("/checkId")
@@ -302,64 +280,103 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping("/deptEmpCount")
-	public ResponseEntity<Integer> deptEmpCount(@RequestParam("dept_no") String deptNum) throws Exception{
-		ResponseEntity<Integer> entity = null;
+	@ResponseBody
+	public ResponseEntity<Integer> deptEmpCount(@RequestParam("dept_no") String deptNum)
+																		throws Exception {
+		
+		ResponseEntity<Integer> entity=null;
 		int count = employeeService.getdeptEmpCount(deptNum);
 		
-		entity = new ResponseEntity<Integer>(count, HttpStatus.OK);
+		entity=new ResponseEntity<Integer>(count,HttpStatus.OK);
 		
 		return entity;
 	}
 	
 	@RequestMapping("/receiveDoc")
 	@ResponseBody
-	public ResponseEntity<byte[]> recieveDoc(String fileName, String id) throws Exception {
-		InputStream in  = null;
+	public ResponseEntity<byte[]> recieveDoc(String fileName, String id) 
+															throws Exception {
+		InputStream in = null;
 		ResponseEntity<byte[]> entity = null;
-		
+
 		HttpHeaders headers = new HttpHeaders();
-		
+
 		String savePath = employeeAttachPath + File.separator + id;
 		try {
 			in = new FileInputStream(savePath + File.separator + fileName);
-			
+
 			fileName = fileName.substring(fileName.indexOf("$$") + 2);
-			
+
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-			headers.add("Content-Disposition", "attachment;filename=\""+new String(fileName.getBytes("utf-8"),"ISO-8859-1") + "\"");
-			entity = new ResponseEntity<byte[]> (IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
-		} catch(IOException e) {
+			headers.add("Content-Disposition",
+					"attachment;filename=\"" 
+				    + new String(fileName.getBytes("utf-8"), "ISO-8859-1") + "\"");
+			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers,
+																HttpStatus.CREATED);
+		} catch (IOException e) {
 			e.printStackTrace();
 			entity = new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
-					
 		} finally {
 			in.close();
 		}
 		return entity;
 	}
 
+	
+	private String saveFile(MultipartFile file, String old_fileName, String id) throws Exception {
+		if (file == null || file.isEmpty()) {
+			if (old_fileName == null || old_fileName.isEmpty()) {
+				File oldFile = new File(employeeAttachPath + File.separator + id, old_fileName);
+				if (oldFile.exists())
+					oldFile.delete();
+				return "";
+			}
+			return old_fileName;
+		}
+
+		// 기존 파일 삭제
+		File oldFile = new File(employeeAttachPath + File.separator + id, old_fileName);
+		if (oldFile.exists())
+			oldFile.delete();
+
+		// 신규 파일 저장
+		String fileName = UUID.randomUUID().toString().replace("-", "") + "$$" + file.getOriginalFilename();
+		File savePath = new File(employeeAttachPath + File.separator + id);
+
+		if (!savePath.exists()) {
+			savePath.mkdirs();
+		}
+
+		file.transferTo(new File(savePath, fileName));
+
+		return fileName;
+	}
+	
+	
 	@RequestMapping("/picture/{id}")
 	@ResponseBody
-	public ResponseEntity<byte[]> sendPicture(@PathVariable("id") String id, HttpServletResponse response) throws Exception{
-		
+	public ResponseEntity<byte[]> sendPicture(@PathVariable("id") String id,
+											  HttpServletResponse response)
+													  		throws Exception {
+
 		ResponseEntity<byte[]> entity = null;
-		
+
 		EmployeeVO emp = (EmployeeVO) employeeService.getEmployee(id).get("employee");
-		
+
 		String fileName = emp.getPicture();
 		String savePath = employeeAttachPath + File.separator + emp.getId();
-		
+
 		FileInputStream in = null;
-		
+
 		try {
 			in = new FileInputStream(savePath + File.separator + fileName);
 			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), HttpStatus.OK);
-		}catch(IOException e) {
+		} catch (IOException e) {
 			entity = new ResponseEntity<byte[]>(HttpStatus.NOT_FOUND);
-		}finally {
+		} finally {
 			if(in!=null)in.close();
 		}
-		
+
 		return entity;
 	}
 	

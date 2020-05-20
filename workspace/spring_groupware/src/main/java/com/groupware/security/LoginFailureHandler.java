@@ -15,12 +15,13 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
+			// 이 exception = BadCredentialsException.
 		
-		// request.setAttribute("msg", exception.getMessage());
+		request.setAttribute("msg", exception.getMessage());
 		// request에 심는다. = forward로 간다.
 		
 		//임시
-		request.setAttribute("msg", "아이디 혹은 패스워드가 일치하지 않습니다.");
+		//request.setAttribute("msg", "아이디 혹은 패스워드가 일치하지 않습니다.");
 		
 		super.onAuthenticationFailure(request, response, exception);
 	}

@@ -67,7 +67,7 @@ public class ModifyEmployeeRequest {
 	public String getOld_picture() {
 		return id;
 	}
-	public void setOld_picture() {
+	public void setOld_picture(String old_picture) {
 		this.old_picture = old_picture;
 	}
 	

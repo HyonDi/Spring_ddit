@@ -1,9 +1,12 @@
 package com.groupware.controller;
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,4 +85,30 @@ public class CommonController {
 		model.addAttribute("employee",employee);
 		return url;
 	}
+	
+	// 6분 뒤 시간이 날라간것. 
+	@RequestMapping("/commons/loginTimeOut")
+	public void loginTimeOut(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		
+		out.println("<script>");
+		out.println("alert('세션이 만료되었습니다.\\n다시 로그인 하세요!')");
+		out.println("location.href='"+request.getContextPath()+"/commons/login';");
+		out.println("</script>");
+		
+	}
+	
+	@RequestMapping("/commons/loginExpired")
+	public void loginExpired(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		
+		out.println("<script>");
+		out.println("alert('중복 로그인이 확인되었습니다.\\n다시 로그인 하면 다른 장치에서 로그인은 취소됩니다.')");
+		out.println("location.href='"+request.getContextPath()+"/commons/login';");
+		out.println("</script>");
+		
+	}
+	
 }

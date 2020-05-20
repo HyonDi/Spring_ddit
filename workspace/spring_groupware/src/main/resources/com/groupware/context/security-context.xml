@@ -12,14 +12,15 @@
 	
 	<authentication-manager>
 		<!-- 인증  -->
-		<authentication-provider>
+		<!-- <authentication-provider>
 		
-			<!-- JDBC 이용할것임. 여기에바로 쿼리문작성. 좋은방법은 아님. 컬럼명맞춰서줘야하는데, jdbc에서 username으로 넘어온다고......-->
+			JDBC 이용할것임. 여기에바로 쿼리문작성. 좋은방법은 아님. 컬럼명맞춰서줘야하는데, jdbc에서 username으로 넘어온다고......
 			<jdbc-user-service data-source-ref="dataSource"
 							   users-by-username-query="select id as username, pwd as password,enabled from employee where id = ?"
 							   authorities-by-username-query="select id as username, authority from employee where id=?"
 			/>
-		</authentication-provider>
+		</authentication-provider> -->
+		<authentication-provider ref="authenticator"/>
 	</authentication-manager>
 	
 	<!-- 인허가 -->
@@ -42,28 +43,54 @@
 			password-parameter="pwd"
 			default-target-url="/"
 			authentication-success-handler-ref="loginSuccessHandler"
-			authentication-failure-handler-ref="LoginFailureHandler"
+			authentication-failure-handler-ref="loginFailureHandler"
 		/>
 		<!-- default-target-url="/index.htm"  삭제. -->
 		<!-- authentication-success-handler : 로그인성공시 . -->
 		
 		
+		<!-- 세션만료 혹은 expired시 이게 실행되지않기에 tomcat session이벤트..? tomcatsecurity를 잡아야한다.(근데얘는 authentication잡기가어려움.) -->
+		<!-- spring security에는 없음. spring이 tomcatsecurity를 데려와 만든것이 있대.(=destroy 이벤트)  -->
 		<logout
 			logout-url="/commons/logout"
 			invalidate-session="true"
 			delete-cookies="JSESSIONID"
-			logout-success-url="/index.htm"
+			success-handler-ref="logoutSuccessHandler"
 		/>
 		
+			<!-- logout-success-url="/index.htm" -->
+		<session-management invalid-session-url="/commons/loginTimeOut">
+			<concurrency-control
+				expired-url="/commons/loginExpired"
+				max-sessions="1"
+				session-registry-ref="sessionRegistry"
+				/>
+		
+		</session-management>
+		
+		
 	</http>
+	
+	<beans:bean id="sessionRegistry"
+				class="org.springframework.security.core.session.SessionRegistryImpl"
+				/>
+	
+	<beans:bean id="authenticator"
+			    class="com.groupware.security.CustomAuthentication"
+			    p:employeeDAO-ref="employeeDAO"
+				/>
 
 	<beans:bean id="loginSuccessHandler"
 			 	class="com.groupware.security.LoginSuccessHandler"
 			 	p:defaultTargetUrl="/index.htm"
 			 	/>
-	<beans:bean id="LoginFailureHandler"
+	<beans:bean id="loginFailureHandler"
 			 	class="com.groupware.security.LoginFailureHandler"
 			 	p:defaultFailureUrl="/commons/login"
 			 	p:useForward="true"
 			 	/>
+	<beans:bean id="logoutSuccessHandler"
+				class="com.groupware.security.CustomLogoutSuccessHandler"
+				p:employeeService-ref="employeeService"
+				/>
 </beans:beans>

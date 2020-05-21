@@ -49,23 +49,11 @@ public class ModifyEmployeeRequest {
 	private String old_graduDoc;
 	private String old_scoreDoc;
 
-	
-	@Override
-	public String toString() {
-		return "ModifyImployeeRequest [id=" + id + ", pwd=" + pwd + ", eno=" + eno + ", name=" + name + ", email="
-				+ Arrays.toString(email) + ", enabled=" + enabled + ", phone_c=" + phone_c + ", phone_p=" + phone_p
-				+ ", picture=" + picture + ", regDate=" + regDate + ", position=" + position + ", authority="
-				+ authority + ", deptName=" + deptName + ", postCode=" + postCode + ", address1=" + address1
-				+ ", address2=" + address2 + ", ssn=" + Arrays.toString(ssn) + ", remark=" + remark + ", register="
-				+ register + ", recentLoginTime=" + recentLoginTime + ", posi_no=" + posi_no + ", dept_no=" + dept_no
-				+ ", careers=" + Arrays.toString(careers) + ", licenseDoc=" + licenseDoc + ", graduDoc=" + graduDoc
-				+ ", scoreDoc=" + scoreDoc + ", old_licenseDoc=" + old_licenseDoc + ", old_graduDoc=" + old_graduDoc
-				+ ", old_scoreDoc=" + old_scoreDoc + "]";
-	}
+
 
 
 	public String getOld_picture() {
-		return id;
+		return old_picture;
 	}
 	public void setOld_picture(String old_picture) {
 		this.old_picture = old_picture;

@@ -20,6 +20,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +42,8 @@ import com.groupware.exception.InvalidPasswordException;
 import com.groupware.request.ModifyEmployeeRequest;
 import com.groupware.request.RegistEmployeeRequest;
 import com.groupware.request.SearchCriteria;
+import com.groupware.security.CustomAuthentication;
+import com.groupware.security.User;
 import com.groupware.service.employee.DepartmentService;
 import com.groupware.service.employee.EmployeeService;
 import com.groupware.service.employee.PositionService;
@@ -87,11 +94,11 @@ public class EmployeeController {
 		
 		EmployeeVO employee = empReq.toEmployeeVO();
 		List<CareerVO> careers = new ArrayList<CareerVO>();
-		System.out.println("careers : " + careers); // []
-		System.out.println("employee : " + employee); //
+		System.out.println("careers : " + careers); 
+		System.out.println("employee : " + employee); 
 		System.out.println("empReq : " + empReq);
 		System.out.println("empReq.toEmployeeVO() : " + empReq.toEmployeeVO());
-		System.out.println("empReq.getCareers() : " + empReq.getCareers()); //null
+		System.out.println("empReq.getCareers() : " + empReq.getCareers()); 
 		
 		if(careers!=null) {
 			for(CareerVO career : empReq.getCareers()) {
@@ -212,12 +219,22 @@ public class EmployeeController {
 	//
 */	
 	
+	@Autowired
+	private CustomAuthentication authProvider;
+	// security-context에 bean등록해놓았어서 가져다 쓸 수 있다.
+	
+	
+	// auth :  loginSuccesshandleradaptor에서 썼던 authentication을 다시 가져다준다.(provider에서, handleradaptor 가.)
+	// 로그인유저랑 authentivation이랑 sync돼있음. authentication을 가져와서 이안에있는 userDetail을 바꿔야한다.
 	@RequestMapping(value="/modify",method=RequestMethod.POST)
-	public String modifyPOST(ModifyEmployeeRequest modifyReq,HttpSession session,
+	public String modifyPOST(ModifyEmployeeRequest modifyReq,HttpSession session, Authentication auth,
 							 Model model)throws Exception{
 		String url="employee/modify_ok";
 		
 
+		System.out.println("브라우저에서 온 old_pic : " + modifyReq.getOld_picture());
+		System.out.println("브라우저에서 온 id : " + modifyReq.getId());
+		
 		EmployeeVO employee = modifyReq.toEmployeeVO();
 		List<CareerVO> careers = modifyReq.getCareerList();
 				
@@ -236,12 +253,42 @@ public class EmployeeController {
 		
 		EmployeeVO loginUser = (EmployeeVO)session.getAttribute("loginUser");
 		
-		
-		if(loginUser!=null && loginUser.getId().equals(employee.getId())) {		
+		// 바뀐사용자정보가 등록되려면 authentication provider 내용이 들어가야한다. 그래서 주석했음. provider를통해 다시 요청해야한다.
+		/*if(loginUser!=null && loginUser.getId().equals(employee.getId())) {		
 			loginUser = (EmployeeVO)employeeService.getEmployee(employee.getId())
 					.get("employee");			
 			session.setAttribute("loginUser", loginUser);
+		}*/
+		
+		/* 로그인한 사용자의 권한을 동적으로 업데이트해야할 경우 (물론 변경된 경우 ) 로그아웃하고 로그인 할 필요 없이 
+		 * Spring SecurityContextHolder의 Authentication객체(보안토큰) 을 재설정하면 됩니다.*/
+		
+		// userdetial을 employee로 바꿔야하는데 session이랑 loginUser랑 안맞아? 바뀐employee를 userDetail로 다시 심어서 provider한테 넘겨야함.
+		
+		// securityprovider에서했던내용을 다시하는 것임.
+		if(auth.getName().equals(employee.getId())) {
+			// 변경된 로그인 사용자 정보를 가져온다.
+			EmployeeVO updateEmployee = (EmployeeVO) employeeService.getEmployee(auth.getName()).get("employee");
+			
+			// 권한을 갱신한다.
+			List<GrantedAuthority> updateAuthorities = new ArrayList<GrantedAuthority>();
+			updateAuthorities.add(new SimpleGrantedAuthority(updateEmployee.getAuthority()));
+			
+			// 새로운 Authentication을 생성.
+			UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(),
+															auth.getCredentials(), updateAuthorities);
+			// securityContextHolder 으로 새로 생성한 authentication 을 setting
+			SecurityContextHolder.getContext().setAuthentication(newAuth);
+			
+			// security의 userDetail을 갱신하기 위한 user생성.
+			User user = new User(updateEmployee);
+			
+			// authentication detail 과 session attribute를 교체한다.
+			newAuth.setDetails(user);
+			session.setAttribute("loginUser", updateEmployee);
+			
 		}
+		
 		model.addAttribute("employee", employee);
 		
 		return url;				
@@ -346,8 +393,10 @@ public class EmployeeController {
 		if (!savePath.exists()) {
 			savePath.mkdirs();
 		}
-
+		
 		file.transferTo(new File(savePath, fileName));
+		System.out.println("새로등록한 파일 이름 : " + file.getOriginalFilename());
+		System.out.println("fileName : " + fileName);
 
 		return fileName;
 	}

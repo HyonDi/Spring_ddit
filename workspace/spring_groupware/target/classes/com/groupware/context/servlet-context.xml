@@ -32,6 +32,19 @@
 	
 	<context:component-scan base-package="com.groupware" />
 	
-	
+	<!-- 로그인을 필터가하고있음. 컨트롤러없음. 그래서이렇게는 안되고,  loginSuccessHandler에서 할거임.-->
+	<interceptors>
+		<!-- LoginSuccessHandler에서 처리했다.
+			<interceptor>
+			<mapping path="/commons/login"/>
+			<beans:bean class="com.groupware.interceptor.LoginUserLogInterceptor"/>
+			
+		</interceptor> -->
+		<interceptor>
+			<mapping path="/employee/regist"/>
+			<beans:bean class="com.groupware.interceptor.RegistMemberLogInterceptor"/>
+			
+		</interceptor>
+	</interceptors>
 	
 </beans:beans>

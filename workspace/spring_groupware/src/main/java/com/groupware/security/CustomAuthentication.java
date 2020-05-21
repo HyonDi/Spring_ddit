@@ -19,7 +19,7 @@ import com.groupware.dto.EmployeeVO;
 public class CustomAuthentication implements AuthenticationProvider{
 	// 얘는 필터야.
 	// LoginSuccessHandler, LoginFailureHandler처럼 만들고 빈등록한다.
-	// securiti-context
+	// security-context
 	// provider??
 
 	private EmployeeDAO employeeDAO;
@@ -36,8 +36,12 @@ public class CustomAuthentication implements AuthenticationProvider{
 		String login_id = (String) auth.getPrincipal();// id
 		String login_pwd = (String) auth.getCredentials();// pwd
 		
+		
+		
+		
 		EmployeeVO employee = null;
 		try {
+			// dao말고 service로해서 exception notfoundidException, invalidPasswordException 다 따로 catch해도 된다.
 			employee=employeeDAO.selectEmployeeById(login_id);
 		}catch(SQLException e) {
 			// 'BadCredentialsException'를 provider가 manager에게보내면 manager가 trycatch함. : failuer호출한다.
@@ -99,7 +103,7 @@ public class CustomAuthentication implements AuthenticationProvider{
 		// 너가내보내는 authentication이 너가 하고자했던 타입과 일치하는가?
 		// 매니저가 알아서 실행하나봐.
 		
-		// UsernamePasswordAuthenticationToken 타입.
+		// UsernamePasswordAuthenticationToken 타입.(스프링 시큐리티 내부 클래스로 인증 토큰)
 		return arg.equals(UsernamePasswordAuthenticationToken.class);
 		
 	}

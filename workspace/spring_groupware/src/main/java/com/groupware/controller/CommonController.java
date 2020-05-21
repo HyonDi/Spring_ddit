@@ -89,24 +89,49 @@ public class CommonController {
 	// 6분 뒤 시간이 날라간것. 
 	@RequestMapping("/commons/loginTimeOut")
 	public void loginTimeOut(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		// <페이지유지를위함
+		String retURL = request.getHeader("Referer");// Referer : header중에 이전에있던 url을 기억하는 애.
+		
+		if(retURL==null || retURL.contains("login")) {
+			retURL=request.getContextPath()+"/commons/login";
+		}
+		
+		// *새로고침시에는 referer가 없기때문에 메인으로간다.
+		// 페이지유지를위함>
+		
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
 		out.println("<script>");
 		out.println("alert('세션이 만료되었습니다.\\n다시 로그인 하세요!')");
-		out.println("location.href='"+request.getContextPath()+"/commons/login';");
+		/*out.println("location.href='"+request.getContextPath()+"/commons/login';");*/
+		out.println("location.href='"+retURL+"';");//retURL:returnURL 줄인것. 단점은 http부터 시작한다.
 		out.println("</script>");
+		
+		
 		
 	}
 	
 	@RequestMapping("/commons/loginExpired")
 	public void loginExpired(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		
+		// *새로고침시에는 referer가 없기때문에 메인으로간다.		
+		// <페이지유지를위함
+		String retURL = request.getHeader("Referer");
+		
+		if(retURL==null || retURL.contains("login")) {
+			retURL=request.getContextPath()+"/commons/login";
+		}
+		// 페이지유지를위함>
+		
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		
 		out.println("<script>");
 		out.println("alert('중복 로그인이 확인되었습니다.\\n다시 로그인 하면 다른 장치에서 로그인은 취소됩니다.')");
-		out.println("location.href='"+request.getContextPath()+"/commons/login';");
+		/*out.println("location.href='"+request.getContextPath()+"/commons/login';");*/
+		out.println("location.href='"+retURL+"';");
 		out.println("</script>");
 		
 	}

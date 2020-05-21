@@ -285,7 +285,7 @@ div#logo {
 				</li>
 				<li class="red">
 				<!-- 로그인했을때만 보여야한다. (로그인안했을때만 하고싶으면   access="!isAuthenticated"-->
-					<sec:authorize access="isAuthenticated">
+					<sec:authorize access="isAuthenticated()">
 						<button class="btn btn-xs btn-danger" style="margin: 5px 3px 7px 3px;" title="System Log Out"
 								onclick="self.location='<%=request.getContextPath()%>/commons/logout';">
 							<i class="ace-icon fa fa-power-off bigger-130"></i>

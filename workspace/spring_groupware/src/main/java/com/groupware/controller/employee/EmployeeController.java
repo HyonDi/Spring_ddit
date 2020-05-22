@@ -27,6 +27,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -429,4 +430,13 @@ public class EmployeeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/download/list/{type}",method=RequestMethod.GET)
+	public String downloadList(@ModelAttribute("cri") SearchCriteria cri, @PathVariable("type")String type, Model model) throws Exception{
+		// bean 써야해서 String을 리턴하는것으로.									// view쪽에 type에대한 구분자를 넘겨주기위해 model받는다.
+
+		// model.addAttribute("cri",cri);
+		model.addAttribute("type",type);
+		
+		return "employeeRepoertView"; // jsp가 아님! 일반 클래스. 클래스의 빈등록한 아이디임.
+	}
 }

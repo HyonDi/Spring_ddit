@@ -28,7 +28,11 @@ public class FreeBoardController {
 	@Autowired
 	private BoardService bService;
 	
-	
+	@RequestMapping("/card/card")
+	public String card() {
+		String url = "board/card/card";
+		return url;
+	}
 	
 	@RequestMapping("/free/list")
 	public ModelAndView freeList(SearchCriteria cri, ModelAndView modelnView) throws SQLException{

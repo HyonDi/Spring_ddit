@@ -118,5 +118,14 @@
 	<bean id="imgPath" class="java.lang.String">
 		<constructor-arg value="${filePath.board.images}"/>
 	</bean>
+	
+	
+	<!-- View (BeanNameViewResolver 쓰는 애) 
+			employeeRepoertView : employeeController에서 downlodaList가 리턴하는 String.-->
+	<bean id="employeeRepoertView" class="com.groupware.bean.view.EmployeeListReportView"
+		p:dataSource-ref="dataSource"
+	/>
+		
+	
 		  
 </beans>

@@ -47,7 +47,7 @@
 							<!-- <form method="post" action="/kakaoPay">
     							<button>카카오페이로 결제하기</button>
 							</form> -->
-							<button type="button" class="btn btn-sm btn-white btn-bold" onclick="OpenWindow('<%=request.getContextPath()%>/kakaopay','','850','620');">
+							<button type="button" class="btn btn-sm btn-white btn-bold" onclick="OpenWindow('<%=request.getContextPath()%>/board/card/card','','850','620');">
 								<i class="red ace-icon fa fa-pencil-square-o bigger-120"></i>	
 								<b>카카오페이</b>
 							</button>

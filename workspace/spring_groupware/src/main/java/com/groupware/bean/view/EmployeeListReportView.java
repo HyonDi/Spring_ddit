@@ -58,6 +58,23 @@ public class EmployeeListReportView extends AbstractView{
 		
 		// * (classpath: 한거 = 배포될 때 classes 를 말함.)
 		
+		//
+		Map<String, String> searchType= new HashMap<String, String>();
+		
+		searchType.put("i", "id");
+		searchType.put("n", "name");
+		searchType.put("e", "email");
+		
+		String query = "select * from employee ";
+		
+		if(cri.getSearchType()!=null) {
+			query += "where " + searchType.get(cri.getSearchType()) + " like '%'||'" + cri.getKeyword()+"'||'%'";
+		}
+		
+		System.out.println("query:" + query);
+		params.put("query", query);
+		//
+		
 		// 2. jrxml 템플릿 결정/로딩
 		InputStream reportStream = 
 			this.getClass().getResourceAsStream("/com/groupware/jrxml/" + jrFileName);

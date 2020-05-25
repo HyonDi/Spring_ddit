@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/task"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!-- 어노테이션일 때 (추천X)--><!-- 클래스 하나 자체를 빈으로할지 어노테이션으로 할지 결정하는것. -->
+	<!-- <context:component-scan base-package="com.spring.scheduler"/>
+	<annotation-driven/> -->
+	
+	
+	
+	
+	<!-- 어노테이션말고 빈등록으로 할 때. (이걸 사용할 것. property로 만들어도 된다.)--> <!-- 대상클래스 빈등록 -->
+	<beans:bean id="taskScheduler"
+				class="com.spring.scheduler.MemberLoginLogTaskScheduler"
+				p:logService-ref="loginLogService"
+				/>
+				
+				<!-- 어떤 클래스의 어떤 매서드를 어떤 주기로 실행할지 결정 -->
+	<scheduled-tasks scheduler="printScheduler">
+		<scheduled ref="taskScheduler" 
+				   method="testScheduler"
+				   cron="*/10 * * * * *"/>
+	
+	</scheduled-tasks>
+	
+			    <!-- 실제 스케쥴을 실행할 곳. -->
+	<scheduler id="printScheduler"/>
+	
+
+</beans:beans>

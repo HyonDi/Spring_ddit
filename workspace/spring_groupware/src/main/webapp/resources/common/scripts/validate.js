@@ -1,5 +1,5 @@
 
-	$("#openDate, #closeDate, #sDate, #eDate").datepicker({})
+/*	$("#openDate, #closeDate, #sDate, #eDate").datepicker({})
 	.on('changeDate', function(e) {
 		var minDate = new Date(e.date.valueOf());
 		//팝업기간
@@ -13,7 +13,7 @@
 		} else if ($(this).attr('id') == 'closeDate') {
 			$('input[id=openDate]').datepicker('setEndDate', minDate);
 		}
-	});
+	});*/
 	/*
 	jQuery.validator.addMethod("datetimePeriod", function(value, element) {
 		var sDateTime = $("#sDate").datepicker("getDate");
@@ -34,7 +34,7 @@
 	
 	
 	// 영구보존 관련 추가
-	var cdate = "";
+/*	var cdate = "";
 	 $('#never').click(function() {		 
 		 var ischecked = $('#never').is(":checked");
 	      if(ischecked){
@@ -72,4 +72,4 @@
 				"endDate":{ required:"게시기간 종료일을 선택하십시요" }
 			},
 			focusInvalid:true
-		});
+		});*/

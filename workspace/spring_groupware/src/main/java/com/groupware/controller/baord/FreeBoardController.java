@@ -127,4 +127,6 @@ public class FreeBoardController {
 		out.println("</script>");
 		
 	}
+	
+
 }

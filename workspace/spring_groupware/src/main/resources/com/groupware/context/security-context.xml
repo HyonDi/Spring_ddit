@@ -28,9 +28,7 @@
 	<http use-expressions="true" pattern="/**">
 		<access-denied-handler error-page="/security/accessDenied"/>
 		<intercept-url pattern="/commons**/**" access="permitAll"/>
-		
-		<intercept-url pattern="/board/regist*" access="hasAnyRole('ROLE_USER, ROLE_ADMIN, ROLE_SUPER, ROLE_VIP, ROLE_VVIP')"/>
-		
+		<intercept-url pattern="/board/regist*" access="hasAnyRole('ROLE_ADMIN')"/>
 		<intercept-url pattern="/**/regist*" access="hasAnyRole('ROLE_ADMIN, ROLE_SUPER, ROLE_VIP, ROLE_VVIP')"/>
 		<intercept-url pattern="/**/modify*" access="hasAnyRole('ROLE_ADMIN, ROLE_SUPER, ROLE_VIP, ROLE_VVIP')"/>
 		<intercept-url pattern="/**/remove*" access="hasAnyRole('ROLE_ADMIN, ROLE_SUPER, ROLE_VIP, ROLE_VVIP')"/>

@@ -1,0 +1,99 @@
+	.main-card{
+		text-align: center;
+	}
+	
+	.card{
+		display : inline-block;
+		margin-right : 20px;
+		margin-bottom : 20px;
+		width : 280px;
+		height : 430px;
+		perspective : 560px;
+		color : white;
+	}
+	
+	.card-inner {
+		position : relative;
+		width : 100%;
+		height : 100%;
+		text-align : center;
+		transition : transform 0.8s;
+		transform-style:preserve-3d;
+	}
+	
+	.card.flipped .card-inner{
+		transform : rotateY(180deg);
+	}
+	
+	.card-front, .card-back{
+		position: absolute;
+		width : 100%;
+		height : 100%;
+		border : 1px solid black;
+		backface-visibility : hidden;
+	}
+	
+	.card-front {
+		background : #e74c3c;
+	}
+	
+	.card-back{
+		background : #e74c3c;
+		transform : rotateY(180deg);
+	}
+	
+	/* 카드 안쪽  */
+	.top-letter{
+		width : 280px;
+		height : 80px;
+		line-height : 80px;
+		font-size : 25px;
+		font-weight : bold; 
+	}
+	
+	.bottom-image{
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 280px;
+        height: 350px;
+       }
+       
+    .bottom-menu{
+    	 text-align : left;
+    }
+       
+    .bottom-menu li{
+    	margin-top : 20px;
+    	
+    }
+       
+     /* a태그  */
+     A:link{
+     	text-decoration:none;
+     	color:white;
+     }
+     
+     A:visited{
+     	text-decoration:none;
+     	color:white;
+     }
+     
+     A:active{
+     	text-decoration:none;
+     	color:white;
+     }
+     
+     A:hover{
+     	text-decoration:none;
+     	color:#EBA094;
+     }
+     
+     
+     /* hr */
+     hr {
+  		background-color: black;
+  		height: 2px;
+  		border: 0;
+	}

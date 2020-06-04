@@ -14,6 +14,7 @@ function validCheck(){
 	return isValid;
 }
 
+
 var fileFormData = new FormData();
 var registForm = $('form#registForm');
 
@@ -330,11 +331,16 @@ function fnChangeCategory(){
 <script>
 var template=Handlebars.compile($('#templateAttach').html());
 
+/* 해당문서형태의 아이콘 */
 function getUploadFileInfo(fileName,imgsrc){
 	
 	var fileNameFormat = fileName.substring(fileName.lastIndexOf('.')+1);	
+	
+	// 이미지가 아닌경우만. 이미지의경우 썸네일표시할것임.
 	if(!checkImageType(fileNameFormat)){
 		var icon="";
+		
+		// 확장자 검사한다. 아이콘명으로 이미지소스를잡을거야.
 		switch(fileNameFormat){
 		case "doc":case "docx": icon="doc"; break;
 		case "ppt":case "pptx": icon="ppt"; break;
@@ -347,6 +353,7 @@ function getUploadFileInfo(fileName,imgsrc){
 		
 		imgsrc="<%=request.getContextPath()%>/resources/common/images/"+icon+".png";
 	}
+	// json으로 return.
 	return {fileName:fileName,imgsrc:imgsrc};	
 }
 
@@ -355,7 +362,7 @@ function checkImageType(fileName){
 	return fileName.toLowerCase().match(pattern);
 }
 
-
+/* 기본이벤트를 막는다. */
 $(document).on("dragenter dragover drop",function(event){
 	event.preventDefault();
 });
@@ -379,11 +386,14 @@ $('.fileDrop').on('drop',function(event){
 	
 	function readAndPreview(file) {
 	   
+		// 드롭핑을하면 파일리더가 읽는다.
 		var reader = new FileReader();
 		reader.addEventListener("load", function () {	
 			
+			// 임시로만든 파일저장용 form데이터.
 			fileFormData.append(file.name,file);
 			
+			// 이미지인지 아닌지. (이미지면썸네일, 이미지가아니면 서버에있는 아이콘 경로를 준다.)
 			var fileInfo=getUploadFileInfo(file.name,this.result);
 			var html=template(fileInfo);
 			$('.uploadedList').append(html);

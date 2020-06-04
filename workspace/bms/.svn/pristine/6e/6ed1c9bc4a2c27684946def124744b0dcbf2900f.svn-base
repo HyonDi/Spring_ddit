@@ -1,0 +1,81 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>건축물 시설 관리 시스템</title>
+
+	<!-- header -->
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<link rel="stylesheet" href="https://d19m59y37dris4.cloudfront.net/universal/2-0-1/vendor/font-awesome/css/font-awesome.min.css">
+	<link href="<%=request.getContextPath()%>/resources/bootstrap/tiles/header.css" rel="stylesheet">
+
+    <!-- footer -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+	<!-- Bootstrap core CSS -->
+	<link href="<%=request.getContextPath()%>/resources/bootstrap/tiles/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Material Design Bootstrap -->
+	<link href="<%=request.getContextPath()%>/resources/bootstrap/tiles/css/mdb.min.css" rel="stylesheet">
+	<!-- Your custom styles (optional) -->
+	<link href="<%=request.getContextPath()%>/resources/bootstrap/tiles/css/style.css" rel="stylesheet">
+    
+	<!-- main -->
+	<link href="<%=request.getContextPath()%>/resources/bootstrap/tiles/css/main/main.css" rel="stylesheet">
+<style type="text/css">
+
+	  #header{            
+            width:auto;
+            height:50px;
+            
+            
+      }
+        
+      #main{
+          float:left;
+          width: 100%;
+          padding-top : 210px;
+          min-height: 867px;
+      }
+      
+      #footer{
+          width: auto;
+          height: auto;            
+          text-align: center;
+          
+          clear:both;
+      }
+      
+</style>
+
+</head>
+
+<body>
+	<div style="width:100%; height:100%;">
+		<div id="header"><tiles:insertAttribute name="header" /></div>
+	    <div id="main"><tiles:insertAttribute name="body" /></div>    
+	    <div id="footer"><tiles:insertAttribute name="footer" /></div>
+    </div>
+</body>
+
+	<!-- header -->
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <!-- footer -->
+     <script type="text/javascript" src="<%=request.getContextPath()%>/resources/bootstrap/tiles/js/jquery-3.4.1.min.js"></script>
+	<!-- Bootstrap tooltips -->
+	<script type="text/javascript" src="<%=request.getContextPath()%>/resources/bootstrap/tiles/js/popper.min.js"></script>
+	<!-- Bootstrap core JavaScript -->
+	<script type="text/javascript" src="<%=request.getContextPath()%>/resources/bootstrap/tiles/js/bootstrap.min.js"></script>
+	<!-- MDB core JavaScript -->
+	<script type="text/javascript" src="<%=request.getContextPath()%>/resources/bootstrap/tiles/js/mdb.min.js"></script>
+	<!-- main -->
+	<script type="text/javascript" src="<%=request.getContextPath()%>/resources/bootstrap/tiles/js/main/main.js"></script>
+
+</html>
+
+
+
+

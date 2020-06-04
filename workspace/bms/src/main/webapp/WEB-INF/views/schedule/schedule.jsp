@@ -1,0 +1,256 @@
+<%@page import="org.apache.velocity.runtime.directive.Foreach"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<%--     <meta charset="utf-8"> 
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INSPINIA | Calendar</title>
+--%>
+
+
+<link href="<%=request.getContextPath() %>/resources/css/schedule/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="<%=request.getContextPath() %>/resources/css/schedule/css/plugins/iCheck/custom.css" rel="stylesheet">
+
+<link href="<%=request.getContextPath() %>/resources/css/schedule/css/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/css/schedule/css/plugins/fullcalendar/fullcalendar.print.css" rel='stylesheet' media='print'>
+
+<link href="<%=request.getContextPath() %>/resources/css/schedule/css/animate.css" rel="stylesheet">
+<link href="<%=request.getContextPath() %>/resources/css/schedule/css/style.css" rel="stylesheet">
+
+<style>
+	#addScheduleBtn{
+		float : right;
+		margin-left : 10px;
+	}
+	
+	.ibox-title{
+		padding-right : 10px;
+		padding-top :0px;
+		padding-bottom :5px;
+		
+	}
+	
+	#addToDoListBtn {
+		float : right;
+		margin-right : 10px;
+		margin-bottom : 20px;
+		
+	}
+	
+	#toDoListH5 {
+		display : inline;
+	}
+	
+	
+</style>
+
+</head>
+
+<body>
+
+<%-- <div id="wrapper"> --%>
+
+<%--<div id="page-wrapper" class="gray-bg">--%>
+
+<div class="wrapper wrapper-content">
+    <div class="row animated <%-- fadeInDown --%>">
+        
+        <div class="col-lg-9">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5> </h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#" class="dropdown-item">Config option 1</a>
+                            </li>
+                            <li><a href="#" class="dropdown-item">Config option 2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                	<button type="button" id="addScheduleBtn" class="btn btn-outline btn-danger" onclick="OpenWindow('<%=request.getContextPath()%>/schedule/addSchedule','','850','620');">일정 추가</button>
+                    
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5 id="toDoListH5"><br/>To Do List</h5> 
+                    <button type="button" id="addToDoListBtn" class="btn btn-outline btn-danger" onclick="OpenWindow('<%=request.getContextPath()%>/schedule/addToDoList','','850','620');">To Do List 추가</button>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#" class="dropdown-item">Config option 1</a>
+                            </li>
+                            <li><a href="#" class="dropdown-item">Config option 2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div id='external-events'>
+                        <p>달력으로 드래그해주세요.</p>
+                        <!-- <div class='external-event navy-bg'>에어컨 필터 청소</div>
+                        <div class='external-event navy-bg'>환기</div>
+                        <div class='external-event navy-bg'>전등 점검</div>
+                        <div class='external-event navy-bg'>컴퓨터 전원 점검</div>
+                        <div class='external-event navy-bg'>빔프로젝터 점검</div> -->
+                        <p class="m-t">
+                            <input type='checkbox' id='drop-remove' class="i-checks icheckbox_square-grey" checked /> <label for='drop-remove'>드래그 후 목록에서 삭제</label>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<%-- </div>--%>
+<%-- </div> --%>
+
+
+
+<!-- Mainly scripts -->
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/plugins/fullcalendar/moment.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/jquery-3.1.1.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/popper.min.js"></script>
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/bootstrap.js"></script>
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/inspinia.js"></script>
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/plugins/pace/pace.min.js"></script>
+
+<!-- jQuery UI  -->
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+<!-- iCheck -->
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/plugins/iCheck/icheck.min.js"></script>
+
+<!-- Full Calendar -->
+<script src="<%=request.getContextPath() %>/resources/js/schedule/js/plugins/fullcalendar/fullcalendar.min.js"></script>
+
+<script>
+function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
+	winleft = (screen.width - WinWidth) / 2;
+	wintop = (screen.height - WinHeight) / 2;
+	var win = window.open(UrlStr , WinTitle , "scrollbars=yes,width="+ WinWidth +", height="+ WinHeight +", top="+ wintop +", left=" + winleft + ", resizable=yes, status=yes"  );
+    win.focus() ; 
+}
+
+function OpenWindowNoScr(UrlStr, WinTitle, WinWidth, WinHeight) {
+	winleft = (screen.width - WinWidth) / 2;
+	wintop = (screen.height - WinHeight) / 2;
+	var win = window.open(UrlStr , WinTitle , "width="+ WinWidth +", height="+ WinHeight +", top="+ wintop +", left=" + winleft + ", resizable=yes, status=yes"  );
+    win.focus() ; 
+}
+
+    $(document).ready(function() {
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-grey',
+                radioClass: 'iradio_square-grey'
+            });
+
+        /* initialize the external events
+         -----------------------------------------------------------------*/
+
+
+        $('#external-events div.external-event').each(function() {
+
+            // store data so the calendar knows to render an event upon drop
+            $(this).data('event', {
+                title: $.trim($(this).text()), // use the element's text as the event title
+                stick: true // maintain when user navigates (see docs on the renderEvent method)
+            });
+
+            // make the event draggable using jQuery UI
+            $(this).draggable({
+                zIndex: 1111999,
+                revert: true,      // will cause the event to go back to its
+                revertDuration: 0  //  original position after the drag
+            });
+
+        });
+
+
+        /* initialize the calendar
+         -----------------------------------------------------------------*/
+         
+        /* var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear(); */
+
+        $('#calendar').fullCalendar({
+        	// 달력 높이
+        	height: 600,
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            editable: true,
+            droppable: true, // this allows things to be dropped onto the calendar
+            drop: function() {
+                // is the "remove after drop" checkbox checked?
+                if ($('#drop-remove').is(':checked')) {
+                    // if so, remove the element from the "Draggable Events" list
+                    $(this).remove();
+                }
+            },
+            events: 
+            	
+                $.ajax({
+                	url : '<%=request.getContextPath()%>/schedule/toJson',
+                	type : 'get',
+                	dataType : 'json',
+                	success : function(allSchedule){
+                		
+                		alert(allSchedule);
+                		/* title = allSchedule.schedule_name; */
+                	},
+                	error : function(error){
+                		alert(error.status);
+                	}
+                })
+                
+            
+        });
+
+
+    });
+
+</script>
+</body>
+
+</html>

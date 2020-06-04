@@ -1,0 +1,88 @@
+package com.bms.controller.commons;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
+import org.springframework.mobile.device.DeviceUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.bms.dto.member.MemberVO;
+import com.bms.service.member.MemberService;
+import com.bms.service.menu.MenuService;
+
+
+@Controller
+@RequestMapping("/commons")
+public class CommonsController {
+	
+	@Autowired
+	private MemberService memberService;
+	public void setMemberService(MemberService memberService) {
+		this.memberService = memberService;
+	}
+	
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public String loginGET(HttpServletRequest request) {
+		String url = "/commons/login";
+		
+		Device device = DeviceUtils.getCurrentDevice(request);
+		
+		  String deviceType = "";
+		  if (device.isNormal()) {
+		    deviceType  = "일반";
+		    url = "commons/login";
+		  } else if (device.isMobile()) {
+		    deviceType  = "모바일";
+		    url = "mobile/login";
+		  } else if (device.isTablet()) {
+		    deviceType  = "태블릿";
+		    url = "mobile/login";
+		  }
+		
+		  System.out.println(deviceType);
+		  
+		return url;
+	}
+	
+	@RequestMapping(value="loginPost", method=RequestMethod.POST)
+	public String loginPOST(String id, String pwd, HttpServletRequest request, HttpSession session)throws Exception{
+		String url = "";
+		
+		try {
+			memberService.login(id, pwd);
+			
+			MemberVO loginUser = memberService.getMember(id);
+			
+			session.setMaxInactiveInterval(60*10);
+			session.setAttribute("loginUser", loginUser);
+			if(loginUser.getMember_authority().equals("owner")) {
+				url = "redirect:/main/main_owner";
+			}else if(loginUser.getMember_authority().equals("manager")) {
+				url = "redirect:/main/main_superintendent";
+			}else {
+				url = "redirect:/main/main_resident";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/findId")
+	public String findId() throws Exception{
+		String url = "/commons/findId";
+		return url;
+	}
+	
+	@RequestMapping(value="/findPassword")
+	public String findPassword() throws Exception{
+		String url = "/commons/findPassword";
+		return url;
+	}
+	
+}

@@ -9,6 +9,7 @@
 	
 	/* 이메일 직접선택 */
 	$('#directInput').on('change',function(){
+		
 		if($(this).prop("checked")){			
 			$('select[name="email"]').prop("disabled",true);
 		}else{

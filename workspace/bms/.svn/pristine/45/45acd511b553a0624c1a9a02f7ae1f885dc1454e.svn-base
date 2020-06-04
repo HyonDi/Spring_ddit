@@ -1,0 +1,65 @@
+package com.bms.controller.schedule;
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+
+
+@Controller
+@RequestMapping("/schedule")
+public class ScheduleContoller {
+	
+	/*@Autowired
+	private ScheduleService scheduleService;
+*/
+
+	@RequestMapping(value="/schedule", method=RequestMethod.GET)
+	public String getCalendar(ModelAndView mnv) throws Exception {
+		String url = "schedule/schedule";
+/*
+		List<MenuVO> menuList1 = null;
+		List<MenuVO> menuList2 = null;
+		List<MenuVO> menuList3 = null;
+		List<MenuVO> menuList4 = null;
+		
+		try {
+			menuList1 = menuService.selectUnderMenu("MENU01");
+			menuList2 = menuService.selectUnderMenu("MENU02");
+			menuList3 = menuService.selectUnderMenu("MENU03");
+			menuList4 = menuService.selectUnderMenu("MENU04");
+		}catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println("테스트 오류");
+		}
+
+		mnv.addObject("menuList1", menuList1);
+		mnv.addObject("menuList2", menuList2);
+		mnv.addObject("menuList3", menuList3);
+		mnv.addObject("menuList4", menuList4);
+		mnv.setViewName(url);
+		*/
+		
+		return url;
+		
+	}
+	
+	@RequestMapping(value="/addSchedule", method=RequestMethod.GET)
+	public String getAddSchedule(ModelAndView mnv) throws Exception {
+		String url = "schedule/addSchedule";
+		return url;
+		
+	}
+	
+	@RequestMapping(value="/addToDoList", method=RequestMethod.GET)
+	public String getAddToDoList(ModelAndView mnv) throws Exception {
+		String url = "schedule/addToDoList";
+		return url;
+		
+	}
+}

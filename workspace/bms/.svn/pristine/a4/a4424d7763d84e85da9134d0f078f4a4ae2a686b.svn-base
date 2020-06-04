@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>	
+	
+	<typeAliases>
+		<typeAlias type="java.lang.String" alias="str"/>
+		<typeAlias type="java.lang.Integer" alias="int"/>
+		<typeAlias type="com.bms.dto.member.MemberVO" alias="member"/>
+		<typeAlias type="com.bms.dto.notice.NoticeVO" alias="notice"/>
+		<typeAlias type="com.bms.dto.menu.MenuVO" alias="menu"/>
+		<typeAlias type="com.bms.dto.schedule.scheduleVO" alias="schedule"/>
+	</typeAliases>
+
+</configuration>
+
+
+
+
+
+
+

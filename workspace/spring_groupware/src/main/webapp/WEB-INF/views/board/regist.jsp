@@ -149,7 +149,7 @@ body {
 
 </div>
 
-<%-- <%@ include file="./regist_file.jsp" %>	 --%>
+<%-- <%@ include file="./regist_file.jsp" %> --%>
 
 <%@ include file="./regist_js.jsp" %>
 

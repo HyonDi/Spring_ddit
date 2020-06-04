@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>	
+	
+	<typeAliases>
+		<typeAlias type="java.lang.String" alias="str"/>
+		<typeAlias type="java.lang.Integer" alias="int"/>		
+		<typeAlias type="com.spring.dto.EmployeeVO" alias="employee"/>
+		<typeAlias type="com.spring.dto.BoardVO" alias="board"/>
+		<typeAlias type="com.spring.dto.ReplyVO" alias="reply"/>
+		<typeAlias type="com.spring.dto.PdsAttachVO" alias="pdsach"/>
+		<typeAlias type="com.spring.dto.PdsVO" alias="pds"/>
+		<typeAlias type="com.spring.dto.NoticeVO" alias="notice"/>
+		<typeAlias type="com.spring.dto.NoticeAttachVO" alias="nattach"/>
+		<typeAlias type="com.spring.dto.ScheduleVO" alias="schedule"/>
+		<typeAlias type="com.spring.dto.PositionVO" alias="position"/>
+		<typeAlias type="com.spring.dto.DepartmentVO" alias="dept"/>
+		<typeAlias type="com.spring.dto.CareerVO" alias="career"/>
+		<typeAlias type="com.spring.dto.PdsShareVO" alias="pdsShare"/>
+		<typeAlias type="com.spring.dto.MenuVO" alias="menu"/>
+		
+	</typeAliases>
+	
+	
+	
+</configuration>
+
+
+
+
+
+
+

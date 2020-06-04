@@ -1,0 +1,29 @@
+package com.bms.service.member;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.bms.dao.member.MemberDao;
+import com.bms.dto.member.MemberVO;
+
+public class MemberServiceImpl implements MemberService{
+	
+	@Autowired
+	private MemberDao memberDao;
+	public void setMemberDao(MemberDao memberDao) {
+		this.memberDao = memberDao;
+	}
+	
+	@Override
+	public void login(String id, String pwd) throws SQLException {	
+		memberDao.selectMemberById(id);
+	}
+
+	@Override
+	public MemberVO getMember(String id) throws SQLException {
+		MemberVO member = memberDao.selectMemberById(id);
+		return member;
+	}
+}

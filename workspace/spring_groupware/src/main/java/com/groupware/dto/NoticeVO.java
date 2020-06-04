@@ -17,6 +17,7 @@ public class NoticeVO {
 	private int point;		  // 중요 여부 (1:중요, 0:일반)
 	
 	private List<NoticeAttachVO> attachList; // 첨부파일 리스트
+	
 
 	public NoticeVO() {}
 	public NoticeVO(int nno, String title, String writer, String content, int viewcnt, Date regDate, Date startDate,

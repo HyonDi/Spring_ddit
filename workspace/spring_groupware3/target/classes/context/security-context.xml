@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	
+	<http pattern="/resources/**" security="none" />
+	
+	<authentication-manager>
+		<!-- <authentication-provider>
+			<user-service>
+				<user name="user" password="user"   authorities="ROLE_USER"/>
+				<user name="manager" password="manager" authorities="ROLE_MANAGER"/>
+				<user name="admin" password="admin"  
+					  authorities="ROLE_ADMIN,ROLE_MANAGER,ROLE_USER"/>
+			</user-service> 
+			<jdbc-user-service data-source-ref="dataSource"
+			  users-by-username-query="select username,password,enabled 
+			                           from authority_view
+			                           where username=?"
+			  authorities-by-username-query="select username,authority
+			                                 from authority_view
+			                                 where username=?"/>
+			                                 
+		</authentication-provider> -->
+		
+		<authentication-provider ref="authenticator"/>
+		
+	</authentication-manager>
+	<beans:bean id="authenticator" 
+				class="com.spring.security.CustomAuthentication" 
+				p:employeeDAO-ref="employeeDAO"
+	/>
+	<http use-expressions="true" pattern="/**">
+		<access-denied-handler error-page="/security/accessDenied"/>
+		<intercept-url pattern="/commons/**" access="permitAll"/>
+		<intercept-url pattern="/**/regist*" access="hasAnyRole('ROLE_ADMIN,ROLE_SUPER,ROLE_VIP,ROLE_VVIP')"/>
+		<intercept-url pattern="/**/modify*" access="hasAnyRole('ROLE_ADMIN,ROLE_SUPER,ROLE_VIP,ROLE_VVIP')"/>
+		<intercept-url pattern="/**/remove*" access="hasAnyRole('ROLE_ADMIN,ROLE_SUPER,ROLE_VIP,ROLE_VVIP')"/>			
+		<intercept-url pattern="/**" access="isAuthenticated()"/>						
+					   
+		<form-login
+			 login-page="/commons/login"
+			 login-processing-url="/commons/loginPost"
+			 username-parameter="id"
+			 password-parameter="pwd"
+			 default-target-url="/"
+			 authentication-success-handler-ref="loginSuccessHandler"
+			 authentication-failure-handler-ref="loginFailureHandler"	
+			 />
+		<logout
+			logout-url="/commons/logout"
+			invalidate-session="true"						
+			delete-cookies="JSESSIONID"						 
+			success-handler-ref="logoutSuccessHandler"
+		/>
+		<session-management invalid-session-url="/commons/loginTimeOut">
+			<concurrency-control 
+				expired-url="/commons/loginExpired"
+				max-sessions="1"								
+				session-registry-ref="sessionRegistry"	
+			/>			
+		</session-management>	
+	</http>
+	
+	
+	<beans:bean id="sessionRegistry" 
+	 			class="org.springframework.security.core.session.SessionRegistryImpl"
+	 			/>	
+	
+
+	<beans:bean id="sessionDestoryListener" 
+				class="com.spring.security.SessionDestoryListener"
+				p:employeeService-ref="employeeService" 
+				/>
+					            
+	<beans:bean id="loginFailureHandler"
+				class="com.spring.security.LoginFailureHandler"
+				p:defaultFailureUrl="/commons/login"
+				p:useForward="true"
+				/>
+	<beans:bean id="loginSuccessHandler"
+				class="com.spring.security.LoginSuccessHandler"
+				p:defaultTargetUrl="/index.htm"				
+				/>
+	<beans:bean id="logoutSuccessHandler"
+	   			class="com.spring.security.CustomLogoutSuccessHandler"
+	   			p:employeeService-ref="employeeService"
+	   			/>
+</beans:beans>
+
+
+
+
+
+
+

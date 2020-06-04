@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+ <script type="text/javascript" src="vendor/jquery/jquery.js"></script>
 <title></title>
 
 <style>

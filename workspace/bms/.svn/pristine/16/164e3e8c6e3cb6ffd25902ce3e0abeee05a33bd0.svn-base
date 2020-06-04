@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Schedule-Mapper">
+
+	
+	
+	
+	<!-- 1. 내 전체 스케쥴 -->
+	<select id="myAllSchedule" parameterType="String" resultType="schedule">
+		select *
+		from schedule, my_schedule_sort_code
+		where schedule.schedule_sort_code = my_schedule_sort_code.schedule_sort_code
+        and my_schedule_sort_code.member_code=#{member_code}
+	</select>
+	
+	<!-- 2. 내 분류별 스케쥴 -->
+	<select id="mySortSchedule" parameterType="scheduleSortCode" resultType="schedule">
+		select *
+		from schedule, my_schedule_sort_code
+		where schedule.schedule_sort_code = my_schedule_sort_code.schedule_sort_code
+        and my_schedule_sort_code.member_code=#{member_code}
+        and my_schedule_sort_code.schedule_sort_code=#{schedule_sort_code}
+	</select>
+	
+	<!-- 3. 내가 가진 분류 코드 -->
+	<select id="myScheduleSortCode" parameterType="String" resultType="scheduleSortCode">
+		select *
+		from my_schedule_sort_code
+		where member_code=#{member_code}
+	</select>
+	
+	<!-- 4. 내 전체 해야할 일 -->
+	<select id="myAllToDoList" parameterType="String" resultType="schedule">
+		select *
+		from schedule, my_schedule_sort_code
+		where schedule.schedule_sort_code = my_schedule_sort_code.schedule_sort_code
+		and my_schedule_sort_code.member_code=#{member_code}
+		and schedule.schedule_istodolist=1
+	</select>
+	
+	<!-- 5. 분류별 해야할 일 -->
+	<select id="mySortToDoList" parameterType="scheduleSortCode" resultType="schedule">
+		select *
+		from schedule, my_schedule_sort_code
+		where schedule.schedule_sort_code = my_schedule_sort_code.schedule_sort_code
+		and my_schedule_sort_code.member_code=#{member_code}
+		and my_schedule_sort_code.schedule_sort_code=#{schedule_sort_code}
+		and schedule.schedule_istodolist=1
+	</select>
+	
+	<!--  6. 모든 관리인의 업무 일정 -->
+	<select id="SuperintendentSchedule" resultType="schedule">
+		select *
+		from schedule, my_schedule_sort_code , member_superintendent
+		where schedule.schedule_sort_code = my_schedule_sort_code.schedule_sort_code
+		and my_schedule_sort_code.member_code = member_superintendent.member_code
+		and my_schedule_sort_code.schedule_sort_name ='업무'
+	</select>
+	
+	<!-- 7. 일정하나 뽑기 -->
+	<select id="selectOneSchedule" parameterType="String" resultType="schedule">
+		select *
+		from schedule
+		where schedule_code=#{schedule_code}
+	</select>
+	
+	<!-- 8. 분류코드 하나 뽑기 -->
+	<select id="selectOneScheduleSortCode" parameterType="String" resultType="scheduleSortCode">
+		select *
+		from my_schedule_sort_code
+		where schedule_sort_code=#{schedule_sort_code}
+	</select>
+	
+	<!-- 9. 스케쥴의 다음시퀀스 뽑기 -->
+	<select id="selectScheduleSeqNext" resultType="int">
+		select schedule_seq.nextval from dual
+	</select>
+	
+	<!-- 10. 스케쥴분류코드의 다음시퀀스 뽑기 -->
+	<select id="selectScheduleSortCodeSeqNext" resultType="int">
+		select my_schedule_sort_code_seq.nextval from dual
+	</select>
+	
+	<!-- 11. 내 스케쥴 검색 -->
+	<select id="searchSchedule" parameterType="searchSchedule" resultType="schedule">
+		select *
+		from schedule, my_schedule_sort_code
+		where schedule.schedule_sort_code = my_schedule_sort_code.schedule_sort_code
+		and my_schedule_sort_code.member_code=#{member_code}
+		and schedule.schedule_name like '%'||#{keyword}||'%' 
+		or schedule.schedule_contents like '%'||#{keyword}||'%'
+	</select>
+	
+	
+	
+	<!-- 스케쥴 cud -->
+	<update id="insertSchedule" parameterType="schedule">
+		insert 
+		into 
+		schedule(schedule_code,schedule_sort_code,schedule_name,schedule_contents,schedule_start_date,
+				schedule_end_date,schedule_start_time,schedule_end_time,schedule_istodolist,schedule_isallday)
+		values
+		(#{schedule_code},#{schedule_sort_code},#{schedule_name},#{schedule_contents},#{schedule_start_date},
+		#{schedule_end_date},#{schedule_start_time},#{schedule_end_time},#{schedule_istodolist},#{schedule_isallday})
+	</update>
+	
+	<update id="updateSchedule" parameterType="schedule">
+		update 
+		schedule 
+		set 
+		schedule_name=#{schedule_name}, schedule_contents=#{schedule_contents}, schedule_start_date=#{schedule_start_date},
+		schedule_end_date=#{schedule_end_date}, schedule_start_time=#{schedule_start_time},
+		schedule_end_time=#{schedule_end_time}, schedule_istodolist=#{schedule_istodolist}, schedule_isallday=#{schedule_isallday}
+		where schedule_code=#{schedule_code}
+	</update>
+	
+	<update id="deleteSchedule" parameterType="String">
+		delete 
+		from schedule 
+		where schedule_code=#{schedule_code}
+	</update>
+	
+	<!-- 스케쥴 분류코드 cud -->
+	<update id="insertScheduleSortCode" parameterType="scheduleSortCode">
+		insert 
+		into 
+		my_schedule_sort_code(schedule_sort_code,member_code,schedule_sort_name,schedule_sort_color)
+		values
+		(#{schedule_sort_code},#{member_code},#{schedule_sort_name},#{schedule_sort_color})
+	</update>
+	
+	<update id="updateScheduleSortCode" parameterType="scheduleSortCode">
+		update 
+		my_schedule_sort_code
+		set 
+		schedule_sort_name=#{schedule_sort_name}, schedule_sort_color=#{schedule_sort_color} 
+		where schedule_sort_code=#{schedule_sort_code}
+	</update>
+	
+	<update id="deleteScheduleSortCode" parameterType="String">
+		delete 
+		from my_schedule_sort_code
+		where schedule_sort_code=#{schedule_sort_code}
+	</update>
+	
+	
+</mapper>

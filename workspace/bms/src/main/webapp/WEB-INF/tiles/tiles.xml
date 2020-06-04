@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+<!-- 건물주 -->
+	<definition name="owner" template="/WEB-INF/tiles/web/template.jsp" >
+		<put-attribute name="left"   value="/WEB-INF/tiles/web/left-owner.jsp" />
+        <put-attribute name="header" value="/WEB-INF/tiles/web/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/tiles/web/mainfooter.jsp" />
+	</definition>
+	
+	<definition name="*.owner" extends="owner">
+        <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+ 
+    <definition name="*/*.owner" extends="owner">
+         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+    </definition>
+    <definition name="*/*/*.owner" extends="owner">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
+    <definition name="*/*/*/*.owner" extends="owner">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}/{4}.jsp" />
+    </definition>
+    <!-- 관리인 -->
+    <definition name="manager" template="/WEB-INF/tiles/web/template.jsp" >
+		<put-attribute name="left"   value="/WEB-INF/tiles/web/left-manager.jsp" />
+        <put-attribute name="header" value="/WEB-INF/tiles/web/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/tiles/web/mainfooter.jsp" />
+	</definition>
+	
+	<definition name="*.manager" extends="manager">
+        <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+ 
+     <definition name="*/*.manager" extends="manager">
+         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+     </definition>
+    
+    <definition name="*/*/*.manager" extends="manager">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
+    
+    <!-- 입주민 -->
+     <definition name="resident" template="/WEB-INF/tiles/web/template.jsp" >
+		<put-attribute name="left"   value="/WEB-INF/tiles/web/left-resident.jsp" />
+        <put-attribute name="header" value="/WEB-INF/tiles/web/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/tiles/web/mainfooter.jsp" />
+	</definition>
+	
+	<definition name="*.resident" extends="resident">
+        <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+ 
+     <definition name="*/*.resident" extends="resident">
+         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+     </definition>
+    
+    <definition name="*/*/*.resident" extends="resident">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
+    
+    
+     <!-- 메뉴 미표시 -->
+    <definition name="baseEmpty" template="/WEB-INF/tiles/web/templateEmpty.jsp">
+    </definition>
+    
+    <definition name="*.part" extends="baseEmpty">
+        <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+ 
+     <definition name="*/*.part" extends="baseEmpty">
+         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+     </definition>
+    
+    <definition name="*/*/*.part" extends="baseEmpty">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
+    <!-- 메인화면 템플릿 -->
+    <definition name="main" template="/WEB-INF/tiles/web/mainTemplate.jsp" >
+        <put-attribute name="header" value="/WEB-INF/tiles/web/header.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/tiles/web/mainfooter.jsp" />
+	</definition>
+	
+	<definition name="*.main" extends="main">
+        <put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+    </definition>
+ 
+     <definition name="*/*.main" extends="main">
+         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+     </definition>
+    
+    <definition name="*/*/*.main" extends="main">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+    </definition>
+    
+            
+</tiles-definitions>

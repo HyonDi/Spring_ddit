@@ -1,0 +1,46 @@
+package com.bms.controller.schedule;
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+
+
+@Controller
+@RequestMapping("/schedule")
+public class ScheduleContoller {
+	
+	/*@Autowired
+	private ScheduleService scheduleService;
+*/
+
+	@RequestMapping(value="/schedule", method=RequestMethod.GET)
+	public String getCalendar(ModelAndView mnv) throws Exception {
+		String url = "schedule/schedule";
+		return url;
+		
+	}
+	
+	@RequestMapping(value="/addSchedule", method=RequestMethod.GET)
+	public String getAddSchedule(ModelAndView mnv) throws Exception {
+		String url = "schedule/addSchedule";
+		
+		
+		
+		
+		return url;
+		
+	}
+	
+	@RequestMapping(value="/addToDoList", method=RequestMethod.GET)
+	public String getAddToDoList(ModelAndView mnv) throws Exception {
+		String url = "schedule/addToDoList";
+		return url;
+		
+	}
+}

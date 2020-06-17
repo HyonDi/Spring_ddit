@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FacilityManage-Mapper">
+	
+	<sql id="search">
+		<if test="searchType == 'n'.toString()">
+			and facility_name like '%'||#{keyword}||'%'
+		</if>
+		<if test="searchType == 'w'.toString()">
+			and facility_name like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	
+	<select id="selectSearchAllFacilityList" parameterType="String" resultType="FacilityManage">
+		select a.*, b.check_point_facility_contents, c.member_name
+		from holding_facility a, check_point_facility b, member c
+		where a.facility_code = b.facility_code(+)
+		and a.member_code = c.member_code
+		and a.facility_code not in 'fac2'
+		<include refid="search"/>
+	</select>
+	
+	<select id="selectSearchAllFacilityListCount" parameterType="String" resultType="int">
+		select count(*)
+		from holding_facility a, check_point_facility b, member c
+		where a.facility_code = b.facility_code(+)
+		and a.member_code = c.member_code
+		and a.facility_code not in 'fac2'
+		<include refid="search"/>
+	</select>
+	
+	<update id="insertFacility" parameterType="FacilityManage">
+		insert into holding_facility values(#{facility_code},#{member_code},#{facility_name},#{facility_url},#{facility_picture})
+	</update>
+	
+	<update id="insertFacilityCheckList" parameterType="checkList">
+		insert into check_point_facility values(#{check_point_facility_code},#{check_point_facility_contents},#{facility_code})
+	</update>
+	
+	<select id="selectHoldingFacilityCodeSequence" resultType="int">
+		select holding_facility_seq.nextval from dual
+	</select>
+	
+	<select id="selectFacilityCheckListCodeSequence" resultType="int">
+		select check_point_facility_seq.nextval from dual
+	</select>
+	
+</mapper>

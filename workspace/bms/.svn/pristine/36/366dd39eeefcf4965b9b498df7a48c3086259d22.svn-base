@@ -1,0 +1,52 @@
+package com.bms.dao.member;
+
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.bms.dto.member.MemberVO;
+import com.bms.request.member.FindIdRequest;
+
+public class MemberDaoImpl implements MemberDao{
+	
+	@Autowired
+	private SqlSession sqlSession;
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+	}
+	@Override
+	public MemberVO selectMemberById(String id) throws SQLException {
+		MemberVO member = sqlSession.selectOne("Member-Mapper.selectMemberById", id);
+		return member;
+	}
+	@Override
+	public MemberVO selectMemberByPhone(String member_phone) throws SQLException {
+		MemberVO member = sqlSession.selectOne("Member-Mapper.selectMemberByPhone", member_phone);
+		return member;
+	}
+	@Override
+	public String selectGetMemberId(MemberVO member) throws SQLException {
+		String id = sqlSession.selectOne("Member-Mapper.selectGetMemberId", member);
+		if(id == null) {
+			System.out.println("해당하는 아이디가 없습니다.");
+		}
+		return id;
+	}
+	@Override
+	public String selectGetMemberPassword(MemberVO member) throws SQLException {
+		String pwd = sqlSession.selectOne("Member-Mapper.selectGetMemberPassword", member);
+		if(pwd == null) {
+			System.out.println("해당하는 아이디의 비밀번호가 없습니다.");
+		}
+		return pwd;
+	}
+	
+	
+
+
+
+}

@@ -1,0 +1,13 @@
+package com.bms.service.facility;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import com.bms.dto.facility.FacilityManageVO;
+import com.bms.request.paging.SearchCriteria;
+
+public interface FacilityManageService {
+	
+	Map<String, Object> selectSearchAllFacilityList(SearchCriteria cri)throws SQLException;
+}

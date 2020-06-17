@@ -1,0 +1,69 @@
+package com.bms.service.facility;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.bms.dao.facility.FacilityManageDao;
+import com.bms.dto.facility.CheckListVO;
+import com.bms.dto.facility.FacilityManageVO;
+import com.bms.request.paging.PageMaker;
+import com.bms.request.paging.SearchCriteria;
+
+public class FacilityManageServiceImpl implements FacilityManageService {
+	
+	@Autowired
+	private FacilityManageDao facilityManageDao;
+	public void setFacilityManageDao(FacilityManageDao facilityManageDao) {
+		this.facilityManageDao = facilityManageDao;
+	}
+	@Override
+	public Map<String, Object> selectSearchAllFacilityList(SearchCriteria cri) throws SQLException {
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
+		
+		List<FacilityManageVO> facilityList;
+		try {
+			facilityList = facilityManageDao.selectSearchAllFacilityList(cri);
+			int totalCount = facilityManageDao.selectSearchAllFacilityListCount(cri);
+			
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(cri);
+			pageMaker.setTotalCount(totalCount);
+			
+			dataMap.put("facilityList", facilityList);
+			dataMap.put("pageMaker",pageMaker);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return dataMap;
+	}
+	@Override
+	public void insertFacilityDetail(FacilityManageVO facility, List<CheckListVO> checkList) throws SQLException {
+		int facilitySeq = facilityManageDao.selectHoldingFacilityCodeSequence();
+		int facilityCheckListSeq = facilityManageDao.selectFacilityCheckListCodeSequence();
+		
+		String facility_code = "facility" + facilitySeq;
+		String check_point_facility_code = "ckFacility" + facilityCheckListSeq;
+		
+		String url = UUID.randomUUID().toString().replace("-", "");
+		facility.setCheck_point_facility_code(check_point_facility_code);
+		facility.setFacility_code(facility_code);
+		facility.setFacility_url(url);
+		
+		facilityManageDao.insertFacility(facility);
+		
+		for(CheckListVO check:checkList) {
+			
+		facilityManageDao.insertFacilityCheckList(check);
+		
+		}
+	}
+
+}

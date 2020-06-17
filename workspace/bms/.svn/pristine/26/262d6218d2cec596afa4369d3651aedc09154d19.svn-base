@@ -1,0 +1,29 @@
+package com.bms.service.member;
+
+import java.io.UnsupportedEncodingException;
+import java.sql.SQLException;
+
+import javax.mail.MessagingException;
+
+import com.bms.dto.member.MemberVO;
+
+public interface MemberService {
+	
+	//테스트용
+	void login(String id,  String pwd)throws SQLException;
+	
+	MemberVO getMember(String id)throws SQLException;
+	
+	MemberVO getPhoneCheckMember(String member_phone) throws SQLException;
+	
+	String getMemberId(MemberVO member) throws SQLException;
+	
+	String getMemberPassword(MemberVO member) throws SQLException, MessagingException, UnsupportedEncodingException;
+	
+	void changePassword(MemberVO member)throws SQLException;
+	
+	//모바일 맴버 code를 통한 member_name 조회
+	String getMemberNameByCode(String member_code) throws SQLException;
+
+	int selectPasswordUpdateChk(MemberVO member)throws SQLException;
+}

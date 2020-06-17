@@ -12,5 +12,6 @@
 	<import resource="classpath:com/bms/context/dataSource-context.xml"/>
 	<import resource="classpath:com/bms/context/application-context.xml"/>
 	<import resource="classpath:com/bms/context/aop-context.xml"/>
+	<import resource="classpath:com/bms/context/mail-context.xml"/>
 	
 </beans>

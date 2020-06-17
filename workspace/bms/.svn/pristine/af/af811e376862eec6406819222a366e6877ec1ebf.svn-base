@@ -1,0 +1,158 @@
+<%@page import="java.util.Date"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Bootstrap core CSS -->
+  <link href="<%=request.getContextPath()%>/resources/mobile/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="<%=request.getContextPath()%>/resources/mobile/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/mobile/vendor/simple-line-icons/css/simple-line-icons.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
+  <!-- Plugin CSS -->
+  <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/mobile/device-mockups/device-mockups.min.css">
+
+  <!-- Custom styles for this template -->
+  <link href="<%=request.getContextPath()%>/resources/mobile/css/new-age.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+	<header class="masthead" style="height: 48px;padding-top: 5px;padding-bottom: 65px;background:white;">
+	    <div class="container">
+	    	<div class="col-md-2" style="display : inline;">
+	      		<img src="<%=request.getContextPath()%>/resources/mobile/img/image.png" style="width:55px; height:62px;" />
+	      		<p class="font-weight-bold" style="display:inline; color:black; font-size:11px;">시설물 관리 시스템</p>
+	      	</div>
+	      	<div class="col-md-2" style="display : inline;">
+			    <button class="btn btn-primary" onclick="javascript:location.href='<%=request.getContextPath()%>/commons/logout';" type="button" style="font-size:10px;width:74px;">로그아웃</button>
+			    <button class="btn btn-secondary" onclick="javascript:location.href='<%=request.getContextPath()%>/mypage/personal_information_modification/mobile/mypage_resident';" type="button" style="font-size:10px;width:74px;">설정</button>
+			</div>
+	      </div>
+	</header>
+  
+  	<section class="contact bg-light" id="contact" style="padding:38px 0px;">
+  	
+	    <div class="container">
+	      <ul class="list-inline list-social">
+	        <li class="list-inline-item">
+	          <a href="<%=request.getContextPath()%>/notice/mobileList?chk=admin" style="width:100px; height:88px; color:black;">
+				<img src="<%=request.getContextPath()%>/resources/mobile/img/공지.png" alt="공지사항" class="img-responsive img-rounded" style="display:inline; width:50px; height:50px;">
+	            <span style="font-size:20px; font-weight:bold; display:block;">공지사항</span>
+	          </a>
+	        </li>
+	        <li class="list-inline-item">
+	          <a href="<%=request.getContextPath()%>/suggestion/mobileList?chk=admin" style="width:100px; height:88px; color:black;">
+				<img src="<%=request.getContextPath()%>/resources/mobile/img/건의.png" alt="건의사항" class="img-responsive img-rounded" style="display:inline; width:50px; height:50px;">
+	            <span style="font-size:20px; font-weight:bold; display:block;">건의사항</span>
+	          </a>
+	        </li>
+	        <li class="list-inline-item">
+	          <a href="<%=request.getContextPath()%>/bacode/go" style="width:100px; height:88px; color:black;">
+				<img src="<%=request.getContextPath()%>/resources/mobile/img/QR.png" alt="QR" class="img-responsive img-rounded" style="display:inline; width:50px; height:50px;">
+	            <span style="font-size:20px; font-weight:bold; display:block;">QR스캔</span>
+	          </a>
+	        </li>
+	      </ul>
+	    </div>
+	    
+	    <br/><br/>
+	    
+	    <div class="container">
+	      <ul class="list-inline list-social">
+	        <li class="list-inline-item">
+	          <a href="#" style="width:100px; height:88px; color:black;">
+	            <img src="<%=request.getContextPath()%>/resources/mobile/img/외주.png" alt="외주업체" class="img-responsive img-rounded" style="display:inline; width:50px; height:50px;">
+	            <span style="font-size:20px; font-weight:bold; display:block;">업체목록</span>
+	          </a>
+	        </li>
+	        <li class="list-inline-item">
+	          <a href="#" style="width:100px; height:88px; color:black;">
+				<img src="<%=request.getContextPath()%>/resources/mobile/img/입주.png" alt="입주자목록" class="img-responsive img-rounded" style="display:inline; width:50px; height:50px;">
+	            <span style="font-size:20px; font-weight:bold; display:block;">입주자목록</span>
+	          </a>
+	        </li>
+	        <li class="list-inline-item">
+	          <a href="#" style="width:100px; height:88px; color:black;">
+				<img src="<%=request.getContextPath()%>/resources/mobile/img/관리인.png" alt="관리인조회" class="img-responsive img-rounded" style="display:inline; width:50px; height:50px;">
+	            <span style="font-size:20px; font-weight:bold; display:block;">관리인목록</span>
+	          </a>
+	        </li>
+	      </ul>
+	    </div>
+	    
+	</section>
+	
+	<section class="contact" id="contact2" style="padding-top:0px; padding-bottom:0px;">
+		<div class="container">
+			<div class="btn-group" style="height:50px">
+	            <button type="button" id="noticeMain" onclick="notices();" class="btn btn-primary" style="border-radius:0px; width:206px; margin-left:-15px;">공지사항</button>
+	            <button type="button" id="suggestionMain" onclick="suggestion();" class="btn btn-secondary" style="border-radius:0px; width:206px; margin-left:0px;">건의사항</button>
+          	</div>
+			<div id="noticeId" style="display:block;">
+				<ul class="list-group" style="width:410px; margin-left:-15px;">
+				  <c:forEach items="${noticeList}" var="notice">
+				  		<li class="list-group-item"><a href="<%=request.getContextPath()%>/notice/mobileDetail?notice_code=${notice.notice_code}&chk=dt&chk2=admin" style="color:black;">${notice.notice_title}</a></li>
+				  </c:forEach>
+				</ul>
+			</div>
+			<div id="suggestionId" style="display:none;">
+				<ul class="list-group" style="width:410px; margin-left:-15px;">
+				  <c:forEach items="${suggestionList}" var="suggestion">
+				  		<li class="list-group-item"><a href="<%=request.getContextPath()%>/suggestion/mobileDetail?suggestion_code=${suggestion.suggestion_code}&chk=dc&chk2=admin"  style="color:black;">${suggestion.suggestion_title}</a></li>
+				  </c:forEach>
+				</ul>
+			</div>
+		</div>
+	</section>
+
+</body>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="<%=request.getContextPath()%>/resources/mobile/vendor/jquery/jquery.min.js"></script>
+  <script src="<%=request.getContextPath()%>/resources/mobile/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="<%=request.getContextPath()%>/resources/mobile/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="<%=request.getContextPath()%>/resources/mobile/js/new-age.min.js"></script>
+  <script>
+  
+  	function notices(){
+  		$("div[id='noticeId']").css('display', 'block');
+  		$("div[id='suggestionId']").css('display', 'none');
+  		
+  		$("button[id='noticeMain']").attr('class','btn btn-primary');
+  		$("button[id='suggestionMain']").attr('class','btn btn-secondary');
+  	}
+  
+  	function suggestion(){
+  		$("div[id='noticeId']").css('display', 'none');
+  		$("div[id='suggestionId']").css('display', 'block');
+  		
+  		$("button[id='noticeMain']").attr('class','btn btn-secondary');
+  		$("button[id='suggestionMain']").attr('class','btn btn-primary');
+  	}
+  	
+//   	function scan(){
+//   		Android.scanBarcode();
+//   	}
+  
+  </script>
+
+</html>

@@ -1,12 +1,346 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Member-Mapper">
-
+	
+	<!-- 아이디 입력하면 멤버vo 반환-->
 	<select id="selectMemberById" parameterType="String" resultType="member">
 		select 
 		* 
 		from member 
 		where member_id=#{member_id}
+	</select>
+	
+	<!-- 휴대폰번호 입력하면 멤버vo 반환 -->
+	<select id="selectMemberByPhone" parameterType="String" resultType="member">
+		select
+		*
+		from member
+		where member_phone=#{member_phone}
+	</select>
+	
+	<!-- 파라미터타입?? -->
+	<select id="selectGetMemberId" resultType="String">
+		select member_id
+		from member
+		where member_email=#{member_email, jdbcType=VARCHAR}
+		and member_name=#{member_name, jdbcType=VARCHAR}
+		and member_phone=#{member_phone, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 파라미터타입?? -->
+	<select id="selectGetMemberPassword" resultType="String">
+		select member_pwd
+		from member
+		where member_id=#{member_id}
+		and member_name=#{member_name}
+		and member_email=#{member_email}
+	</select>
+	
+	<update id="changePassword" parameterType="member">
+		update member set member_pwd=#{member_pwd}, member_pwdupdatechk=2
+		where member_id=#{member_id}
+	</update>
+	
+	<!-- 파라미터타입?? -->
+	<select id="selectPasswordUpdateChk" resultType="Integer">
+		select member_pwdupdatechk
+		from member
+		where member_id=#{member_id}
+		and member_name=#{member_name}
+		and member_email=#{member_email}
+	</select>
+	
+	<!-- 회원코드를 입력하면 멤버 이름 반환. -->
+	<select id="selectMemberNameByCode" resultType="String" parameterType="String">
+		select 
+		member_name 
+		from 
+		member
+		where member_code = #{member_code}
+	</select>
+	
+	<!-- 검색용 -->
+	<sql id="search">
+		<if test="searchType == 'w'.toString()">
+			and ((member_name like '%'||#{keyword}||'%')
+			or (member_id like '%'||#{keyword}||'%')
+			or (member_phone like '%'||#{keyword}||'%')
+			or (member_email like '%'||#{keyword}||'%')
+			or (member_address like '%'||#{keyword}||'%')) 		
+		</if>
+		<if test="searchType == 'n'.toString()">
+			and member_name like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'i'.toString()">
+			and member_id like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'p'.toString()">
+			and member_phone like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'e'.toString()">
+			and member_email like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'a'.toString()">
+			and member_address like '%'||#{keyword}||'%'			
+		</if>				
+	</sql>
+	
+	<!-- 입주자 리스트. 넣어야하는 member_code는 건물주코드임. -->
+	<select id="selectResidentList" parameterType="String" resultType="resident">
+		select*
+		from member,member_resident
+		where member.member_code = member_resident.member_code
+		and member.member_up_code = #{member_up_code}
+	</select>
+	
+	<!-- 관리인 리스트. 넣어야하는 member_code는 건물주코드임. -->
+	<select id="selectSuperintendentList" parameterType="String" resultType="superintendent">
+		select*
+		from member,member_superintendent
+		where member.member_code = member_superintendent.member_code
+		and member.member_up_code = #{member_up_code}
+	</select>
+	
+	<!-- 입주자리스트 검색 -->
+	<select id="selectSearchResidentList" parameterType="String" resultType="resident">
+		select*
+		from member,member_resident
+		where member.member_code = member_resident.member_code
+		<include refid="search" />
+	</select>
+	<!-- 입주자리스트 검색count -->
+	<select id="selectSearchResidentListCount" parameterType="String" resultType="int">
+		select count(*)
+		from member,member_resident
+		where member.member_code = member_resident.member_code
+		<include refid="search" />
+	</select>
+	
+	<!-- 입주자 count -->
+	<select id="ResidentCount" resultType="int">
+		select count(*)
+		from member
+		where member.member_up_code = #{member_up_code}
+		and member_authority = 'resident'
+	</select>
+	
+	<!-- 관리인리스트 검색. -->
+	<select id="selectSearchSuperintendentList" parameterType="String" resultType="superintendent">
+		select*
+		from member,member_superintendent
+		where member.member_code = member_superintendent.member_code
+		<include refid="search" />
+	</select>
+	
+	<!-- 관리인리스트 검색count -->
+	<select id="selectSearchSuperintendentListCount" parameterType="String" resultType="int">
+		select count(*)
+		from member,member_superintendent
+		where member.member_code = member_superintendent.member_code
+		<include refid="search" />
+	</select>
+	
+	<!-- 관리인 count -->
+	<select id="SuperintendentCount" resultType="int">
+		select count(*)
+		from member
+		where member.member_up_code = #{member_up_code}
+		and member_authority = 'manager'
+	</select>
+	
+	<!-- 입주자 한 명 select/ id로 -->
+	<select id="selectResidentById" parameterType="String" resultType="resident">
+		select*
+		from member,member_resident
+		where member.member_code = member_resident.member_code
+		and member_id=#{member_id}
+	</select>
+	<!-- 입주자 한 명 select/ code로 -->
+	<select id="selectResidentByCode" parameterType="String" resultType="resident">
+		select*
+		from member,member_resident
+		where member.member_code = member_resident.member_code
+		and member.member_code=#{member_code}
+	</select>
+	
+	<!-- 관리인 한 명 select/ id로 -->
+	<select id="selectSuperintendentById" parameterType="String" resultType="superintendent">
+		select*
+		from member,member_superintendent
+		where member.member_code = member_superintendent.member_code
+		and member_id=#{member_id}
+	</select>
+	
+	<!-- 관리인 한 명 select/ code로 -->
+	<select id="selectSuperintendentByCode" parameterType="String" resultType="superintendent">
+		select*
+		from member,member_superintendent
+		where member.member_code = member_superintendent.member_code
+		and member.member_code=#{member_code}
+	</select>
+	
+	<!-- member insert -->
+	<update id="insertMember" parameterType="member">
+		insert into 
+		member(member_code,member_id,member_pwd,member_name,member_ssn,member_address,member_email,
+				member_phone,member_up_code,member_authority,member_picture)
+		values(#{member_code},#{member_id},#{member_pwd},#{member_name},#{member_ssn},#{member_address},#{member_email},
+			   #{member_phone},#{member_up_code},#{member_authority},#{member_picture}
+		)
+	</update>
+	
+	<!-- resident insert -->
+	<update id="insertResident" parameterType="resident">
+		insert into 
+		member_resident(member_code,member_enabled,member_significant,member_regdate)
+		values(#{member_code},#{member_enabled},#{member_significant},sysdate
+		)
+	</update>
+	
+	<!-- superintendent insert -->
+	<update id="insertSuperintendent" parameterType="superintendent">
+		insert into 
+		member_superintendent(member_code,superintendent_pay,superintendent_significant)
+		values(#{member_code},#{superintendent_pay},#{superintendent_significant}
+		)
+	</update>
+	
+	<!-- owner insert -->
+	<update id="insertOwner" parameterType="owner">
+		insert into 
+		member_owner(member_code,member_building_location)
+		values(#{member_code},#{member_building_location}
+		)
+	</update>
+	
+	<!-- member 수정 -->
+	<update id="updateMember" parameterType="member">
+		update member 
+		set 
+		member_id=#{member_id}, member_pwd=#{member_pwd}, member_name=#{member_name},member_ssn=#{member_ssn},
+		member_address=#{member_address},member_email=#{member_email},member_phone=#{member_phone},member_picture=#{member_picture}
+		where member_code=#{member_code}
+	</update>
+	<!-- resident 수정 -->
+	<update id="updateResident" parameterType="resident">
+		update member_resident 
+		set 
+		member_enabled=#{member_enabled}, member_significant=#{member_significant}
+		where member_code=#{member_code}
+	</update>
+	<!--  superintendent 수정 -->
+	<update id="updateSuperintendent" parameterType="superintendent">
+		update member_superintendent
+		set 
+		superintendent_pay=#{superintendent_pay}, superintendent_significant=#{superintendent_significant}
+		where member_code=#{member_code}
+	</update>
+	<!-- owner 수정 -->
+	<update id="updateOwner" parameterType="owner">
+		update member_owner
+		set 
+		member_building_location=#{member_building_location}
+		where member_code=#{member_code}
+	</update>
+	
+	<!-- member 삭제 -->
+	<update id="deleteMember" parameterType="String" >
+		delete 
+		from member 
+		where member_code=#{member_code}		
+	</update>
+	
+	<!-- resident 삭제 -->
+	<update id="deleteResident" parameterType="String" >
+		delete 
+		from member_resident 
+		where member_code=#{member_code}		
+	</update>
+	<!-- superintendent 삭제 -->
+	<update id="deleteSuperintendent" parameterType="String" >
+		delete 
+		from member_superintendent
+		where member_code=#{member_code}		
+	</update>
+	<!-- owner 삭제 -->
+	<update id="deleteOwner" parameterType="String" >
+		delete 
+		from member_owner 
+		where member_code=#{member_code}		
+	</update>
+	
+	<!-- 활성화 -->
+	<update id="disableResident" parameterType="String">
+		update 
+		member_resident
+		set
+		member_enabled=0
+		where member_code=#{member_code}
+	</update>
+	
+	<!-- 로그인시간 -->
+	<update id="updateRecentLoginTime" parameterType="String">
+		update member 
+		set
+		member_recent_login_time = sysdate
+		where member_code=#{member_code}	
+	</update>
+	
+	<!-- 멤버시퀀스 조회 -->
+	<select id="selectMemberSeqNext" resultType="int">
+		select member_seq.nextval from dual
+	</select>
+	
+	<!-- 멤버시퀀스 현재값 조회 -->
+	<select id="selectMemberSeqCurrnt" resultType="int">
+		select 
+        last_number 
+		from 
+        user_sequences 
+		where 
+        sequence_name = 'MEMBER_SEQ'
+	</select>
+	
+	<!-- 관리인의 경력사항 불러오기 -->
+	<select id="selectCareer" parameterType="String" resultType="career">
+		select *
+		from carrer
+		where member_code = #{member_code}
+	</select>
+	<!-- 관리인의 담당 시설 불러오기 -->
+	<select id="selectResponsibility_facility" parameterType="String" resultType="responsibilityFacility">
+		select responsibility_facilitiy.member_code, holding_facility.facility_code,holding_facility.facility_name
+		from holding_facility, responsibility_facilitiy
+		where holding_facility.facility_code = responsibility_facilitiy.facility_code
+		and responsibility_facilitiy.member_code=#{member_code}
+	</select>
+	<!-- 관리인의 당당 업무 불러오기 -->
+	<select id="selectResponsibility_task" parameterType="String" resultType="responsibilityTask">
+		select 
+		responsibility_task.task_code,responsibility_task.member_code,necessary_task.task_contents
+		from 
+		responsibility_task, necessary_task
+		where responsibility_task.task_code = necessary_task.task_code
+		and responsibility_task.member_code=#{member_code}
+	</select>
+	
+	<!-- 관리인이 작성한 일지 수 -->
+	<select id="selectJournalCount" parameterType="String" resultType="int">
+		select count(*)
+		from journal
+		where member_code = #{member_code}
+	</select>
+	
+	<select id="selectCommunityReplyRequest" resultType="communityReq" parameterType="String">
+		select member.member_name, reply.reply_code
+		from member join reply on member.member_code = reply.member_code
+        where member.member_code = #{member_code}
+	</select>
+	
+	<select id="selectMemberAllByCode" resultType="member" parameterType="String">
+		select * from
+		member
+		where member_code = #{member_code}
 	</select>
 
 </mapper>

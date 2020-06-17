@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Reply-Mapper">
+	
+	<update id="mobileReplyWrite" parameterType="reply">
+		insert into 
+			reply 
+		(reply_code, member_code, reply_contents, reply_reg_date, board_code, board_sort_code)
+			values
+		('rep' || to_char(sysdate,'yyyymmdd') || reply_seq.nextval, #{member_code}, #{reply_contents}, sysdate, #{board_code},#{board_sort_code})
+	</update>
+	
+	<select id="mobileReply" resultType="reply" parameterType="String">
+		select 
+		* 
+		from 
+		reply
+		where board_code = #{board_code}
+		order by reply_reg_date desc
+	</select>
+	
+	<delete id="mobileReplyDelete" parameterType="String">
+		delete 
+		from
+		reply
+		where reply_code = #{reply_code}
+	</delete>
+	
+	<update id="mobileReplyModify" parameterType="reply">
+		update 
+		reply
+		set
+		reply_contents = #{reply_contents}
+		where reply_code = #{reply_code}
+	</update>
+	
+	<select id="mobileReplyList" resultType="reply" parameterType="String">
+		select member.member_name, reply.* from
+        member join reply on member.member_code = reply.member_code
+        where reply.board_code = #{board_code}
+        and reply.reply_up_code is null
+        order by reply_reg_date desc
+	</select>
+	
+	<select id="mobileReplyCnt" resultType="int" parameterType="String">
+		select
+		count(*)
+		from
+		reply
+		where board_code = #{board_code}
+	</select>
+	
+	<select id="mobileReplyUpCode" resultType="communityReq">
+		select member.member_name, reply.* from
+        member join reply on member.member_code = reply.member_code
+        where reply.reply_up_code is not null
+        order by reply_reg_date desc
+	</select>
+	
+	<update id="mobileReplyResRegist" parameterType="reply">
+		insert into 
+			reply 
+		(reply_code, member_code, reply_contents, reply_reg_date, board_code, reply_up_code, board_sort_code)
+			values
+		('rep' || to_char(sysdate,'yyyymmdd') || reply_seq.nextval, #{member_code}, #{reply_contents}, sysdate, #{board_code}, #{reply_up_code}, #{board_sort_code})
+	</update>
+	
+</mapper>

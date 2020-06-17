@@ -1,0 +1,618 @@
+package com.bms.controller.member;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.bms.dto.facility.FacilityVO;
+import com.bms.dto.facility.ResponsibilityFacilityVO;
+import com.bms.dto.item.ItemVO;
+import com.bms.dto.member.CareerVO;
+import com.bms.dto.member.MemberVO;
+import com.bms.dto.member.ResidentVO;
+import com.bms.dto.member.SuperintendentVO;
+import com.bms.dto.menu.MenuVO;
+import com.bms.dto.task.ResponsibilityTaskVO;
+import com.bms.dto.task.TaskVO;
+import com.bms.request.paging.SearchCriteria;
+import com.bms.service.facility.FacilityService;
+import com.bms.service.member.MemberService;
+import com.bms.service.menu.MenuService;
+import com.bms.service.task.TaskService;
+
+import net.sf.json.JSONArray;
+
+@Controller
+@RequestMapping("/member")
+public class MemberController {
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private MenuService menuService;
+	
+	@Autowired
+	private TaskService taskService;
+	
+	@Autowired
+	private FacilityService facilityService;
+	
+	@Resource(name="memberPicturePath")
+	private String picturePath;
+	
+	String fileName;
+	
+	@RequestMapping(value="/resident_management/owner", method=RequestMethod.GET)
+	public ModelAndView resident_management(ModelAndView mnv, HttpServletResponse response)throws Exception{
+		String url = "/member/residentList.owner";
+		
+		List<MenuVO> menuList1 = null;
+		List<MenuVO> menuList2 = null;
+		List<MenuVO> menuList3 = null;
+		List<MenuVO> menuList4 = null;
+		
+		try {
+			
+			menuList1 = menuService.selectUnderMenu("MENU01");
+			menuList2 = menuService.selectUnderMenu("MENU02");
+			menuList3 = menuService.selectUnderMenu("MENU03");
+			menuList4 = menuService.selectUnderMenu("MENU04");
+			
+		}catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		/*response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.println("<script>");
+		out.println("mainframe.location.reload();$('#mainframe').attr('src', tt+ '/test');");
+		out.println("<script>");*/
+
+		mnv.addObject("menuList1", menuList1);
+		mnv.addObject("menuList2", menuList2);
+		mnv.addObject("menuList3", menuList3);
+		mnv.addObject("menuList4", menuList4);
+		mnv.setViewName(url);
+		
+		
+		return mnv;
+		
+		
+	}
+	@RequestMapping(value="/checkId", method=RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<Map<String, Boolean>> checkId(HttpServletRequest request, HttpServletResponse response, String id)throws Exception{
+		ResponseEntity<Map<String, Boolean>> entity = null;
+		Map<String, Boolean> result = new HashMap<String, Boolean>();
+		try {
+			MemberVO member = (MemberVO) memberService.getMember(id);
+			if(member != null) {
+				result.put("result", false);
+			}else {
+				result.put("result", true);
+			}
+			entity = new ResponseEntity<Map<String, Boolean>>(result, HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<Map<String, Boolean>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return entity;
+		
+	}
+	
+	@RequestMapping(value="/resident_management/owner/test")
+	public ModelAndView getResidentList(Model model, HttpSession session,SearchCriteria cri, ModelAndView mnv)throws Exception{
+		// 여기에 입주자 리스트
+		String url = "/member/residentList";
+		
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		Map<String, Object> dataMap = memberService.getResidentList(cri);
+		
+		mnv.addAllObjects(dataMap);
+		mnv.addObject("loginUser", loginUser);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value="/superindendent_management/owner/test")
+	public ModelAndView getSuperIntendentList(HttpSession session, SearchCriteria cri, ModelAndView mnv)throws Exception{
+		// 여기에 관리인 리스트를 출력
+		String url = "/member/superindendentList";
+		
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		Map<String, Object> dataMap = memberService.getSuperintendentList(cri);
+		
+		mnv.addAllObjects(dataMap);
+		mnv.addObject("loginUser", loginUser);
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@RequestMapping(value="/superindendent_management/owner", method=RequestMethod.GET)
+	public ModelAndView manager_management(ModelAndView mnv)throws Exception{
+		String url = "/member/superindendentList.owner";
+		
+		List<MenuVO> menuList1 = null;
+		List<MenuVO> menuList2 = null;
+		List<MenuVO> menuList3 = null;
+		List<MenuVO> menuList4 = null;
+		
+		try {
+			
+			menuList1 = menuService.selectUnderMenu("MENU01");
+			menuList2 = menuService.selectUnderMenu("MENU02");
+			menuList3 = menuService.selectUnderMenu("MENU03");
+			menuList4 = menuService.selectUnderMenu("MENU04");
+			
+		}catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+
+		mnv.addObject("menuList1", menuList1);
+		mnv.addObject("menuList2", menuList2);
+		mnv.addObject("menuList3", menuList3);
+		mnv.addObject("menuList4", menuList4);
+		mnv.setViewName(url);
+		
+		
+		return mnv;
+		
+		
+	}
+	
+	/*@RequestMapping(value="/superindendent_management/regist", method=RequestMethod.GET)
+	public String registForm()throws Exception{
+		String url = "member/regist";
+		
+		return url;
+	}*/
+	
+	@RequestMapping(value="/picture",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> picture(@RequestParam("pictureFile") MultipartFile multi, 
+										  String oldPicture) throws Exception{
+		
+		ResponseEntity<String> entity=null;
+		String result="";
+		HttpStatus status=null;
+		
+		/* 파일유무확인 */
+		if (multi.isEmpty()) {			
+			result="파일이 없습니다.!";		
+			
+			
+//			int count = (int)Math.round(Math.random()*17)+1;
+//			
+//			File downloadFile = new File(picturePath);
+//			FileInputStream inStream = new FileInputStream("classpath:/resources/images/animal/a"+count+".jpg");
+//			 String oriFilePath = "classpath:/resources/images/animal/a"+count+".jpg";
+//		        //복사될 파일경로
+//		        String copyFilePath = picturePath;
+//		        
+//		        //파일객체생성
+//		        File oriFile = new File(oriFilePath);
+//		        //복사파일객체생성
+//		        File copyFile = new File(copyFilePath);
+//		        
+//		        try {
+//		            
+//		            FileInputStream fis = new FileInputStream(oriFile); //읽을파일
+//		            
+//		            FileOutputStream fos = new FileOutputStream(copyFile+"/"+UUID.randomUUID().toString().replace("-", "")+".jpg"); //복사할파일
+//		            
+//		            int fileByte = 0; 
+//		            // fis.read()가 -1 이면 파일을 다 읽은것
+//		            while((fileByte = fis.read()) != -1) {
+//		                fos.write(fileByte);
+//		            }
+//		            //자원사용종료
+//		            fis.close();
+//		            fos.close();
+//		            
+//		        } catch (FileNotFoundException e) {
+//		            // TODO Auto-generated catch block
+//		            e.printStackTrace();
+//		        } catch (IOException e) {
+//		            // TODO Auto-generated catch block
+//		            e.printStackTrace();
+//		        }
+//			
+			
+			
+//			status=HttpStatus.BAD_REQUEST;
+			status=HttpStatus.OK;
+		}else 
+		/* 용량제한 5MB */
+		if (multi.getSize() > 1024 * 1024 * 5) {			
+			result="용량초과 입니다";			
+			status=HttpStatus.BAD_REQUEST;
+		}else{
+			/* 파일저장폴더설정 */
+			String uploadPath = picturePath;
+			// 업로드path를 멤버코드 폴더로 하기위해 
+			// 서비스에서 시퀀스 currentval 가져와서 +1한거를 담아둔다. +1 안해도되나봐
+			int seq = memberService.selectMemberSeqCurrnt();
+			String memcod = "mem"+seq;
+			uploadPath += "\\"+memcod;
+			
+			fileName = UUID.randomUUID().toString().replace("-", "")+".jpg";			
+			File storeFile = new File(uploadPath,fileName);
+			
+			if(!storeFile.exists()) {
+				storeFile.mkdirs();
+			}
+			// local HDD 에 저장.
+			multi.transferTo(storeFile);
+			
+			if(!oldPicture.isEmpty()){
+				File oldFile = new File(uploadPath,oldPicture);
+				if (oldFile.exists()) {
+					oldFile.delete();
+				}
+			}
+			
+			result=fileName;
+			status=HttpStatus.OK;
+			
+		}
+		return new ResponseEntity<String>(result,status);
+	}
+	
+	
+	
+	@RequestMapping("/getPicture")
+	@ResponseBody
+	public ResponseEntity<byte[]> getPicture(String picture, String member_code)throws Exception{
+		//System.out.println("Controller /getPicture");
+		//System.out.println("membercode : >>>>>>" + member_code);
+		InputStream in=null;
+		ResponseEntity<byte[]> entity=null;
+		String imgPath = this.picturePath;
+		imgPath += "\\"+member_code;
+		// path가.. 각자의 memcode 폴더안에들어있으니까 memcode를 불러와야겠네
+		try{
+			
+			//in=new FileInputStream(imgPath+File.separator+picture);
+			in=new FileInputStream(new File(imgPath,picture));
+			
+			entity=new ResponseEntity<byte[]>(IOUtils.toByteArray(in),HttpStatus.CREATED);
+		}catch(Exception e){
+			//e.printStackTrace();
+			entity=new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}finally{
+			in.close();
+		}
+		
+		//System.out.println(entity.toString());
+		return entity;
+	}
+	
+	@RequestMapping(value="/addResident" , method=RequestMethod.GET)
+	public String addResidentForm(HttpSession session,Model model) throws Exception{
+		String url = "member/addResident";
+		MemberVO owner = (MemberVO) session.getAttribute("loginUser");
+		model.addAttribute("owner", owner);
+		
+		return url;
+	}
+	//==============================================================================
+	@RequestMapping(value="/addResident", method=RequestMethod.POST)
+	public ModelAndView addResidentPost(MemberVO member,ResidentVO resident,String enabledStr,ModelAndView mnv, HttpSession session) throws Exception{
+		String url = "member/regist_success";
+		System.out.println("Controller addResident");
+		System.out.println("vo로 받은 abled : >>>" + resident.getMember_enabled());
+		System.out.println("string으로 받은 abled : >>>>" + enabledStr);
+		try {
+			
+			if(fileName==null||fileName.equals("")) {
+				member.setMember_picture("");
+			}else {
+				member.setMember_picture(fileName);
+			}
+			
+			if(enabledStr==null) {
+				resident.setMember_enabled(0);
+			}else {
+				resident.setMember_enabled(1);
+			}
+			
+		System.out.println("memberVo : >>>" + member.toString());
+		System.out.println("residentVo : >>>" + resident.toString());
+			
+			memberService.insertMember(member);// 공통
+			memberService.insertResident(resident); // 관리자인서트
+			
+		}catch(Exception e) {
+			url = "member/regist_fail";
+			e.printStackTrace();
+		}
+		
+		mnv.addObject("resident", resident);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	//==============================================================================
+	
+	@RequestMapping(value="/addSuperintendent" , method=RequestMethod.GET)
+	public String addSuperintendentForm(HttpSession session,Model model) throws Exception{
+		String url = "member/addSuperintendent";
+		MemberVO owner = (MemberVO) session.getAttribute("loginUser");
+		model.addAttribute("owner", owner);
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/addSuperintendent", method=RequestMethod.POST)
+	public ModelAndView addSuperintendentPost(MemberVO member,SuperintendentVO superintendent,ModelAndView mnv, HttpSession session) throws Exception{
+		//System.out.println("Controller addSuperintendent POST");
+		String url = "member/regist_success";
+		//MemberVO owner = (MemberVO) session.getAttribute("loginUser");
+		
+		
+		
+		try {
+			member.setMember_picture(fileName);
+			//System.out.println(stock.getItem_picture()+">>>>>>>>>>>>>>"); // null
+			//System.out.println("member.toString : >>>>>>>" + member.toString());
+			memberService.insertMember(member);// 공통
+			
+			// 인서트 된애를찾아야해- 어떻게찾지...
+			//...???
+			
+			//System.out.println("새로 넣을 member.getMember_code() : >>>" + member.getMember_code());
+			//System.out.println("superintendent.toString() : >>>>>>>>>>>>>" + superintendent.toString());
+			memberService.insertSuperintendent(superintendent); // 관리자인서트
+			// 이렇게해도 되나????
+		}catch(Exception e) {
+			url = "member/regist_fail";
+			e.printStackTrace();
+		}
+		
+		//System.out.println("owner : >>>>>>>>" + owner.getMember_code());
+		mnv.addObject("superintendent", superintendent);
+		//mnv.addObject("owner", owner);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value="/detailResident" , method=RequestMethod.GET)
+	public String detailResidentForm(Model model,String member_code) throws Exception{
+		String url = "member/detailResident";
+		
+		ResidentVO resident = memberService.selectResidentByCode(member_code);
+		model.addAttribute("resident",resident);
+	
+		return url;
+	}
+	@RequestMapping(value="/modifyResident" , method=RequestMethod.GET)
+	public String modifyResidentForm(Model model,String member_code,HttpSession session) throws Exception{
+		String url = "member/modifyResident";
+		
+		ResidentVO resident = memberService.selectResidentByCode(member_code);
+        
+		model.addAttribute("resident",resident);
+		
+		return url;
+	}
+	@RequestMapping(value="/modifyResident",method=RequestMethod.POST)
+	public String modifyResidentPost(Model model,String member_code,String member_significant, String enabledStr) throws Exception{
+		
+		
+		String url = "member/modifyResident_success";
+		
+		System.out.println("Controller modifyResident");
+		System.out.println("enabledStr : >>>" + enabledStr);
+		// 수정시킬 입주자
+		ResidentVO resident = memberService.selectResidentByCode(member_code);
+		
+		/*if(enabledStr.equals("on")) {
+			resident.setMember_enabled(1);
+		}else {
+			resident.setMember_enabled(0);
+		}
+		*/
+		if(enabledStr==null) {
+			resident.setMember_enabled(0);
+		}else {
+			resident.setMember_enabled(1);
+		}
+		
+		if(member_significant!=null) {
+			resident.setMember_significant(member_significant);
+		}
+		memberService.updateResident(resident);
+
+		model.addAttribute("member",resident);
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/detailSuperintendent" , method=RequestMethod.GET)
+	public String detailSuperintendentForm(Model model,String member_code) throws Exception{
+		String url = "member/detailSuperintendent";
+		
+		SuperintendentVO superintendent = memberService.selectSuperintendentByCode(member_code);
+		
+		
+		List<CareerVO> career = memberService.selectCareer(member_code);
+		List<ResponsibilityFacilityVO> responsibilityFacility = memberService.selectResponsibilityFacility(member_code);
+		List<ResponsibilityTaskVO> responsibilityTask = memberService.selectResponsibilityTask(member_code);
+		
+		int journalCount = memberService.selectJournalCount(member_code);
+		
+		model.addAttribute("superintendent",superintendent);
+		model.addAttribute("career",career);
+		model.addAttribute("responsibilityFacility",responsibilityFacility);
+		model.addAttribute("responsibilityTask",responsibilityTask);
+		model.addAttribute("journalCount", journalCount);
+		
+		return url;
+	}
+	@RequestMapping(value="/modifySuperintendent" , method=RequestMethod.GET)
+	public String modifySuperintendentForm(Model model,String member_code,HttpSession session) throws Exception{
+		String url = "member/modifySuperintendent";
+		
+		SuperintendentVO superintendent = memberService.selectSuperintendentByCode(member_code);
+		List<CareerVO> career = memberService.selectCareer(member_code);
+		List<ResponsibilityFacilityVO> responsibilityFacility = memberService.selectResponsibilityFacility(member_code);
+		List<ResponsibilityTaskVO> responsibilityTask = memberService.selectResponsibilityTask(member_code);
+		int journalCount = memberService.selectJournalCount(member_code);
+		MemberVO owner = (MemberVO) session.getAttribute("loginUser");
+		
+		List<FacilityVO> facilityList = facilityService.selectHoldingFacilityList(owner.getMember_code());
+		
+		JSONArray facilityListJson = JSONArray.fromObject(facilityList);
+        model.addAttribute("facilityJson", facilityListJson);
+		
+        
+		List<TaskVO> taskList = taskService.selectNecessaryTask(owner.getMember_code());
+		JSONArray taskListJson = JSONArray.fromObject(taskList);
+        model.addAttribute("taskListJson", taskListJson);
+        
+		model.addAttribute("superintendent",superintendent);
+		model.addAttribute("career",career);
+		model.addAttribute("responsibilityFacility",responsibilityFacility);
+		model.addAttribute("responsibilityTask",responsibilityTask);
+		model.addAttribute("journalCount", journalCount);
+		model.addAttribute("facilityList",facilityList);
+		model.addAttribute("taskList",taskList);
+		
+		//System.out.println("JsonFacility : >>>>>>" + facilityListJson.toString());
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/modifySuperintendent",method=RequestMethod.POST)
+	public String modifySuperintendentPost(Model model,String member_code,String superintendent_pay,String superintendent_significant ,
+			/*@RequestParam("facility_codes")*/String[] facility_codes,
+			/*@RequestParam("task_codes")*/String[] task_codes,
+			/*@RequestParam("before_facility_codes")*/String[] before_facility_codes,
+			/*@RequestParam("before_task_codes")*/String[] before_task_codes) throws Exception{
+		
+		
+		String url = "member/modifySuperintendent_success";
+		
+		System.out.println("Controller modifySuperintendent");
+		
+//		for(int i = 0; i <facility_codes.length;i++) {
+//			System.out.println("facility_codes >>"+facility_codes[i]);
+//		}
+//		for(int i = 0; i <task_codes.length;i++) {
+//			System.out.println("task_codes >>"+task_codes[i]);
+//		}
+//		System.out.println(">>>>>>>>>>>>>>>" + member_code);
+//		System.out.println(">>>>>>>>>>>>>>>" + superintendent_pay);
+//		System.out.println(">>>>>>>>>>>>>>>" + superintendent_significant);
+		
+		// 수정시킬 관리인
+		SuperintendentVO superintendent = memberService.selectSuperintendentByCode(member_code);
+		if(superintendent_pay!=null) {
+			superintendent.setSuperintendent_pay(Integer.parseInt(superintendent_pay));
+		}
+		if(superintendent_significant!=null) {
+			superintendent.setSuperintendent_significant(superintendent_significant);
+		}
+		memberService.updateSuperintendent(superintendent);
+		
+		// 담당 시설 delete, insert
+		// 먼저 삭제(이전에있던거 전부삭제)
+		if(before_facility_codes!=null) {
+			for(int i=0; i<before_facility_codes.length;i++) {
+				facilityService.deleteResponsibilityFacility(before_facility_codes[i]);
+			}
+		}
+		
+		if(facility_codes!=null) {
+			for(int i=0; i<facility_codes.length;i++) {
+				facilityService.deleteResponsibilityFacility(facility_codes[i]);
+			}
+			
+			for(int i=0; i<facility_codes.length;i++) {
+				ResponsibilityFacilityVO rf = new ResponsibilityFacilityVO();
+				rf.setMember_code(member_code);
+				rf.setFacility_code(facility_codes[i]);
+				facilityService.insertResponsibilityFacility(rf);
+			}
+		}
+		
+		// 담당업무
+		if(before_task_codes!=null) {
+			for(int i=0; i<before_task_codes.length; i++) {
+				taskService.deleteResponsibilityTask(before_task_codes[i]);
+			}	
+		}
+		
+		if(task_codes!=null) {
+			for(int i=0; i<task_codes.length; i++) {
+				taskService.deleteResponsibilityTask(task_codes[i]);
+			}
+			for(int i=0; i<task_codes.length;i++) {
+				ResponsibilityTaskVO rt = new ResponsibilityTaskVO();
+				rt.setMember_code(member_code);
+				rt.setTask_code(task_codes[i]);
+				taskService.insertResponsibilityTask(rt);
+			}
+			
+		}
+		model.addAttribute("member",superintendent);
+		
+		return url;
+	}
+	@RequestMapping(value="/deleteSuperintendent",method=RequestMethod.GET)
+	public String deleteSuperintendentPost(String member_code, Model model) throws Exception{
+		String url="member/remove_success";
+		
+		SuperintendentVO superintendent =  memberService.selectSuperintendentByCode(member_code);
+		model.addAttribute("member",superintendent);
+		
+		memberService.deleteMember(member_code);
+		memberService.deleteSuperintendent(member_code);
+		return url;
+	}
+	@RequestMapping(value="/deleteResident",method=RequestMethod.GET)
+	public String deleteResidentPost(String member_code, Model model) throws Exception{
+		String url="member/remove_success";
+		
+		ResidentVO resident =  memberService.selectResidentByCode(member_code);
+		model.addAttribute("member",resident);
+		
+		memberService.deleteMember(member_code);
+		memberService.deleteResident(member_code);
+		return url;
+	}
+}

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>관리인 관리</title>
+
+<link
+	href="<%=request.getContextPath() %>/resources/css/schedule/css/bootstrap.min.css"
+	rel="stylesheet">
+<link
+	href="<%=request.getContextPath() %>/resources/css/schedule/css/animate.css"
+	rel="stylesheet">
+<link
+	href="<%=request.getContextPath() %>/resources/css/schedule/css/style.css"
+	rel="stylesheet">
+
+<style>
+#addSuperintendentBtn {
+	display: inline;
+	margin-bottom: 20px;
+	margin-right: 20px;
+}
+
+#searchSelect {
+	display: inline;
+	width: 120px;
+	margin-right: 10px;
+	/* 		float : right; */
+}
+
+#keword {
+	display: inline;
+	width: 300px;
+	margin-right: 10px;
+	/* 		float : right; */
+}
+
+#searchBtn {
+	/* 		float : right; */
+	margin-right: 20px;
+}
+
+#searchWrapper {
+	float: right;
+}
+
+/* .pictureView{
+	background-position:center;
+	background-size:cover;
+	background-repeat:no-repeat;
+	}
+	 */
+#imgprofile {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+</style>
+</head>
+<body>
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<button id="addSuperintendentBtn" type="button"
+			class="btn btn-w-m btn-danger"
+			onclick="OpenWindow('<%=request.getContextPath()%>/facility_stock/facility_management/regist','','850','620');">시설
+			등록</button>
+
+		<div id=searchWrapper>
+			<select class="form-control m-b" id="searchType" name="searchType">
+				<option value="w" ${pageMaker.cri.searchType eq 'w' ? 'selected': '' }>전체</option>
+				<option value="n" ${pageMaker.cri.searchType eq 'n' ? 'selected': '' }>이름</option>
+			</select> 
+			<input id="keword" type="text" class="form-control form-control-sm" value="${param.keyword}" name="keyword" placeholder="검색어를 입력하세요.">
+			<button id="searchBtn" type="submit" class="btn btn-sm btn-primary">검색</button>
+		</div>
+		<div class="row">
+
+			<c:forEach items="${facilityList}" var="facilityList">
+			
+				<div class="col-md-3">
+					<div class="ibox">
+						<div class="ibox-content product-box">
+						<input type="hidden" name="picture">
+							<div class="product-imitation" id="pictureView">
+							
+							</div>
+							<div class="product-desc">
+
+								<a href="#" class="product-name">{facilityList.name}</a>
+
+								<div class="m-t text-righ">
+
+									<a onclick="OpenWindow('<%=request.getContextPath()%>/facility_stock/facility_management/detail?facility_code=${faciliyList.facility_code}','','850','620');" class="btn btn-xs btn-outline btn-primary">상세정보
+										<i class="fa fa-long-arrow-right"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</c:forEach>
+			<div class="card-footer">
+				<%@ include file="/WEB-INF/views/pagination/pagination.jsp"%>
+			</div>
+		</div>
+	</div>
+
+	<form id="jobForm">
+		<input type='hidden' name="page" value="${pageMaker.cri.page}" /> <input
+			type='hidden' name="perPageNum" value="${pageMaker.cri.perPageNum}" />
+		<input type='hidden' name="searchType"
+			value="${pageMaker.cri.searchType }" /> <input type='hidden'
+			name="keyword" value="${pageMaker.cri.keyword }" />
+	</form>
+	<!-- Mainly scripts -->
+	<script
+		src="<%=request.getContextPath() %>/resources/js/schedule/js/jquery-3.1.1.min.js"></script>
+	<script
+		src="<%=request.getContextPath() %>/resources/js/schedule/js/popper.min.js"></script>
+	<script
+		src="<%=request.getContextPath() %>/resources/js/schedule/js/bootstrap.js"></script>
+	<script
+		src="<%=request.getContextPath() %>/resources/js/schedule/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+	<script
+		src="<%=request.getContextPath() %>/resources/js/schedule/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+	<!-- Custom and plugin javascript -->
+	<script
+		src="<%=request.getContextPath() %>/resources/js/schedule/js/inspinia.js"></script>
+	<script
+		src="<%=request.getContextPath() %>/resources/js/schedule/js/plugins/pace/pace.min.js"></script>
+	<script>
+	
+
+	
+	
+	$(document).ready(function(){
+		/* $('div.pictureView').next('input').val(); */	
+		
+	
+	})
+	
+	function OpenWindow(UrlStr, WinTitle, WinWidth, WinHeight) {
+		winleft = (screen.width - WinWidth) / 2;
+		wintop = (screen.height - WinHeight) / 2;
+		var win = window.open(UrlStr , WinTitle , "scrollbars=yes,width="+ WinWidth +", height="+ WinHeight +", top="+ wintop +", left=" + winleft + ", resizable=yes, status=yes"  );
+	    win.focus() ; 
+	}	
+	
+	var imageURL = "<%=request.getContextPath()%>/facility_stock/facility_management/getPicture?picture=${facilityList.facility_picture}";
+	$('div#pictureView').css({'background-image':'url('+imageURL+')',
+							  'background-position':'center',
+							  'background-size':'cover',
+							  'background-repeat':'no-repeat'
+	});
+	
+	$('#searchBtn').on('click',function(e){
+		
+		var jobForm=$('#jobForm');
+		jobForm.find("[name='page']").val(1);
+		jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());
+		jobForm.find("[name='keyword']").val($('input[name="keyword"]').val());
+		
+		jobForm.attr("action","<%=request.getContextPath()%>/facility_stock/facility_supply_management/owner/test").attr("method","get");
+		jobForm.submit();
+	});
+	
+	function searchList_go(page){
+		
+		var jobForm=$('#jobForm');
+		jobForm.find("[name='page']").val(page);
+		jobForm.find("[name='searchType']").val($('select[name="searchType"]').val());
+		jobForm.find("[name='keyword']").val($('div.input-group>input[name="keyword"]').val());	
+		jobForm.attr("action","<%=request.getContextPath()%>/facility_stock/facility_supply_management/owner/test").attr("method","post");
+		jobForm.submit();
+	}
+
+	</script>
+</body>
+</html>

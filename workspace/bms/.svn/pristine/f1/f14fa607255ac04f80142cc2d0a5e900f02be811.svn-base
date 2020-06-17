@@ -1,0 +1,36 @@
+package com.bms.dao.stock;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.bms.dto.stock.StockVO;
+
+public class StockDaoImpl implements StockDao {
+
+	@Autowired
+	private SqlSession sqlSession;
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+	}
+	
+	@Override
+	public List<StockVO> selectStockList() throws SQLException {
+		List<StockVO> stockList = sqlSession.selectList("Stock-Mapper.selectStockList");
+		return stockList;
+	}
+
+	@Override
+	public void insertStock(StockVO stock) throws SQLException {
+		sqlSession.update("Stock-Mapper.insertStock", stock);
+	}
+
+	@Override
+	public int selectHoldingItemCodeSequence() throws SQLException {
+		int sequence = sqlSession.selectOne("Stock-Mapper.selectHoldingItemCodeSequence");
+		return sequence;
+	}
+
+}

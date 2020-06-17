@@ -1,0 +1,36 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+</head>
+<body text="000000" bgcolor="ffffff" style="margin:1px;">
+<!-- 전체 div 사이즈 353px 임 -->
+<!-- 타이틀 바 사이즈 -->
+
+<table border="0" style="font-size:9pt; width:100%;" cellspacing=0 cellpadding=0>
+	<tr>
+		<td valign="middle" align=center width=110>
+			<tr><td background="<%=request.getContextPath()%>/resources/images/etc_infor_vline.gif" height=1></td></tr>
+			<tr height=22>
+				<td>&nbsp;<img src="<%=request.getContextPath()%>/resources/images/etc_infor_dot.gif" border=0>&nbsp;휴대폰 : <a style="color:black;" href="tel:${company.company_charge_phone }"> ${company.company_charge_phone}</a></td>
+			</tr>
+			<tr><td background="<%=request.getContextPath()%>/resources/images/etc_infor_vline.gif" height=1></td></tr>
+			<tr height=22>
+				<td>&nbsp;<img src="<%=request.getContextPath()%>/resources/images/etc_infor_dot.gif" border=0>&nbsp;이메일 : <a style="color:black;" href="mailto:${company.company_charge_email}">${company.company_charge_email}</a></td>
+			</tr>
+			<tr><td background="<%=request.getContextPath()%>/resources/images/etc_infor_vline.gif" height=1></td></tr>
+			<tr height=22>
+				<td>&nbsp;<img src="<%=request.getContextPath()%>/resources/images/etc_infor_dot.gif" border=0>&nbsp;회사주소 : ${company.company_address}</td>
+			</tr>
+			
+		</td>
+	</tr>
+	</table>
+</body>
+</html>

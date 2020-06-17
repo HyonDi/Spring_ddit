@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- properties Path 경로 -->
+	<!-- stock.picture -->
+	<bean id="picturePath" class="java.lang.String">
+		<constructor-arg value="${stock.picture.upload}" />
+	</bean>
+	<!-- member.picture -->
+	<bean id="memberPicturePath" class="java.lang.String">
+		<constructor-arg value="${member.picture.upload}" />      
+	</bean>
+
+	<!--  DAO -->
+	<bean id="mypageDao" class="com.bms.dao.mypage.MypageDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="memberDao" class="com.bms.dao.member.MemberDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="menuDao" class="com.bms.dao.menu.MenuDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="scheduleDao" class="com.bms.dao.schedule.ScheduleDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="noticeDao" class="com.bms.dao.notice.NoticeDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="communityDao" class="com.bms.dao.community.CommunityDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="suggestionDao" class="com.bms.dao.suggestion.SuggestionDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="stockDao" class="com.bms.dao.stock.StockDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="companyDao" class="com.bms.dao.company.CompanyDaoImpl" p:sqlSession-ref="sqlSession" />
+	<!-- Service -->
+	<bean id="mypageService" class="com.bms.service.mypage.MypageServiceImpl" p:mypageDao-ref="mypageDao" />
+	<bean id="memberService" class="com.bms.service.member.MemberServiceImpl" p:memberDao-ref="memberDao" />
+	<bean id="menuService" class="com.bms.service.menu.MenuServiceImpl" p:menuDao-ref="menuDao"/>
+	<bean id="scheduleService" class="com.bms.service.schedule.ScheduleServiceImpl" p:scheduleDao-ref="scheduleDao"/>
+	<bean id="suggestionService" class="com.bms.service.suggestion.SuggestionServiceImpl" p:suggestionDao-ref="suggestionDao"/>
+	<bean id="stockService" class="com.bms.service.stock.StockServiceImpl" p:stockDao-ref="stockDao"/>
+	<bean id="companyService" class="com.bms.service.company.CompanyServiceImpl" p:companyDao-ref="companyDao" />
+
+	
+	<!-- mail -->
+	<bean id="emailSender" class="com.bms.util.MailSender" p:mailSender-ref="mailSender"/>
+	<bean id="noticeService" class="com.bms.service.notice.NoticeServiceImpl" p:noticeDao-ref="noticeDao" />
+	<bean id="communityService" class="com.bms.service.community.CommunityServiceImpl" p:communityDao-ref="communityDao"/>
+</beans>

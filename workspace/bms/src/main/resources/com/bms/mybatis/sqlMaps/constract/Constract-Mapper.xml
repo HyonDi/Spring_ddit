@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ConstractReq-Mapper">
+
+	<sql id="search">
+		<if test="searchType == 'tcw'.toString()">
+			and (
+			constract_kind like '%'||#{keyword}||'%'
+			or
+			constract_amount like '%'||#{keyword}||'%'
+			or
+			constract_type like '%'||#{keyword}||'%'						
+			)			
+		</if>
+	</sql>
+	
+	<select id="selectSearchConstractList" resultType="constractReq">
+		<![CDATA[
+			select
+			*
+			from
+			constract_details
+			where constract_code is not null 
+		]]>		  	
+			<include refid="search" />
+			order by constract_code desc
+		
+	</select>
+	
+	<select id="selectSearchConstractListCount" resultType="int">
+		<![CDATA[
+			select
+			count(*)
+			from
+			constract_details
+			where constract_code is not null  
+		]]>		  	
+			<include refid="search" />
+		
+	</select>
+	
+	<select id="mobileConstractList" resultType="constractReq" parameterType="String">
+		select constract_details.*, member.member_name
+		from constract_details, member
+        where constract_code is not null
+        and constract_details.member_code = member.member_code
+        and constract_details.constract_code = #{constract_code}
+	</select>
+
+</mapper>

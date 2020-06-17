@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Resident-Mapper">
+
+	<sql id="search">
+		<if test="searchType == 'tcw'.toString()">
+			and (
+			member.member_name like '%'||#{keyword}||'%'
+			or
+			member.member_phone like '%'||#{keyword}||'%'
+			or
+			member.member_address like '%'||#{keyword}||'%'						
+			)			
+		</if>
+	</sql>
+
+	<select id="selectSearchResidentList" resultType="resident">
+		<![CDATA[
+			select
+			member.*, member_resident.member_enabled, member_resident.member_regdate, member_resident.member_significant
+			from
+			member join member_resident on (member.member_code = member_resident.member_code)
+			and member.member_code is not null
+            and member_resident.member_code is not null
+			and member.member_authority = 'resident'
+		]]>		  	
+			<include refid="search" />
+			order by member.member_code asc
+		
+	</select>
+	
+	<select id="selectSearchResidentListCount" resultType="int">
+		<![CDATA[
+			select
+			count(*)
+			from
+			member
+			where member_code is not null
+			and member_authority = 'resident'
+		]]>		  	
+			<include refid="search" />
+		
+	</select>
+	
+	<select id="selectResidentByCode" resultType="resident" parameterType="String">
+		
+			select
+			member.*, member_resident.member_enabled, member_resident.member_regdate, member_resident.member_significant
+			from
+			member join member_resident on (member.member_code = member_resident.member_code)
+			and member.member_code is not null
+            and member_resident.member_code is not null
+			and member.member_authority = 'resident'
+			and member.member_code = #{member_code}
+	
+	</select>
+
+</mapper>

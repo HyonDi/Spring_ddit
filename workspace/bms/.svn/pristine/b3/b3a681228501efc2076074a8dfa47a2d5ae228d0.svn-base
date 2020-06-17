@@ -1,0 +1,47 @@
+package com.bms.service.mypage;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.bms.dao.mypage.MypageDao;
+import com.bms.dto.member.MemberVO;
+
+public class MypageServiceImpl implements MypageService{
+	
+	@Autowired
+	private MypageDao mypageDao;
+	public void setMypageDao(MypageDao mypageDao) {
+		this.mypageDao = mypageDao;
+	}
+
+
+
+	@Override
+	public MemberVO getMember(String id) throws SQLException {
+		
+		MemberVO member = mypageDao.selectMemberById(id);
+		return member;
+	}
+
+
+
+	@Override
+	public void modify(MemberVO member) throws SQLException {
+
+		mypageDao.updateMember(member);
+			
+	}
+
+
+
+	@Override
+	public void remove(String id) throws SQLException {
+		
+		mypageDao.deleteMember(id);
+		
+	}
+
+}

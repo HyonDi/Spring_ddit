@@ -48,13 +48,20 @@
 		and schedule.schedule_istodolist=1
 	</select>
 	
-	<!--  6. 모든 관리인의 업무 일정 -->
-	<select id="SuperintendentSchedule" resultType="schedule">
-		select *
+	<!--  6. 모든 관리인의 업무 일정 -> 멤버업코드가 건물주인 관리인의 업무일정~!!!!! -->
+		<!-- select *
 		from schedule, my_schedule_sort_code , member_superintendent
 		where schedule.schedule_sort_code = my_schedule_sort_code.schedule_sort_code
 		and my_schedule_sort_code.member_code = member_superintendent.member_code
-		and my_schedule_sort_code.schedule_sort_name ='업무'
+		and my_schedule_sort_code.schedule_sort_name ='업무' -->
+		
+	<select id="SuperintendentSchedule" parameterType="String" resultType="schedule">
+		select *
+		from schedule, my_schedule_sort_code , member
+		where schedule.schedule_sort_code = my_schedule_sort_code.schedule_sort_code
+		and my_schedule_sort_code.member_code = member.member_code
+		and my_schedule_sort_code.schedule_sort_name ='*업무 일정*'
+        and member.member_up_code = #{member_up_code}--여기가 바뀌는 곳
 	</select>
 	
 	<!-- 7. 일정하나 뽑기 -->

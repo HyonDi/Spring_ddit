@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Manager-Mapper">
+
+	<sql id="search">
+		<if test="searchType == 'tcw'.toString()">
+			and (
+			member.member_name like '%'||#{keyword}||'%'
+			or
+			member.member_phone like '%'||#{keyword}||'%'
+			or
+			member.member_address like '%'||#{keyword}||'%'						
+			)			
+		</if>
+	</sql>
+
+	<select id="selectSearchManagerList" resultType="manager">
+		<![CDATA[
+			select
+			member.*, member_superintendent.superintendent_pay, member_superintendent.superintendent_significant
+			from
+			member join member_superintendent on (member.member_code = member_superintendent.member_code)
+			and member.member_code is not null
+            and member_superintendent.member_code is not null
+			and member.member_authority = 'manager'
+		]]>		  	
+			<include refid="search" />
+			order by member.member_code asc
+		
+	</select>
+	
+	<select id="selectSearchManagerListCount" resultType="int">
+		<![CDATA[
+			select
+			count(*)
+			from
+			member
+			where member_code is not null
+			and member_authority = 'resident'
+		]]>		  	
+			<include refid="search" />
+		
+	</select>
+	
+	<select id="selectManagerByCode" resultType="manager" parameterType="String">
+		
+			select
+			member.*, member_superintendent.superintendent_pay, member_superintendent.superintendent_significant
+			from
+			member join member_superintendent on (member.member_code = member_superintendent.member_code)
+			and member.member_code is not null
+            and member_superintendent.member_code is not null
+			and member.member_authority = 'manager'
+			and member.member_code = #{member_code}
+	
+	</select>
+
+</mapper>

@@ -1,0 +1,70 @@
+package com.bms.dao.stock;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.bms.dto.stock.StockVO;
+import com.bms.request.paging.SearchCriteria;
+
+public class StockDaoImpl implements StockDao {
+
+	@Autowired
+	private SqlSession sqlSession;
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+	}
+	
+	@Override
+	public List<StockVO> selectStockList() throws SQLException {
+		List<StockVO> stockList = sqlSession.selectList("Stock-Mapper.selectStockList");
+		return stockList;
+	}
+
+	@Override
+	public void insertStock(StockVO stock) throws SQLException {
+		sqlSession.update("Stock-Mapper.insertStock", stock);
+	}
+
+	@Override
+	public int selectHoldingItemCodeSequence() throws SQLException {
+		int sequence = sqlSession.selectOne("Stock-Mapper.selectHoldingItemCodeSequence");
+		return sequence;
+	}
+
+	@Override
+	public StockVO getStockByItemCode(String item_code) throws SQLException {
+		StockVO stock = sqlSession.selectOne("Stock-Mapper.getStockByItemCode", item_code);
+		return stock;
+	}
+
+	@Override
+	public void modifyStock(StockVO stock) throws SQLException {
+		sqlSession.update("Stock-Mapper.modifyStock", stock);
+	}
+
+	@Override
+	public void deleteStock(String item_code) throws SQLException {
+		sqlSession.update("Stock-Mapper.deleteStock", item_code);
+		
+	}
+
+	@Override
+	public List<StockVO> selectStockListCriteria(SearchCriteria cri) throws SQLException {
+		int offset = cri.getPageStartRowNum();
+		int limit = cri.getPerPageNum();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		List<StockVO> stockList = sqlSession.selectList("Stock-Mapper.selectSearchStockList", cri, rowBounds);
+		return stockList;
+	}
+
+	@Override
+	public int selectStockListCriteriaCount(SearchCriteria cri) throws SQLException {
+		int count = sqlSession.selectOne("Stock-Mapper.selectSearchStockListCount", cri);
+		return count;
+	}
+
+}

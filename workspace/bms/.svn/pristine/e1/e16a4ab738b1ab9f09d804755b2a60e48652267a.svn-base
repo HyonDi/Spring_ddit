@@ -1,0 +1,15 @@
+package com.bms.dao.stock;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.bms.dto.stock.StockVO;
+
+public interface StockDao {
+	//재고현황 리스트(페이지 아직미적용)
+	List<StockVO> selectStockList() throws SQLException;
+	//재고등록하기
+	void insertStock(StockVO stock) throws SQLException;
+	//item_code시퀀스 값 받아오기
+	int selectHoldingItemCodeSequence()throws SQLException;
+}

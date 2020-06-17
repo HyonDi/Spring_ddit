@@ -1,0 +1,114 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Bootstrap core CSS -->
+  <link href="<%=request.getContextPath()%>/resources/mobile/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="<%=request.getContextPath()%>/resources/mobile/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/mobile/vendor/simple-line-icons/css/simple-line-icons.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
+  <!-- Plugin CSS -->
+  <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/mobile/device-mockups/device-mockups.min.css">
+
+  <!-- Custom styles for this template -->
+  <link href="<%=request.getContextPath()%>/resources/mobile/css/new-age.min.css" rel="stylesheet">
+
+</head>
+
+	<body id="page-top">
+	
+	  <!-- Navigation -->
+	  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+	    <div class="container">
+	    	<a class="navbar-brand js-scroll-trigger" style="color:black; display:inline;" href="javascript:history.go(-1);"><ion-icon name="arrow-round-back" style="font-size: 30px; padding-right:20px" /></a>
+	    	<span style="font-weight: bold; font-size:20px;">개인정보수정</span>
+	    </div>
+	  </nav>
+	
+	  <section class="contact bg-light">
+          
+          
+	  </section>
+
+	
+	</body>
+	
+	  <!-- Bootstrap core JavaScript -->
+  <script src="<%=request.getContextPath()%>/resources/mobile/vendor/jquery/jquery.min.js"></script>
+  <script src="<%=request.getContextPath()%>/resources/mobile/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="<%=request.getContextPath()%>/resources/mobile/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="<%=request.getContextPath()%>/resources/mobile/js/new-age.min.js"></script>
+  
+  <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+	
+  <script>
+  function goSubmit(){
+		var form = $("form[id='modifyForm']").serialize();
+		
+		$.ajax({
+			url:"<%=request.getContextPath()%>/mypage/personal_information_modification/resident/test",
+			type:'post',
+			dataType:"text",
+			data : $('form').serialize(),
+			success:function(data){
+				if(data == "SUCCESS"){
+					alert("수정에 성공했습니다.");
+				}else{
+					alert("예상치 못한 오류로 수정하지 못하였습니다.");
+				}
+			},
+			error:function(){
+				alert("일시적 서버오류가 발생했습니다.");
+			}
+			
+		});
+		
+	};
+
+	function CheckID() {
+		var id = $('input[name="member_id"]');
+		if(!id.val()){
+			alert("아이디를 입력하세요.");
+			id.focus();
+			return;
+		}
+		
+		$.ajax({
+			url:"<%=request.getContextPath()%>/mypage/personal_information_modification/checkId",
+			type:"get",
+			data:{"id":id.val()},
+			dataType:"json",
+			success:function(data){
+				if(data.result){
+					$('input[name="checkID"]').attr("value", id.val());
+					alert("사용가능 합니다.");
+					return;
+				}else{
+					alert("중복입니다.");
+				}
+			},
+			error:function(data){
+				alert("서버오류로 인해 확인이 불가능 합니다.");
+			}
+		});
+	}
+  </script>
+</html>

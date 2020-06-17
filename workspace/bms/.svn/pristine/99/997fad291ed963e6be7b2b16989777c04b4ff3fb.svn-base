@@ -1,0 +1,59 @@
+package com.bms.controller.facility;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.bms.dto.menu.MenuVO;
+import com.bms.request.paging.SearchCriteria;
+import com.bms.service.facility.FacilityManageService;
+import com.bms.service.menu.MenuService;
+
+@Controller
+@RequestMapping("/facility_stock/facility_management/")
+public class FacilityManageController {
+	
+	@Autowired
+	private FacilityManageService facilityManageService;
+	public void setFacilityManageService(FacilityManageService facilityManageService) {
+		this.facilityManageService = facilityManageService;
+	}
+	
+	@Autowired
+	private MenuService menuService;
+	String fileName = "";
+	
+	@RequestMapping("owner")
+	public ModelAndView getItemMain_owner(ModelAndView mnv) throws Exception {
+		
+		String url = "facility/manage/list.owner";
+		List<MenuVO> menuList1 = menuService.selectUnderMenu("MENU01");
+		List<MenuVO> menuList2 = menuService.selectUnderMenu("MENU02");
+		List<MenuVO> menuList3 = menuService.selectUnderMenu("MENU03");
+		List<MenuVO> menuList4 = menuService.selectUnderMenu("MENU04");
+
+		mnv.addObject("menuList1", menuList1);
+		mnv.addObject("menuList2", menuList2);
+		mnv.addObject("menuList3", menuList3);
+		mnv.addObject("menuList4", menuList4);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping("owner/test")
+	public ModelAndView stockList(SearchCriteria cri, ModelAndView mnv)throws Exception{
+		String url = "facility/manage/list";
+		
+		Map<String, Object> dataMap = facilityManageService.selectSearchAllFacilityList(cri);
+		
+		mnv.addAllObjects(dataMap);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+}

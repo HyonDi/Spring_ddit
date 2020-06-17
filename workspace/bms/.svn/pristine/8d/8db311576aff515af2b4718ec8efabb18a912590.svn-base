@@ -1,0 +1,10 @@
+package com.bms.service.mypage;
+
+import java.sql.SQLException;
+
+import com.bms.dto.member.MemberVO;
+
+public interface MypageService {
+
+	MemberVO getMember(String id)throws SQLException;
+}

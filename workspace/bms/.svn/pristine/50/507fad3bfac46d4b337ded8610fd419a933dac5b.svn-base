@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>	
+	
+	<typeAliases>
+		<typeAlias type="java.lang.String" alias="str"/>
+		<typeAlias type="java.lang.Integer" alias="int"/>
+		<typeAlias type="com.bms.dto.member.MemberVO" alias="member"/>
+		<typeAlias type="com.bms.dto.notice.NoticeVO" alias="notice"/>
+		<typeAlias type="com.bms.dto.community.CommunityVO" alias="community"/>
+		<typeAlias type="com.bms.dto.menu.MenuVO" alias="menu"/>
+		<typeAlias type="com.bms.dto.mypage.PaymentVO" alias="payment"/>
+		<typeAlias type="com.bms.dto.mypage.ContractVO" alias="contract"/>
+		<typeAlias type="com.bms.dto.company.CompanyVO" alias="company"/>
+		<typeAlias type="com.bms.dto.schedule.ScheduleVO" alias="schedule"/>
+		<typeAlias type="com.bms.request.reply.CommunityReplyRequest" alias="communityReq"/>
+		<typeAlias type="com.bms.dto.manager.ManagerVO" alias="manager"/>
+		<typeAlias type="com.bms.dto.schedule.ScheduleSortCodeVO" alias="scheduleSortCode"/>
+		<typeAlias type="com.bms.dto.suggestion.SuggestionVO" alias="suggestion"/>
+		<typeAlias type="com.bms.dto.payment.PaymentReqVO" alias="paymentReq"/>
+		<typeAlias type="com.bms.dto.constract.ConstractReqVO" alias="constractReq"/>
+		<typeAlias type="com.bms.dto.reply.ReplyVO" alias="reply"/>
+		<typeAlias type="com.bms.request.schedule.SearchSchedule" alias="searchSchedule"/>
+		<typeAlias type="com.bms.dto.item.ItemVO" alias="item"/>
+		<typeAlias type="com.bms.dto.member.OwnerVO" alias="owner"/>
+		<typeAlias type="com.bms.dto.member.ResidentVO" alias="resident"/>
+		<typeAlias type="com.bms.dto.member.SuperintendentVO" alias="superintendent"/>
+		<typeAlias type="com.bms.dto.member.CareerVO" alias="career"/>
+		<typeAlias type="com.bms.dto.facility.ResponsibilityFacilityVO" alias="responsibilityFacility"/>
+		<typeAlias type="com.bms.dto.task.ResponsibilityTaskVO" alias="responsibilityTask"/>
+		<typeAlias type="com.bms.dto.facility.FacilityManageVO" alias="FacilityManage"/>
+		<typeAlias type="com.bms.dto.facility.FacilityVO" alias="facility"/>
+		<typeAlias type="com.bms.dto.task.TaskVO" alias="task"/>
+		<typeAlias type="com.bms.dto.facility.CheckListVO" alias="checkList"/>
+
+	</typeAliases>
+
+</configuration>
+
+
+
+
+
+
+

@@ -69,11 +69,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 		
 		return dataMap; 
 	}	
+	
 	@Override
 	public List<EmployeeVO> getEmployeeList() throws SQLException {
 		
 		return employeeDAO.selectEmployeeList();
 	}
+	
 	@Override
 	public void modify(EmployeeVO employee,List<CareerVO> careers) throws SQLException {		
 		employeeDAO.updateEmployee(employee);	

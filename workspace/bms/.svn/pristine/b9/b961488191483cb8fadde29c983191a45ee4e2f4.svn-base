@@ -1,0 +1,14 @@
+package com.bms.dao.reply;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.bms.dto.reply.ReplyVO;
+
+public interface ReplyDao {
+	
+	void mobileReplyWrite(ReplyVO reply) throws SQLException;
+	
+	ReplyVO mobileReply(String board_code) throws SQLException;
+
+}

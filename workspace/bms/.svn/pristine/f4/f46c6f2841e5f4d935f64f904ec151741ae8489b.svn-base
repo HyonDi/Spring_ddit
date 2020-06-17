@@ -1,0 +1,266 @@
+package com.bms.controller.member;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.bms.dto.member.MemberVO;
+import com.bms.dto.member.ResidentVO;
+import com.bms.dto.member.SuperintendentVO;
+import com.bms.dto.menu.MenuVO;
+import com.bms.dto.stock.StockVO;
+import com.bms.service.member.MemberService;
+import com.bms.service.menu.MenuService;
+
+@Controller
+@RequestMapping("/member")
+public class MemberController {
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Autowired
+	private MenuService menuService;
+	
+	@Resource(name="memberPicturePath")
+	private String picturePath;
+	
+	String fileName;
+	
+	@RequestMapping(value="/resident_management/owner", method=RequestMethod.GET)
+	public ModelAndView resident_management(ModelAndView mnv, HttpServletResponse response)throws Exception{
+		String url = "/member/test.owner";
+		
+		List<MenuVO> menuList1 = null;
+		List<MenuVO> menuList2 = null;
+		List<MenuVO> menuList3 = null;
+		List<MenuVO> menuList4 = null;
+		
+		try {
+			
+			menuList1 = menuService.selectUnderMenu("MENU01");
+			menuList2 = menuService.selectUnderMenu("MENU02");
+			menuList3 = menuService.selectUnderMenu("MENU03");
+			menuList4 = menuService.selectUnderMenu("MENU04");
+			
+		}catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+		/*response.setContentType("text/html;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.println("<script>");
+		out.println("mainframe.location.reload();$('#mainframe').attr('src', tt+ '/test');");
+		out.println("<script>");*/
+
+		mnv.addObject("menuList1", menuList1);
+		mnv.addObject("menuList2", menuList2);
+		mnv.addObject("menuList3", menuList3);
+		mnv.addObject("menuList4", menuList4);
+		mnv.setViewName(url);
+		
+		
+		return mnv;
+		
+		
+	}
+	
+	@RequestMapping(value="/resident_management/owner/test")
+	public String getResidentList(Model model, HttpSession session)throws Exception{
+		// 여기에 입주자 리스트
+		String url = "/member/test";
+		
+		// 로그인한사람 member_code를 가져와서 리스트를 출력한다.
+		MemberVO member = (MemberVO) session.getAttribute("loginUser");
+		
+		// 건물주 멤버코드
+		String member_code = member.getMember_code();
+		
+		List<ResidentVO> residentList = new ArrayList<>();
+		residentList = memberService.selectResidentList(member_code);
+		
+		model.addAttribute("residentList",residentList);
+		return url;
+	}
+	
+	@RequestMapping(value="/superindendent_management/owner/test")
+	public String getSuperIntendentList(Model model, HttpSession session)throws Exception{
+		// 여기에 관리인 리스트를 출력
+		String url = "/member/superindendentList";
+		System.out.println("Controller superindendent_management/owner/test");
+		
+		// 로그인한사람 member_code를 가져와서 리스트를 출력한다.
+		MemberVO member = (MemberVO) session.getAttribute("loginUser");
+		
+		System.out.println("건물주 정보 : >>>>>>>>>>>>>>>>>" + member.toString());
+		System.out.println("건물주 멤버코드 : >>>>>>>>>>>>>>" + member.getMember_code()); // null
+		
+		// 건물주 멤버코드
+		String member_code = member.getMember_code();
+		
+		List<SuperintendentVO> superintendentList = new ArrayList<>();
+		superintendentList = memberService.selectSuperintendentList(member_code);
+		
+		model.addAttribute("superintendentList",superintendentList);
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/superindendent_management/owner", method=RequestMethod.GET)
+	public ModelAndView manager_management(ModelAndView mnv)throws Exception{
+		String url = "/member/superindendentList.owner";
+		
+		List<MenuVO> menuList1 = null;
+		List<MenuVO> menuList2 = null;
+		List<MenuVO> menuList3 = null;
+		List<MenuVO> menuList4 = null;
+		
+		try {
+			
+			menuList1 = menuService.selectUnderMenu("MENU01");
+			menuList2 = menuService.selectUnderMenu("MENU02");
+			menuList3 = menuService.selectUnderMenu("MENU03");
+			menuList4 = menuService.selectUnderMenu("MENU04");
+			
+		}catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+
+		mnv.addObject("menuList1", menuList1);
+		mnv.addObject("menuList2", menuList2);
+		mnv.addObject("menuList3", menuList3);
+		mnv.addObject("menuList4", menuList4);
+		mnv.setViewName(url);
+		
+		
+		return mnv;
+		
+		
+	}
+	
+	/*@RequestMapping(value="/superindendent_management/regist", method=RequestMethod.GET)
+	public String registForm()throws Exception{
+		String url = "member/regist";
+		
+		return url;
+	}*/
+	
+	@RequestMapping(value="/picture",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> picture(@RequestParam("pictureFile") MultipartFile multi, 
+										  String oldPicture) throws Exception{
+		
+		ResponseEntity<String> entity=null;
+		String result="";
+		HttpStatus status=null;
+		
+		/* 파일유무확인 */
+		if (multi.isEmpty()) {			
+			result="파일이 없습니다.!";			
+			status=HttpStatus.BAD_REQUEST;
+		}else 
+		/* 용량제한 5MB */
+		if (multi.getSize() > 1024 * 1024 * 5) {			
+			result="용량초과 입니다";			
+			status=HttpStatus.BAD_REQUEST;
+		}else{
+			/* 파일저장폴더설정 */
+			String uploadPath = picturePath;
+			fileName = UUID.randomUUID().toString().replace("-", "")+".jpg";			
+			File storeFile = new File(uploadPath,fileName);
+			
+			// local HDD 에 저장.
+			multi.transferTo(storeFile);
+			
+			if(!oldPicture.isEmpty()){
+				File oldFile = new File(uploadPath,oldPicture);
+				if (oldFile.exists()) {
+					oldFile.delete();
+				}
+			}
+			
+			result=fileName;
+			status=HttpStatus.OK;
+			
+		}
+		return new ResponseEntity<String>(result,status);
+	}
+	
+	
+	
+	@RequestMapping("/getPicture")
+	@ResponseBody
+	public ResponseEntity<byte[]> getPicture(String picture)throws Exception{
+		InputStream in=null;
+		ResponseEntity<byte[]> entity=null;
+		String imgPath = this.picturePath;
+		try{
+			
+			//in=new FileInputStream(imgPath+File.separator+picture);
+			in=new FileInputStream(new File(imgPath,picture));
+			
+			entity=new ResponseEntity<byte[]>(IOUtils.toByteArray(in),HttpStatus.CREATED);
+		}catch(IOException e){
+			e.printStackTrace();
+			entity=new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}finally{
+			in.close();
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/addSuperintendent" , method=RequestMethod.GET)
+	public String addSuperintendentForm() throws Exception{
+		String url = "member/addSuperintendent";
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/addSuperintendent", method=RequestMethod.POST)
+	public ModelAndView addSuperintendentPost(MemberVO member,SuperintendentVO superintendent,ModelAndView mnv) throws Exception{
+		String url = "member/regist_success";
+		
+		try {
+			member.setMember_picture(fileName);
+			//System.out.println(stock.getItem_picture()+">>>>>>>>>>>>>>"); // null
+			memberService.insertMember(member);
+			System.out.println("member.toString : >>>>>>>" + member.toString());
+			memberService.insertSuperintendent(superintendent);
+			System.out.println("superintendent.toString() : >>>>>>>>>>>>>" + superintendent.toString());
+			// 이렇게해도 되나????
+		}catch(Exception e) {
+			url = "stock/regist_fail";
+			e.printStackTrace();
+		}
+		
+		mnv.addObject("superintendent", superintendent);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+}

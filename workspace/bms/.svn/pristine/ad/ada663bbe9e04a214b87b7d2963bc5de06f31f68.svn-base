@@ -1,0 +1,52 @@
+package com.bms.controller.community;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.bms.dto.community.CommunityVO;
+import com.bms.request.paging.SearchCriteria;
+import com.bms.service.community.CommunityService;
+
+@Controller
+@RequestMapping("/community/")
+public class CommunityController {
+	
+	@Autowired
+	private CommunityService communityService;
+	
+	@RequestMapping("mobileList")
+	public ModelAndView MobilecommunityList(SearchCriteria cri, ModelAndView mnv) throws SQLException {
+		String url = "mobile/communityList_resident";
+		
+		Map<String, Object> dataMap = communityService.getCommunityAll(cri);
+		
+		mnv.setViewName(url);
+		mnv.addAllObjects(dataMap);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value="mobileDetail",method=RequestMethod.GET)
+	public ModelAndView MobilecommunityDetail(ModelAndView mnv, String community_code, String chk) throws SQLException {
+		String url = "mobile/communityDetail_resident";
+		
+		if(chk.equals("dt")) {
+			url = "mobile/communityDetail_resident2";
+		}
+		
+		CommunityVO community = communityService.getCommunityByCno(community_code);
+		
+		mnv.setViewName(url);
+		mnv.addObject("community", community);
+		
+		return mnv;
+	}
+	
+
+}

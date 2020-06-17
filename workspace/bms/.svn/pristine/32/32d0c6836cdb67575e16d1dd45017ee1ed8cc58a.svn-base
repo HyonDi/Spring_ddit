@@ -1,0 +1,100 @@
+package com.bms.dto.schedule;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+public class ScheduleJsonDTO {
+	
+    private String title;
+    private String start;
+    private String end;
+    //private boolean allDay;
+    public ScheduleJsonDTO() {}
+	public ScheduleJsonDTO(String title, String start, String end) {
+		super();
+		this.title = title;
+		this.start = start;
+		this.end = end;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getStart() {
+		return start;
+	}
+
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	public void setStart(String start) {
+		this.start = start;
+	}
+
+	public String getEnd() {
+		return end;
+	}
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	public void setEnd(String end) {
+//		end = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(end);
+		this.end = end;
+	}
+
+	
+
+	
+
+
+/*	ScheduleVO schedulevo;
+	//ScheduleJsonDTO scheduleJsonDTO = null;
+	
+	
+	// 내보낼 때.
+    
+	public ScheduleJsonDTO scheduleVOToDto(ScheduleVO schedulevo) {
+    	// vo를 dto로 바꿔준다.
+    	
+    	// 빈공간 만들고
+    	ScheduleJsonDTO sjd = new ScheduleJsonDTO();
+    	
+    	// 제목 세팅
+    	sjd.setTitle(schedulevo.getSchedule_name());
+    	
+    	// allday 인지
+    	if(schedulevo.getSchedule_isallday()==1) {
+    		sjd.setAllDay(true);
+    	} else if(schedulevo.getSchedule_isallday()==0) {
+    		sjd.setAllDay(false);
+    	}
+    	
+    	return sjd;
+		
+    	ScheduleJsonDTO sjd = new ScheduleJsonDTO();
+
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		
+		sjd.setTitle(schedulevo.getSchedule_name());
+		try {
+			sjd.setStart(dateFormat.parse(schedulevo.getSchedule_start_date().toString()));
+			sjd.setEnd(dateFormat.parse(schedulevo.getSchedule_end_date().toString()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+    	
+    	if(schedulevo.getSchedule_isallday()==1) {
+    		sjd.setAllDay(true);
+    	} else if(schedulevo.getSchedule_isallday()==0) {
+    		sjd.setAllDay(false);
+    	}
+    	
+    	return sjd;
+    }*/
+    
+ 
+    		
+}

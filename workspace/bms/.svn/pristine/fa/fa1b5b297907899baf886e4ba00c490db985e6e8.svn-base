@@ -1,0 +1,11 @@
+package com.bms.dao.facility;
+
+import java.util.List;
+
+import com.bms.dto.facility.FacilityManageVO;
+import com.bms.request.paging.SearchCriteria;
+
+public interface FacilityManageDao {
+	
+	List<FacilityManageVO> selectSearchAllFacilityList(SearchCriteria cri)throws Exception; 
+}

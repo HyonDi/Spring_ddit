@@ -1,0 +1,20 @@
+package com.bms.dao.mypage;
+
+import java.sql.SQLException;
+
+import com.bms.dto.member.MemberVO;
+
+public interface MypageDao {
+
+	//id 받아서 member 조회
+	MemberVO selectMemberById(String id) throws SQLException;
+	
+	// update member
+	void updateMember(MemberVO member)throws SQLException;
+	
+	//id를 받아서 delete member
+	void deleteMember(String id)throws SQLException;
+	
+	//패스워드 체크
+	int passCheck(MemberVO member) throws Exception;
+}

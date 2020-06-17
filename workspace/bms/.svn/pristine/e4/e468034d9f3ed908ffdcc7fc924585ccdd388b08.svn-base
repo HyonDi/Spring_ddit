@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FacilityManage-Mapper">
+	
+	<sql id="search">
+		<if test="searchType == 'n'.toString()">
+			and facility_name like '%'||#{keyword}||'%'
+		</if>
+		<if test="searchType == 'w'.toString()">
+			and facility_name like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	
+	<select id="selectSearchAllFacilityList" parameterType="String" resultType="FacilityManage">
+		select a.*, b.check_point_facility_contents, c.member_name
+		from holding_facility a, check_point_facility b, member c
+		where a.facility_code = b.facility_code(+)
+		and a.member_code = c.member_code
+		and a.facility_code not in 'fac2'
+		<include refid="search"/>
+	</select>
+	
+	<select id="selectSearchAllFacilityListCount" parameterType="String" resultType="int">
+		select count(*)
+		from holding_facility a, check_point_facility b, member c
+		where a.facility_code = b.facility_code(+)
+		and a.member_code = c.member_code
+		and a.facility_code not in 'fac2'
+		<include refid="search"/>
+	</select>
+	
+	<update id="insertFacility" parameterType="FacilityManage">
+		insert into holding_facility 
+		values('facility' || to_char(sysdate,'yyyyMMdd') || holding_facility_seq.nextval, #{member_code}, #{facility_name}, #{facility_url}, #{facility_picture})
+	</update>
+	
+	<update id="insertFacilityCheckList" parameterType="checkList">
+		insert into check_point_facility 
+		values('ckFacility' || to_char(sysdate,'yyyyMMdd') || check_point_facility_seq.nextval, #{check_point_facility_contents}, #{facility_code})
+	</update>
+	
+	<select id="selectByFacilityCode" resultType="String">
+		select facility_code
+		from holding_facility
+		where rownum = 1
+		order by facility_code desc
+	</select>
+	
+	<select id="selectFacilityByFacilityCode" parameterType="String" resultType="FacilityManage">
+		select *
+		from holding_facility
+		where facility_code=#{facility_code}
+	</select>
+	
+	<select id="selelctCheckListByFacilityCode" parameterType="String" resultType="checkList">
+		select *
+		from check_point_facility
+		where facility_code=#{facility_code}
+	</select>
+	
+	<update id="modifyFacility" parameterType="FacilityManage">
+		update holding_facility set
+		facility_name=#{facility_name},facility_picture=#{facility_picture}
+		where facility_code=#{facility_code}
+	</update>
+	
+	<update id="modifyCheckList" parameterType="checkList">
+		update check_point_facility set
+		check_point_facility_contents=#{check_point_facility_contents}
+		where facility_code=#{facility_code}
+	</update>
+	
+	<update id="deleteFacility" parameterType="String">
+		delete from holding_facility
+		where facility_code=#{facility_code}
+	</update>
+		
+	<update id="deleteCheckList" parameterType="String">
+		delete from check_point_facility
+		where facility_code=#{facility_code}
+	</update>
+	
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Company-Mapper">
+
+	<sql id="search">
+		<if test="searchType == 't'.toString()">
+			and title like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'w'.toString()">
+			and writer like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'c'.toString()">
+			and content like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'tc'.toString()">
+			and (
+			title like '%'||#{keyword}||'%'
+			or
+			content like '%'||#{keyword}||'%'						
+			)			
+		</if>
+		<if test="searchType == 'cw'.toString()">
+			and (
+			writer like '%'||#{keyword}||'%'
+			or
+			content like '%'||#{keyword}||'%'						
+			)			
+		</if>
+		<if test="searchType == 'tcw'.toString()">
+			and (
+			company_name like '%'||#{keyword}||'%'
+			or
+			company_charge_name like '%'||#{keyword}||'%'
+			or
+			company_work_kind like '%'||#{keyword}||'%'						
+			)			
+		</if>
+	</sql>
+
+	<select id="selectSearchCompanyList" resultType="company">
+		<![CDATA[
+			select
+			*
+			from
+			outsourced_company
+			where company_code is not null 
+		]]>		  	
+			<include refid="search" />
+			order by company_code asc
+		
+	</select>
+	
+	<select id="selectSearchCompanyListCount" resultType="int">
+		<![CDATA[
+			select
+			count(*)
+			from
+			outsourced_company
+			where company_code is not null  
+		]]>		  	
+			<include refid="search" />
+		
+	</select>
+	
+	<select id="selectCompanyByName" resultType="company" parameterType="String">
+		
+		select 
+		* 
+		from 
+		outsourced_company
+		where company_charge_name = #{company_charge_name}
+	
+	</select>
+
+</mapper>

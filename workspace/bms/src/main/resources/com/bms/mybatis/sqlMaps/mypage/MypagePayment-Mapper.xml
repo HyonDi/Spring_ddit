@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MypagePayment-Mapper">
+	
+<!-- 	납부 관리 -->
+
+	<sql id="search">
+		<if test="searchType == 't'.toString()">
+			and payment_type like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'c'.toString()">
+			and payment_date like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'w'.toString()">
+			and payment_plan like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'tw'.toString()">
+			and (
+			payment_type like '%'||#{keyword}||'%'
+			or
+			payment_plan like '%'||#{keyword}||'%'						
+			)			
+		</if>
+		<if test="searchType == 'tcw'.toString()">
+			and (
+			payment_type like '%'||#{keyword}||'%'
+			or
+			payment_date like '%'||#{keyword}||'%'
+			or
+			payment_plan like '%'||#{keyword}||'%'						
+			)			
+		</if>
+	</sql>
+	
+	<select id="selectSearchPaymentList" resultType="payment">
+		select payment_detail.*, member.member_name
+		from payment_detail, member
+		where payment_code is not null
+		and payment_detail.member_code = member.member_code
+		<include refid="search" />
+		order by payment_code desc
+		
+		
+	</select>
+	
+	<select id="selectSearchPaymentListCount" resultType="int">
+		select count(*)
+		from payment_detail
+		where payment_code is not null
+		<include refid="search" />
+		order by payment_code desc
+	</select>
+	
+	<select id="SelectPaymentListByPaymentCode" resultType="payment">
+		select *
+		from payment_detail
+		where payment_code = #{payment_code}
+	</select>
+	
+	
+	<select id="selectPaymentSeqNext" resultType="int">
+		select payment_detail_seq.nextval as payment_code
+		from dual
+	</select>
+
+	<update id="insertPayment"  parameterType="payment">
+		insert
+		into
+		payment_detail(payment_code, member_code, payment_date, 
+					   payment_amount, payment_plan, board_sort_code, 
+					   payment_type)
+	
+		values(#{payment_code}, #{member_code}, #{payment_date}, 
+					   #{payment_amount}, #{payment_plan}, #{board_sort_code}, 
+					   #{payment_type})
+	</update>
+	
+	<update id="updatePayment" parameterType="payment">
+		update
+		payment_detail
+		set
+		payment_date=#{payment_date}, 
+        payment_amount=#{payment_amount}, 
+        payment_plan=#{payment_plan}, 
+        board_sort_code=#{board_sort_code},
+        payment_type=#{payment_type}
+	</update>
+	
+	<update id="deletePayment" parameterType="int">
+		delete
+		from payment_detail
+		where payment_code=#{payment_code}
+	</update>
+	
+</mapper>

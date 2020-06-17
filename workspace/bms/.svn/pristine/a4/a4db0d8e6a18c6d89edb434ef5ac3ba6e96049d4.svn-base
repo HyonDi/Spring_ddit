@@ -1,0 +1,72 @@
+package com.bms.controller.suggestion;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.bms.dto.suggestion.SuggestionVO;
+import com.bms.request.paging.SearchCriteria;
+import com.bms.service.member.MemberService;
+import com.bms.service.suggestion.SuggestionService;
+
+@Controller
+@RequestMapping("/suggestion")
+public class SuggestionController {
+	
+	@Autowired
+	private SuggestionService suggestionService;
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@RequestMapping("mobileList")
+	public ModelAndView MobilesuggestionList(SearchCriteria cri, ModelAndView mnv, String chk) throws SQLException {
+		String url = "mobile/suggestionList_resident";
+		
+		if(chk.equals("admin")) {
+			url = "mobile/suggestionList_superintendent";
+		}else if(chk.equals("mem")){
+			url = "mobile/suggestionList_resident";
+		}
+		
+		Map<String, Object> dataMap = suggestionService.getSuggestionAll(cri);
+		
+		mnv.setViewName(url);
+		mnv.addAllObjects(dataMap);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value="mobileDetail",method=RequestMethod.GET)
+	public ModelAndView MobilesuggestionDetail(ModelAndView mnv, String suggestion_code, String chk, String chk2) throws SQLException {
+		String url = "mobile/suggestionDetail_resident";
+		
+		if(chk.equals("dt") && chk2.equals("mem")) {
+			url = "mobile/suggestionDetail_resident";
+		}else if(chk.equals("dt") && chk2.equals("admin")) {
+			url = "mobile/suggestionDetail_superintendent";
+		}else if(chk.equals("dc") && chk2.equals("admin")) {
+			url = "mobile/suggestionDetail_superintendent2";
+		}else if(chk.equals("dc") && chk2.equals("mem")){
+			url = "mobile/suggestionDetail_resident";
+		}
+		
+		SuggestionVO suggestion = suggestionService.getsuggestionBySno(suggestion_code);
+		
+		String member_code = suggestion.getMember_code();
+		
+		String member_name = memberService.getMemberNameByCode(member_code);
+		
+		mnv.setViewName(url);
+		mnv.addObject("suggestion", suggestion);
+		mnv.addObject("member_name", member_name);
+		
+		return mnv;
+	}
+
+}

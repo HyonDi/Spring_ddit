@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Stock-Mapper">
+	<select id="selectStockList" resultType="stock">
+		select item_code, item_name, item_price, item_cnt, regdate
+		from holding_item
+		where facility_code is null
+	</select>
+	
+	<select id="selectHoldingItemCodeSequence" resultType="int">
+		select holding_item_seq.nextval from dual
+	</select>
+	
+	<update id="insertStock" parameterType="stock">
+		insert into holding_item(item_code, item_name, item_price, item_cnt, item_picture)
+		values(#{item_code}, #{item_name}, #{item_price}, #{item_cnt}, #{item_picture})
+	</update>
+	
+	<select id="getStockByItemCode" parameterType="str" resultType="stock">
+		select *
+		from holding_item
+		where item_code=#{item_code, jdbcType=VARCHAR}
+	</select>
+	
+	<update id="deleteStock" parameterType="str">
+		delete from holding_item
+		where item_code=#{item_code}
+	</update>
+	
+	<update id="modifyStock" parameterType="stock">
+		update holding_item set
+		item_name=#{item_name}, item_price=#{item_price}, item_cnt=#{item_cnt}, item_picture=#{item_picture} 
+		where item_code=#{item_code, jdbcType=VARCHAR}
+	</update>
+</mapper>

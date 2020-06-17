@@ -1,0 +1,25 @@
+package com.bms.dao.facility;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.bms.dto.facility.CheckListVO;
+import com.bms.dto.facility.FacilityManageVO;
+import com.bms.request.paging.SearchCriteria;
+
+public interface FacilityManageDao {
+	
+	//시설 리스트
+	List<FacilityManageVO> selectSearchAllFacilityList(SearchCriteria cri)throws Exception;
+	//시설 리스트카운트
+	int selectSearchAllFacilityListCount(SearchCriteria cri)throws SQLException;
+	
+	//시설등록
+	void insertFacility(FacilityManageVO facility)throws SQLException;
+	
+	void insertFacilityCheckList(CheckListVO check)throws SQLException;
+	
+	int selectHoldingFacilityCodeSequence()throws SQLException;
+	
+	int selectFacilityCheckListCodeSequence()throws SQLException;
+}

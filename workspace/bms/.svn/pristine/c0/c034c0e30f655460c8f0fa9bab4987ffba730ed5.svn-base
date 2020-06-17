@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mypage-Mapper">
+
+	<select id="selectMemberById" parameterType="String" resultType="member">
+		select 
+		* 
+		from member 
+		where member_id=#{member_id}
+	</select>
+
+
+	<update id="updateMemberResident" parameterType="member">
+		update member
+		set
+			member_id=#{member_id},
+			member_pwd=#{member_pwd},
+			member_name=#{member_name},
+			member_ssn=#{member_ssn},
+			member_address=#{member_address},
+			member_email=#{member_email},
+			member_phone=#{member_phone}
+		
+		where member_id=#{member_id}
+
+	</update>
+	
+	<update id="deleteMember" parameterType="str">
+		delete
+		from member
+		where member_id=#{member_id}
+	</update>
+	
+	<select id="passCheck" resultType="int">
+	select count(*)
+	from member
+	where member_id=#{member_id}
+	and member_pwd=#{member_pwd}
+	</select>
+	
+	
+	<sql id="search">
+		<if test="searchType == 't'.toString()">
+			and constract_kind like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'w'.toString()">
+			and constract_term like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'c'.toString()">
+			and member_code like '%'||#{keyword}||'%'			
+		</if>
+		<if test="searchType == 'tw'.toString()">
+			and (
+			constract_kind like '%'||#{keyword}||'%'
+			or
+			constract_term like '%'||#{keyword}||'%'						
+			)			
+		</if>
+		<if test="searchType == 'tcw'.toString()">
+			and (
+			constract_kind like '%'||#{keyword}||'%'
+			or
+			constract_term like '%'||#{keyword}||'%'
+			or
+			member_code like '%'||#{keyword}||'%'						
+			)			
+		</if>
+	</sql>
+	
+	<select id="selectSearchContractListByMemberCode" resultType="contract">
+		select *
+		from constract_details
+		where member_code = #{member_code}
+		<include refid="search" />
+		order by constract_code desc
+	</select>
+	
+	<select id="selectSearchContractList" resultType="contract">
+		select *
+		from constract_details
+		where constract_code is not null
+		<include refid="search" />
+		order by constract_code desc
+	</select>
+	
+	<select id="selectSearchContractListCountByMemberCode" resultType="int">
+		select count(*)
+		from constract_details
+		where member_code = #{member_code}
+		<include refid="search" />
+		order by constract_code desc
+	</select>
+	
+	<select id="selectSearchContractListCount" resultType="int">
+		select count(*)
+		from constract_details
+		where constract_code is not null
+		<include refid="search" />
+		order by constract_code desc
+	</select>
+	
+	<select id="SelectContractListByMemberCode" resultType="contract">
+		select *
+		from constract_details
+		where member_code = #{member_code}
+	</select>
+	
+	<select id="SelectContractListByConstractCode" resultType="contract">
+		select *
+		from constract_details
+		where constract_code = #{constract_code}
+	</select>
+	
+	<select id="selectContractList" resultType="contract">
+		select *
+		from constract_details
+		order by constract_code desc
+	</select>
+	
+	<update id="insertContract" parameterType="contract">
+		insert into 
+			constract_details(constract_start_date,
+						      constract_last_date,
+							  constract_kind,
+							  constract_amount,
+							  constract_term,
+							  constract_type)
+			value(#{constract_start_date}, #{constract_last_date}, #{constract_kind},
+				  #{constract_amount}, #{constract_term}, #{constract_type})							  
+	</update>
+	
+	<update id="updateContract" parameterType="contract">
+		update constract_details
+		set 
+			constract_start_date = #{constract_start_date},
+			constract_last_date = #{constract_last_date},
+			constract_kind = #{constract_kind},
+			constract_amount = #{constract_amount},
+			constract_term = #{constract_term},
+			constract_type = #{constract_type}
+			
+		where 	constract_code =#{constract_code}
+			
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		delete
+		from constract_details
+		where constract_code =#{constract_code}
+	</delete>
+	
+	<select id="selectContractSeqNext" resultType="int">
+		select constract_details.nextval as constract_code
+		from dual
+	</select>
+</mapper>

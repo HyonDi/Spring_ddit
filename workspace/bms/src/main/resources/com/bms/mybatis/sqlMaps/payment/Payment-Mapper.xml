@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PaymentReq-Mapper">
+
+	<sql id="search">
+		<if test="searchType == 'tcw'.toString()">
+			and (
+			payment_date like '%'||#{keyword}||'%'
+			or
+			payment_plan like '%'||#{keyword}||'%'
+			or
+			payment_type like '%'||#{keyword}||'%'						
+			)			
+		</if>
+	</sql>
+	
+	<select id="selectSearchPaymentList" resultType="paymentReq">
+		<![CDATA[
+			select
+			*
+			from
+			payment_detail
+			where payment_code is not null 
+		]]>		  	
+			<include refid="search" />
+			order by payment_code desc
+		
+	</select>
+	
+	<select id="selectSearchPaymentListCount" resultType="int">
+		<![CDATA[
+			select
+			count(*)
+			from
+			payment_detail
+			where payment_code is not null  
+		]]>		  	
+			<include refid="search" />
+		
+	</select>
+
+	<select id="mobilePaymentList" resultType="paymentReq" parameterType="String">
+		select payment_detail.*, member.member_name
+		from payment_detail, member
+        where payment_code is not null
+        and payment_detail.member_code = member.member_code
+        and payment_detail.payment_code = #{payment_code}
+	</select>
+
+</mapper>

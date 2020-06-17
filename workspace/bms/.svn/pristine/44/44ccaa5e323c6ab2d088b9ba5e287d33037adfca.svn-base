@@ -1,0 +1,13 @@
+package com.bms.service.stock;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.bms.dto.stock.StockVO;
+
+public interface StockService {
+	
+	List<StockVO> selectStockList()throws SQLException;
+	
+	void insertStock(StockVO stock)throws SQLException;
+}

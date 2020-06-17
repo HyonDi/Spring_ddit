@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Reply-Mapper">
+	
+	<update id="mobileReplyWrite" parameterType="reply">
+		insert into 
+			reply 
+		(reply_code, member_code, reply_contents, reply_reg_date, board_code, board_sort_code)
+			values
+		('rep' || to_char(sysdate,'yyyymmdd') || reply_seq.nextval, #{member_code}, #{reply_contents}, sysdate, #{board_code},#{board_sort_code})
+	</update>
+	
+	<select id="mobileReply" resultType="reply" parameterType="String">
+		select 
+		* 
+		from 
+		reply
+		where board_code = #{board_code}
+	</select>
+	
+</mapper>

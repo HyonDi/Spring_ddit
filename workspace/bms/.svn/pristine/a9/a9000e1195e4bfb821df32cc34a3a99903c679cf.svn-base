@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="widtd=device-widtd, initial-scale=1">
+	
+
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/board/vendor/bootstrap/css/bootstrap.min.css">
+
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/board/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/board/vendor/animate/animate.css">
+
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/board/vendor/select2/select2.min.css">
+
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/board/vendor/perfect-scrollbar/perfect-scrollbar.css">
+
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/resources/board/css/util.css">
+<style>
+
+
+/*//////////////////////////////////////////////////////////////////
+[ FONT ]*/
+
+
+@font-face {
+  font-family: OpenSans-Regular;
+  src: url('../fonts/OpenSans/OpenSans-Regular.ttf'); 
+}
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ RESTYLE TAG ]*/
+* {
+	margin: 0px; 
+	padding: 0px; 
+	box-sizing: border-box;
+}
+
+body, html {
+	height: 100%;
+	font-family: sans-serif;
+}
+
+/* ------------------------------------ */
+a {
+	margin: 0px;
+	transition: all 0.4s;
+	-webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+}
+
+a:focus {
+	outline: none !important;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+/* ------------------------------------ */
+h1,h2,h3,h4,h5,h6 {margin: 0px;}
+
+p {margin: 0px;}
+
+ul, li {
+	margin: 0px;
+	list-style-type: none;
+}
+
+
+/* ------------------------------------ */
+input {
+  display: block;
+	outline: none;
+	border: none !important;
+}
+
+textarea {
+  display: block;
+  outline: none;
+}
+
+textarea:focus, input:focus {
+  border-color: transparent !important;
+}
+
+/* ------------------------------------ */
+button {
+	outline: none !important;
+	border: none;
+	background: transparent;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+iframe {
+	border: none !important;
+}
+
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Utiliti ]*/
+
+
+
+
+
+
+/*//////////////////////////////////////////////////////////////////
+[ Table ]*/
+
+.limiter {
+  widtd: 100%;
+  margin: 0 auto;
+}
+
+.container-table100 {
+  widtd: 100%;
+  min-height: 100vh;
+  
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 33px 30px;
+}
+
+.wrap-table100 {
+  widtd: 1170px;
+}
+
+  .limiter::-webkit-scrollbar {
+    widtd: 10px;
+  }
+  .limiter::-webkit-scrollbar-tdumb {
+    background-color: #2f3542;
+    border-radius: 10px;
+  }
+  .limiter::-webkit-scrollbar-track {
+    background-color: grey;
+    border-radius: 10px;
+    box-shadow: inset 0px 0px 5px white;
+  }
+
+table {
+  border-spacing: 1;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  widtd: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+table * {
+  position: relative;
+}
+table td, table td {
+  padding-left: 8px;
+}
+table tdead tr {
+  height: 60px;
+  background: #36304a;
+}
+table tbody tr {
+  height: 50px;
+}
+table tbody tr:last-child {
+  border: 0;
+}
+table td, table td {
+  text-align: left;
+}
+table td.l, table td.l {
+  text-align: right;
+}
+table td.c, table td.c {
+  text-align: center;
+}
+table td.r, table td.r {
+  text-align: center;
+}
+
+
+.table100-head td{
+  font-family: OpenSans-Regular;
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  font-weight: unset;
+  background : crimson;
+}
+
+tbody tr:ntd-child(even) {
+  background-color: #f5f5f5;
+}
+
+tbody tr {
+  font-family: OpenSans-Regular;
+  font-size: 15px;
+  color: #808080;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+tbody tr:hover {
+  color: #555555;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.column1 {
+  widtd: 150px;
+  padding-left: 40px;
+}
+
+.column2 {
+  widtd: 150px;
+}
+
+.column3 {
+  widtd: 150px;
+}
+
+.column4 {
+  widtd: 150px;
+  text-align: center;
+}
+
+.column5 {
+  widtd: 150px;
+  text-align: center;
+}
+
+.column6 {
+  widtd: 150px;
+  text-align: center;
+  padding-right: 62px;
+}
+
+.column7 {
+  widtd: 150px;
+  text-align: center;
+  padding-right: 62px;
+}
+
+.column8 {
+  widtd: 150px;
+  text-align: center;
+  padding-right: 62px;
+}
+
+
+@media screen and (max-widtd: 992px) {
+  table {
+    display: block;
+  }
+  table > *, table tr, table td, table td {
+    display: block;
+  }
+  table tdead {
+    display: none;
+  }
+  table tbody tr {
+    height: auto;
+    padding: 37px 0;
+  }
+  table tbody tr td {
+    padding-left: 40% !important;
+    margin-bottom: 24px;
+  }
+  table tbody tr td:last-child {
+    margin-bottom: 0;
+  }
+  table tbody tr td:before {
+    font-family: OpenSans-Regular;
+    font-size: 14px;
+    color: #999999;
+    line-height: 1.2;
+    font-weight: unset;
+    position: absolute;
+    widtd: 40%;
+    left: 30px;
+    top: 0;
+  }
+
+  .column4,
+  .column5,
+  .column6 {
+    text-align: center;
+  }
+
+  .column4,
+  .column5,
+  .column6,
+  .column1,
+  .column2,
+  .column3 {
+    widtd: 100%;
+  }
+
+  tbody tr {
+    font-size: 14px;
+  }
+}
+
+@media (max-widtd: 576px) {
+  .container-table100 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+</style>
+
+</head>
+<body>
+	<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">
+                                  계약 상세 정보
+            </h1>
+        </div>
+        <div id="no-more-tables">
+            <table class="col-md-12 table-bordered table-striped table-condensed">
+
+        			<tr>
+        				<td>1231223</td>
+        				<td>Company</td>
+        				<td >Price</td>
+        				<td>Change</td>
+        				<td>Change %</td>
+        				<td>Open</td>
+        				<td>High</td>
+        				<td>Low</td>
+        				<td>Volume</td>
+
+        				<td>AAC</td>
+        				<td>AUSTRALIAN AGRICULTURAL COMPANY LIMITED.</td>
+        				<td>$1.38</td>
+        				<td>-0.01</td>
+        				<td>-0.36%</td>
+        				<td>$1.39</td>
+        				<td>$1.39</td>
+        				<td>$1.38</td>
+        				<td>9,395</td>
+        			</tr>       		
+        	</table>
+        </div>
+    </div>
+   </div> 
+
+
+
+	<!-- bootstrap icons -->
+	<script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+
+		<!--===============================================================================================-->	
+	<script src="<%=request.getContextPath()%>/resources/board/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="<%=request.getContextPath()%>/resources/board/vendor/bootstrap/js/popper.js"></script>
+	<script src="<%=request.getContextPath()%>/resources/board/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="<%=request.getContextPath()%>/resources/board/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="<%=request.getContextPath()%>/resources/board/js/main.js"></script>
+
+</body>
+</html>

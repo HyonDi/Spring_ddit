@@ -1,0 +1,17 @@
+package com.bms.service.mypage;
+
+import java.sql.SQLException;
+
+import com.bms.dto.member.MemberVO;
+
+public interface MypageService {
+
+	//회원 조회
+	MemberVO getMember(String id)throws SQLException;
+	
+	//회원 수정
+	void modify(MemberVO member)throws SQLException;
+	
+	//회원 삭제
+	void remove(String id)throws SQLException;
+}

@@ -1,0 +1,89 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+
+<html lang="en">
+
+<head>
+  <meta name="format-detection" content="telephone=no">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Bootstrap core CSS -->
+  <link href="<%=request.getContextPath()%>/resources/mobile/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="<%=request.getContextPath()%>/resources/mobile/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/mobile/vendor/simple-line-icons/css/simple-line-icons.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+
+  <!-- Plugin CSS -->
+  <link rel="stylesheet" href="<%=request.getContextPath()%>/resources/mobile/device-mockups/device-mockups.min.css">
+
+  <!-- Custom styles for this template -->
+  <link href="<%=request.getContextPath()%>/resources/mobile/css/new-age.min.css" rel="stylesheet">
+
+</head>
+
+	<body id="page-top">
+	
+	  <!-- Navigation -->
+	  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+	    <div class="container">
+	    	<a class="navbar-brand js-scroll-trigger" style="color:black; display:inline;" href="javascript:history.go(-1);"><ion-icon name="arrow-round-back" style="font-size: 30px; padding-right:20px" /></a>
+	    	<span style="font-weight: bold; font-size:20px;">설정</span>
+	    </div>
+	  </nav>
+	
+	  <header style="padding-bottom: 100px; padding-top: 60px; height: 678px;">
+	    <div class="container h-70">
+	      <div class="row h-70">
+	        <div class="col-lg-7 my-auto">
+	          <div class="header-content mx-auto">
+	          <section class="contact bg-light" id="contact" style="padding-top: 30px; padding-bottom: 30px;">
+		          <form class="form-inline" style="padding-left: 70px;">
+					  <div class="form-group">
+					    <label for="inputPassword6">새로운 비밀번호</label>
+					    <input type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline" style="width: 250px;">
+					  </div>
+					  
+					  <div class="form-group">
+					    <label for="inputPassword6">새로운 비밀번호 확인</label>
+					    <input type="password" id="inputPassword6" class="form-control mx-sm-3" aria-describedby="passwordHelpInline" style="width: 250px;">
+					  </div>
+					  
+					  
+					   <small id="passwordHelpInline" class="text-muted" style="">
+						 * 패스워드는 8 ~ 15 대소문자, 숫자, 특수문자 혼합 입니다.
+						</small>
+						
+			            <button type="button" class="btn btn-primary" style="width: 176px;height: 44px;font-size:large;margin-top: 20px;" onclick="goModifySave();">저장</button>    
+				  
+				  </form>
+				  
+			    </section>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </header>
+	  
+	</body>
+	
+	  <!-- Bootstrap core JavaScript -->
+  <script src="<%=request.getContextPath()%>/resources/mobile/vendor/jquery/jquery.min.js"></script>
+  <script src="<%=request.getContextPath()%>/resources/mobile/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="<%=request.getContextPath()%>/resources/mobile/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="<%=request.getContextPath()%>/resources/mobile/js/new-age.min.js"></script>
+  
+  <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+	
+</html>

@@ -1,0 +1,16 @@
+package com.bms.dao.suggestion;
+
+import java.util.List;
+
+import com.bms.dto.suggestion.SuggestionVO;
+import com.bms.request.paging.SearchCriteria;
+
+public interface SuggestionDao {
+
+	SuggestionVO selectSuggestionBySno(String suggestion_code);
+
+	int selectSuggestionCriteriaTotalCount(SearchCriteria cri);
+
+	List<SuggestionVO> selectsuggestionAll(SearchCriteria cri);
+
+}

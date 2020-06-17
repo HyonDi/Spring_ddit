@@ -1,0 +1,47 @@
+package com.bms.controller.notice;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.bms.dto.notice.NoticeVO;
+import com.bms.request.paging.SearchCriteria;
+import com.bms.service.notice.NoticeService;
+
+@Controller
+@RequestMapping("/notice/")
+public class NoticeController {
+	
+	@Autowired
+	private NoticeService noticeService;
+	
+	@RequestMapping("mobileList")
+	public ModelAndView MobilenoticeList(SearchCriteria cri, ModelAndView mnv) throws SQLException {
+		String url = "mobile/noticeList_resident";
+		
+		Map<String, Object> dataMap = noticeService.getNoticeAll(cri);
+		
+		mnv.setViewName(url);
+		mnv.addAllObjects(dataMap);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value="mobileDetail",method=RequestMethod.GET)
+	public ModelAndView MobilenoticeDetail(ModelAndView mnv, String notice_code) throws SQLException {
+		String url = "mobile/noticeDetail_resident";
+		
+		NoticeVO notice = noticeService.getnoticeByNno(notice_code);
+		
+		mnv.setViewName(url);
+		mnv.addObject("notice", notice);
+		
+		return mnv;
+	}
+
+}

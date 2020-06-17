@@ -1,0 +1,133 @@
+package com.bms.controller.stock;
+
+import java.io.File;
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.bms.dto.menu.MenuVO;
+import com.bms.dto.stock.StockVO;
+import com.bms.service.menu.MenuService;
+import com.bms.service.stock.StockService;
+
+@Controller
+@RequestMapping("/facility_stock/stock_management")
+public class StockController {
+	
+	@Autowired
+	private MenuService menuService;
+	
+	@Resource(name="picturePath")
+	private String picturePath;
+	
+	@Autowired
+	private StockService stockService;
+	public void setStockService(StockService stockService) {
+		this.stockService = stockService;
+	}
+	@RequestMapping("/owner")
+	public ModelAndView getStockMain_owner(ModelAndView mnv) throws Exception {
+		
+		String url = "stock/stockList.owner";
+		List<MenuVO> menuList1 = menuService.selectUnderMenu("MENU01");
+		List<MenuVO> menuList2 = menuService.selectUnderMenu("MENU02");
+		List<MenuVO> menuList3 = menuService.selectUnderMenu("MENU03");
+		List<MenuVO> menuList4 = menuService.selectUnderMenu("MENU04");
+
+		mnv.addObject("menuList1", menuList1);
+		mnv.addObject("menuList2", menuList2);
+		mnv.addObject("menuList3", menuList3);
+		mnv.addObject("menuList4", menuList4);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	@RequestMapping(value="/owner/test")
+	public ModelAndView stockList(ModelAndView mnv)throws Exception{
+		String url = "stock/stockList";
+		
+		List<StockVO> stockList = stockService.selectStockList();
+		mnv.addObject("stockList", stockList);
+		System.out.println(stockList);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	@RequestMapping(value="/regist", method=RequestMethod.GET)
+	public String registForm()throws Exception{
+		String url = "stock/regist";
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/regist", method=RequestMethod.POST)
+	public ModelAndView registPost(StockVO stock, ModelAndView mnv) throws Exception{
+		String url = "stock/regist_success";
+		try {
+			stockService.insertStock(stock);
+		}catch(Exception e) {
+			url = "stock/regist_fail";
+			e.printStackTrace();
+		}
+		mnv.addObject("stock", stock);
+		mnv.setViewName(url);
+		
+		return mnv;
+	}
+	
+	@RequestMapping(value="/picture",method=RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> picture(@RequestParam("pictureFile") MultipartFile multi, 
+										  String oldPicture) throws Exception{
+		
+		ResponseEntity<String> entity=null;
+		String result="";
+		HttpStatus status=null;
+		
+		/* 파일유무확인 */
+		if (multi.isEmpty()) {			
+			result="파일이 없습니다.!";			
+			status=HttpStatus.BAD_REQUEST;
+		}else 
+		/* 용량제한 5MB */
+		if (multi.getSize() > 1024 * 1024 * 5) {			
+			result="용량초과 입니다";			
+			status=HttpStatus.BAD_REQUEST;
+		}else{
+			/* 파일저장폴더설정 */
+			String uploadPath = picturePath;
+			String fileName = UUID.randomUUID().toString().replace("-", "")+".jpg";			
+			File storeFile = new File(uploadPath,fileName);
+			
+			// local HDD 에 저장.
+			if(!storeFile.exists()) {
+				storeFile.mkdirs();
+			}
+			multi.transferTo(storeFile);
+			
+			if(!oldPicture.isEmpty()){
+				File oldFile = new File(uploadPath,oldPicture);
+				if (oldFile.exists()) {
+					oldFile.delete();
+				}
+			}
+			
+			result=fileName;
+			status=HttpStatus.OK;
+			
+		}
+		return new ResponseEntity<String>(result,status);
+	}
+}

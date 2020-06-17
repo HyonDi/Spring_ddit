@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Facility-Mapper">
+	<!-- 보유 시설 리스트 -->
+	<select id="selectHoldingFacilityList" parameterType="String" resultType="Facility">
+		select *
+		from holding_facility
+		where member_code=#{member_code}
+	</select>
+	<!-- 보유 시설테이블에 등록 facility_code가 중복되면 삭제하고 이거로 등록하기.-->
+	<update id="insertResponsibilityFacility" parameterType="responsibilityFacility">
+		insert into 
+		responsibility_facilitiy(facility_code,member_code)
+		values(
+		#{facility_code},#{member_code}
+		)
+	</update>
+	<!-- 보유 시설테이블에 삭제 -->
+	<update id="deleteResponsibilityFacility" parameterType="String" >
+		delete 
+		from responsibility_facilitiy 
+		where facility_code=#{facility_code}		
+	</update>
+</mapper>

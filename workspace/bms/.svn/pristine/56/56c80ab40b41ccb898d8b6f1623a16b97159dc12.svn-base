@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FacilityManage-Mapper">
+	
+	<sql id="search">
+		<if test="searchType == 'n'.toString()">
+			and item_name like '%'||#{keyword}||'%'
+		</if>
+		<if test="searchType == 'w'.toString()">
+			and item_name like '%'||#{keyword}||'%'
+		</if>
+	</sql>
+	
+	<select id="selectSearchAllFacilityList" resultType="FacilityManage">
+		select a.*, b.check_point_facility_contents, c.member_name
+		from holding_facility a, check_point_facility b, member c
+		where a.facility_code = b.facility_code(+)
+		and a.member_code = c.member_code
+		and a.facility_code not in 'fac2'
+		<include refid="search"/>
+	</select>
+	
+</mapper>

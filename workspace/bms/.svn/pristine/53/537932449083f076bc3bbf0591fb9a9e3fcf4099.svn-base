@@ -1,0 +1,31 @@
+package com.bms.dao.member;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.bms.dto.member.MemberVO;
+
+public class MemberDaoImpl implements MemberDao{
+	
+	@Autowired
+	private SqlSession sqlSession;
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+	}
+	@Override
+	public MemberVO selectMemberById(String id) throws SQLException {
+		MemberVO member = sqlSession.selectOne("Member-Mapper.selectMemberById", id);
+		return member;
+	}
+	@Override
+	public MemberVO selectMemberByPhone(String member_phone) throws SQLException {
+		MemberVO member = sqlSession.selectOne("Member-Mapper.selectMemberByPhone", member_phone);
+		return member;
+	}
+
+
+
+}

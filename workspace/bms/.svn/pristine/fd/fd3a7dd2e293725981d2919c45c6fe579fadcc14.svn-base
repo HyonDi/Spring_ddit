@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- properties Path 경로 -->
+	<!-- stock.picture -->
+	<bean id="picturePath" class="java.lang.String">
+		<constructor-arg value="${stock.picture.upload}" />
+	</bean>
+	<bean id="facilitypicturePath" class="java.lang.String">
+		<constructor-arg value="${facility.picture.upload}" />
+	</bean>
+	<!-- member.picture -->
+	<bean id="memberPicturePath" class="java.lang.String">
+		<constructor-arg value="${member.picture.upload}" />      
+	</bean>
+	<!-- payment.picture -->
+	<bean id="paymentPicturePath" class="java.lang.String">
+		<constructor-arg value="${payment.picture.upload}" />      
+	</bean>
+
+	<!--  DAO -->
+	<bean id="mypageDao" class="com.bms.dao.mypage.MypageDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="memberDao" class="com.bms.dao.member.MemberDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="menuDao" class="com.bms.dao.menu.MenuDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="scheduleDao" class="com.bms.dao.schedule.ScheduleDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="noticeDao" class="com.bms.dao.notice.NoticeDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="communityDao" class="com.bms.dao.community.CommunityDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="suggestionDao" class="com.bms.dao.suggestion.SuggestionDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="itemDao" class="com.bms.dao.item.ItemDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="paymentDao" class="com.bms.dao.payment.PaymentDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="constractDao" class="com.bms.dao.constract.ConstractDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="companyDao" class="com.bms.dao.company.CompanyDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="replyDao" class="com.bms.dao.reply.ReplyDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="residentDao" class="com.bms.dao.resident.ResidentDaoImple" p:sqlSession-ref="sqlSession" />
+	<bean id="managerDao" class="com.bms.dao.manager.ManagerDaoImpl" p:sqlSession-ref="sqlSession" />
+	<bean id="facilityManageDao" class="com.bms.dao.facility.FacilityManageDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="facilityDao" class="com.bms.dao.facility.FacilityDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<bean id="taskDao" class="com.bms.dao.task.TaskDaoImpl" p:sqlSession-ref="sqlSession"/>
+	<!-- Service -->
+	<bean id="mypageService" class="com.bms.service.mypage.MypageServiceImpl" p:mypageDao-ref="mypageDao" />
+	<bean id="memberService" class="com.bms.service.member.MemberServiceImpl" p:memberDao-ref="memberDao" />
+	<bean id="menuService" class="com.bms.service.menu.MenuServiceImpl" p:menuDao-ref="menuDao"/>
+	<bean id="scheduleService" class="com.bms.service.schedule.ScheduleServiceImpl" p:scheduleDao-ref="scheduleDao"/>
+	<bean id="suggestionService" class="com.bms.service.suggestion.SuggestionServiceImpl" p:suggestionDao-ref="suggestionDao"/>
+	<bean id="itemService" class="com.bms.service.item.ItemServiceImpl" p:itemDao-ref="itemDao"/>
+	<bean id="paymentService" class="com.bms.service.payment.PaymentServiceImpl" p:paymentDao-ref="paymentDao" />
+	<bean id="constractService" class="com.bms.service.constract.ConstractServiceImpl" p:constractDao-ref="constractDao" />
+	<bean id="companyService" class="com.bms.service.company.CompanyServiceImpl" p:companyDao-ref="companyDao" />
+	<bean id="replyService" class="com.bms.service.reply.ReplyServiceImpl" p:replyDao-ref="replyDao" />
+	<bean id="residentService" class="com.bms.service.resident.ResidentServiceImpl" p:residentDao-ref="residentDao" />
+	<bean id="managerService" class="com.bms.service.manager.ManagerServiceImpl" p:managerDao-ref="managerDao"/>
+	<bean id="facilityManageService" class="com.bms.service.facility.FacilityManageServiceImpl" p:facilityManageDao-ref="facilityManageDao"/>
+	<bean id="facilityService" class="com.bms.service.facility.FacilityServiceImpl" p:facilityDao-ref="facilityDao"/>
+	<bean id="taskService" class="com.bms.service.task.TaskServiceImpl" p:taskDao-ref="taskDao"/>
+
+	
+	<!-- mail -->
+	<bean id="emailSender" class="com.bms.util.MailSender" p:mailSender-ref="mailSender"/>
+	<bean id="noticeService" class="com.bms.service.notice.NoticeServiceImpl" p:noticeDao-ref="noticeDao" />
+	<bean id="communityService" class="com.bms.service.community.CommunityServiceImpl" p:communityDao-ref="communityDao"/>
+</beans>

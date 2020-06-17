@@ -1,0 +1,341 @@
+package com.bms.controller.schedule;
+
+
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.bms.dto.menu.MenuVO;
+import com.bms.dto.schedule.ScheduleJsonDTO;
+import com.bms.dto.schedule.ScheduleSortCodeVO;
+import com.bms.dto.schedule.ScheduleVO;
+import com.bms.service.menu.MenuService;
+import com.bms.service.schedule.ScheduleService;
+import com.sun.javafx.collections.MappingChange.Map;
+
+import net.sf.json.JSONArray;
+
+
+
+@Controller
+@RequestMapping("/mypage/schedule_management/")
+public class ScheduleContoller {
+	@Autowired
+	private MenuService menuService;
+	
+	@RequestMapping(value="superintendent", method=RequestMethod.GET)
+	public ModelAndView getMain_sueprintendent(ModelAndView mnv) throws Exception {
+		
+		String url = "schedule/schedule.manager";
+		List<MenuVO> menuList5 = menuService.selectUnderMenu("MENU05");
+		List<MenuVO> menuList6 = menuService.selectUnderMenu("MENU06");
+		List<MenuVO> menuList7 = menuService.selectUnderMenu("MENU07");
+		List<MenuVO> menuList8 = menuService.selectUnderMenu("MENU08");
+
+		mnv.addObject("menuList5", menuList5);
+		mnv.addObject("menuList6", menuList6);
+		mnv.addObject("menuList7", menuList7);
+		mnv.addObject("menuList8", menuList8);
+		mnv.setViewName(url);
+		
+		return mnv;
+
+	}
+	
+	@RequestMapping(value="resident", method=RequestMethod.GET)
+	public ModelAndView getMain_resident(ModelAndView mnv) throws Exception {
+		String url = "schedule/schedule.resident";
+		List<MenuVO> menuList9 = menuService.selectUnderMenu("MENU09");
+		List<MenuVO> menuList10 = menuService.selectUnderMenu("MENU10");
+		List<MenuVO> menuList11 = menuService.selectUnderMenu("MENU11");
+
+		mnv.addObject("menuList9", menuList9);
+		mnv.addObject("menuList10", menuList10);
+		mnv.addObject("menuList11", menuList11);
+		mnv.setViewName(url);
+		
+		return mnv;
+
+	}
+	
+	@Autowired
+	private ScheduleService scheduleService;
+
+	@RequestMapping(value="superintendent/test", method=RequestMethod.GET)
+	public String getCalendar(Model model) throws Exception {
+		String url = "schedule/schedule";
+		// 여기!! 캘린더에 일정 출력하는 내용
+		List<ScheduleVO> allSchedule = scheduleService.myAllSchedule("333333");
+		List<ScheduleJsonDTO> jsonList = new ArrayList<ScheduleJsonDTO>();
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		ScheduleSortCodeVO ssc = new ScheduleSortCodeVO();
+		
+		for (ScheduleVO sv : allSchedule) {
+			boolean isallday;
+			if(sv.getSchedule_isallday() == 1) {
+				isallday = true;
+			}else {
+				isallday = false;
+			}
+			
+			if (sv.getSchedule_end_date() != null && sv.getSchedule_start_date() != null & sv.getSchedule_name() != null) {
+				//ScheduleJsonDTO sd = new ScheduleJsonDTO(sv.getSchedule_name(), sdf.format(sv.getSchedule_start_date()), sdf.format(sv.getSchedule_end_date()),isallday,sv.getSchedule_code());
+				
+				ssc = scheduleService.selectOneScheduleSortCode(sv.getSchedule_sort_code());
+				
+				//System.out.println("sv.getSchedule_sort_code() : " + sv.getSchedule_sort_code() + ">>>>>>>>>>>>>>>>>>>>>>>>>>>");
+				/*System.out.println(ssc.getSchedule_sort_code());
+				System.out.println(ssc.getSchedule_sort_color());
+				System.out.println(ssc.toString());*/
+				
+				ScheduleJsonDTO sd = new ScheduleJsonDTO(sv.getSchedule_name(), sv.getSchedule_start_date(), 
+						sv.getSchedule_end_date(),isallday,sv.getSchedule_code(),ssc.getSchedule_sort_color(),
+						sv.getSchedule_sort_code(), sv.getSchedule_contents(), sv.getSchedule_start_time(),
+						sv.getSchedule_end_time(), Integer.toString(sv.getSchedule_istodolist()));
+				//System.out.println("sv.getSchedule_code() 테스트 >>>>>>>>>>>>>>>>>" + sv.getSchedule_code());
+				//System.out.println(sd.toString());
+				jsonList.add(sd);
+			}
+		}
+		
+		// todoList출력하는 내용 
+		List<ScheduleVO> allToDoList = scheduleService.myAllToDoList("333333");
+		
+		
+		model.addAttribute("jsonList", JSONArray.fromObject(jsonList));
+		model.addAttribute("allToDoList", allToDoList);
+		return url;
+		
+	}
+	
+	@RequestMapping(value="resident/test", method=RequestMethod.GET)
+	public ModelAndView getCalendar2(ModelAndView mnv) throws Exception {
+		String url = "schedule/schedule";
+		
+		/*List<ScheduleVO> allSchedule = scheduleService.myAllSchedule("333333");
+		mnv.addObject("allSchedule", allSchedule);
+		*/
+		
+		List<ScheduleVO> allToDoList = scheduleService.myAllToDoList("333333");
+		mnv.addObject("allToDoList",allToDoList);
+		
+		mnv.setViewName(url);
+		
+		return mnv;
+		
+	}
+	//없네
+	
+	//리턴 = 데이터 그렇다는것은 화면을 불러올수없는거네
+	//ㅇㅇ 데이터만 넘겨줄때 쓰는거임 ajaxㅇㅋ 존나편리하게도 리턴에 데이터만 넣어줘도 되는건 데이터바인드라는 라이브러리를 사용하고있기때문임
+	//다른데가서 똑같이해도 안된다 = 라이브러리점검
+	
+	//나머지는알아서공부할수잇을듯 충분히ㅎㅎ 그리고 모델엔뷰 안쓴다고 들음
+	//쓸이유가 없기때문
+	//걍 보이드쓰믄 대자나
+	//model 쓰고 나는 Post로 요청할때 mode쓰고 void하고 GEt으로 요청할때엔 modelandview쓴다고생각했음.
+	//걍 강단하게 getMapping PostMapping이라는 어노테이션도 있꼬 (여기엔라이브러리추가안대잇음)
+	//모델엔뷰 쓸이유전혀없음 코드만졸라길어짐 그럼
+	// @ResponseBody// 이새끼있으면 이 컨트롤러는 '응답전용이다'라는뜻
+	
+	
+	
+	
+	@RequestMapping(value="/dragUpdate", method=RequestMethod.POST)
+	@ResponseBody
+	public Object getCalendarJson(@RequestBody ScheduleVO schedule) throws Exception {
+		System.out.println("Cotroller dargUpdate");
+		HashMap<String, Object> scheduleMap = new HashMap<String, Object>();
+		
+		scheduleMap.put("schedule", schedule);
+		
+		//System.out.println("schedule.toString() : " + scheduleMap.toString());
+		//System.out.println("code : " + schedule.getSchedule_code());
+		//System.out.println("color : " + color);
+		
+		String sd = schedule.getSchedule_start_date();
+		String ed = schedule.getSchedule_end_date();
+		
+		// ed가 널이면 sd로 넣기-----------------<<수정해야함>>
+		
+		sd = sd.substring(0,10);
+		
+		if(ed==null) {
+			ed = sd;
+		}
+		ed = ed.substring(0,10);
+		
+		schedule.setSchedule_start_date(sd);
+		schedule.setSchedule_end_date(ed);
+		
+		//System.out.println("sdf.parse(ed).toString() : >>>" + sdf.parse(ed).toString());
+		try {
+			scheduleService.updateSchedule(schedule);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return scheduleMap;
+	}
+	
+	@RequestMapping(value="/todoDragUpdate", method=RequestMethod.POST)
+	@ResponseBody
+	public ScheduleVO todoDragUpdate(ScheduleVO schedule) {
+		
+		System.out.println("Cotroller todoDragUpdate");
+//		HashMap<String, Object> scheduleMap = new HashMap<String, Object>();
+		
+//		scheduleMap.put("schedule", schedule);
+//		
+//		
+//		System.out.println("schedule.toString() : " + scheduleMap.toString());
+//		System.out.println("code >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: " + schedule.getSchedule_code());
+//		System.out.println("name >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: " + schedule.getSchedule_name());
+		System.out.println("date >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: " + schedule.getSchedule_start_date());
+		System.out.println("date >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: " + schedule.getSchedule_sort_code());
+		
+		// 달력 어느날짜에 내려놨는지 알아야함!!!!!!!!!!!!!!!!---------------------<<수정해야함>>
+		
+		String sd = schedule.getSchedule_start_date();
+		String ed = schedule.getSchedule_end_date();
+		
+		
+		sd = sd.substring(0,10);
+		ed = ed.substring(0,10);
+		
+		schedule.setSchedule_start_date(sd);
+		schedule.setSchedule_end_date(ed);
+		schedule.setSchedule_istodolist(0);
+		
+		try {
+			scheduleService.insertSchedule(schedule);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return schedule;
+	}
+	
+	
+	/*@RequestMapping(value="/addSchedule", method=RequestMethod.GET)
+	public ModelAndView getAddSchedule(ModelAndView mnv) throws Exception {
+		String url = "schedule/addSchedule";
+		
+		
+		List<ScheduleSortCodeVO> scheduleSortcodeList = scheduleService.myScheduleSortCode("333333");
+		mnv.addObject("scheduleSortcodeList", scheduleSortcodeList);
+		mnv.setViewName(url);
+		
+		return mnv;
+	
+	}*/
+	
+	@RequestMapping(value="/addSchedule", method=RequestMethod.GET)
+	public ModelAndView getAddSchedule(ModelAndView mnv) throws Exception {
+		String url = "/schedule/addSchedule";
+		mnv.addObject("scheduleSortcodeList",scheduleService.myScheduleSortCode("333333"));
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@RequestMapping(value="/addSchedule", method=RequestMethod.POST)
+	public String addSchedule(ScheduleVO schedule, Model model, @RequestParam("makeNewCode") int makeNewCode,ScheduleSortCodeVO sortcodeVo) throws Exception {
+		String url = "schedule/addSchedule_ok";
+		//System.out.println("makeNewCode : >>>>>>>>>>>>>>>>" + makeNewCode);
+		//System.out.println("sortcodeVo의 색 >>>>>>>>>>:" + sortcodeVo.getSchedule_sort_color()+"/"+"작성자 : " +sortcodeVo.getMember_code());
+		
+		if(makeNewCode==1) {
+			// 코드새로만들기를 하면 
+			sortcodeVo.setMember_code("333333");
+			scheduleService.insertScheduleSortCode(sortcodeVo);
+			System.out.println("새로운 분류 만들기 성공");
+			schedule.setSchedule_sort_code(sortcodeVo.getSchedule_sort_code());
+		}else {
+			System.out.println("makeNewCode 가 1이 아님!! : "+makeNewCode+" : <<<<<<<<<<<<<<<makeNewCode");
+		}
+		
+		scheduleService.insertSchedule(schedule);
+		
+		//scheduleService.insertSchedule(schedule);
+		//System.out.println("schedule.getSchedule_isallday() : " + schedule.getSchedule_isallday());
+		
+		model.addAttribute("schedule", schedule);
+		//System.out.println("schedule.getSchedule_name() : " + schedule.getSchedule_name());
+		return url;
+		
+	}
+	
+	@RequestMapping(value="/addToDoList", method=RequestMethod.GET)
+	public ModelAndView getAddToDoList(ModelAndView mnv) throws Exception {
+		String url = "/schedule/addToDoList";
+		mnv.addObject("scheduleSortcodeList",scheduleService.myScheduleSortCode("333333"));
+		mnv.setViewName(url);
+		return mnv;
+	}
+	@RequestMapping(value="/addToDoList", method=RequestMethod.POST)
+	public String addToDoList(ScheduleVO schedule, Model model) throws Exception {
+		String url = "schedule/addToDoList_ok";
+		
+		//System.out.println("schedule.getSchedule_isallday() : " + schedule.getSchedule_isallday());
+		scheduleService.insertSchedule(schedule);
+		
+		model.addAttribute("schedule", schedule);
+		//System.out.println("schedule.getSchedule_name() : " + schedule.getSchedule_name());
+		return url;
+		
+	}
+	
+	@RequestMapping(value="/updateSchedule", method=RequestMethod.GET)
+	public String getUpdateSchedule(Model model, String schedule_code) throws Exception {
+		String url = "/schedule/updateSchedule";
+		
+		// test
+		//System.out.println("schedule_code >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: " + schedule_code); // null임.
+		
+		ScheduleVO schedule = scheduleService.selectOneSchedule(schedule_code);
+		//System.out.println(schedule.getSchedule_end_date()+">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		/*model.addAttribute("oneSchedule",schedule);*/
+		
+		// 데이트형식 바꿈 
+		//SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		schedule.setSchedule_start_date(schedule.getSchedule_start_date().substring(0,10));
+		schedule.setSchedule_end_date(schedule.getSchedule_end_date().substring(0,10));
+		
+		
+		model.addAttribute("oneSchedule",schedule);
+		model.addAttribute("scheduleSortcodeList",scheduleService.myScheduleSortCode("333333"));
+		
+		return url;
+	}
+	
+	
+	@RequestMapping(value="/updateSchedule", method=RequestMethod.POST)
+	public String updateSchedule(ScheduleVO schedule, Model model) throws Exception {
+		String url = "schedule/updateSchedule_ok";
+		
+		//System.out.println("schedule.getSchedule_isallday() : " + schedule.getSchedule_isallday());
+		//scheduleService.insertSchedule(schedule);
+		scheduleService.updateSchedule(schedule);
+		model.addAttribute("schedule", schedule);
+		//System.out.println("schedule.getSchedule_name() : " + schedule.getSchedule_name());
+		return url;
+		
+	}
+	
+}

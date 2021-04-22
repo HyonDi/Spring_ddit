@@ -26,7 +26,7 @@
 		<!-- commons dbcp (pool은 coupled로 따로 들어옴) -->
 		<commons.dbcp-version>2.4.0</commons.dbcp-version>
 		<!-- myBatis(jdk 버전에 맞춰서...) -->
-		<myBatis-version>3.2.8</myBatis-version>
+		<myBatis-version>3.5.6</myBatis-version>
 		<!-- myBatis-spring -->
 		<myBatis.spring-version>1.2.2</myBatis.spring-version>
 		<!-- log4jdbc.remix -->

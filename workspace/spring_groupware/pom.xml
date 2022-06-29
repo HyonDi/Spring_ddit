@@ -44,7 +44,7 @@
 		<!-- jasperreports -->
 		<jasperreports-version>6.5.0</jasperreports-version>
 		<!-- poi -->
-		<apache.poi-version>3.17</apache.poi-version>
+		<apache.poi-version>4.1.1</apache.poi-version>
 		<!-- imgscalr-lib -->
 		<imgscalr-version>4.2</imgscalr-version>
 	</properties>
